@@ -1,8 +1,10 @@
-package com.example.mpmanage;
+package com.example.mpmanage.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.mpmanage.R;
 
 public class MainActivity extends AppCompatActivity {
 
