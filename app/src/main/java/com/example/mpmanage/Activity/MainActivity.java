@@ -1,13 +1,13 @@
 package com.example.mpmanage.Activity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -36,13 +36,13 @@ public class MainActivity extends AppCompatActivity {
 
     // Dữ Liệu Từ Database
     Admin admin;
-    ArrayList<BaiHat> baiHatArrayList;
-    ArrayList<QuangCao> quangCaoArrayList;
-    ArrayList<Album> albumArrayList;
-    ArrayList<CaSi> caSiArrayList;
-    ArrayList<Playlist> playlistArrayList;
-    ArrayList<ChuDeTheLoai> theLoaiArrayList;
-    ArrayList<ChuDeTheLoai> chuDeArrayList;
+    public static ArrayList<BaiHat> baiHatArrayList;
+    public static ArrayList<QuangCao> quangCaoArrayList;
+    public static ArrayList<Album> albumArrayList;
+    public static ArrayList<CaSi> caSiArrayList;
+    public static ArrayList<Playlist> playlistArrayList;
+    public static ArrayList<ChuDeTheLoai> theLoaiArrayList;
+    public static ArrayList<ChuDeTheLoai> chuDeArrayList;
 
 
     // Các Mục Trong layout
@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private void AnhXa() {
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
@@ -83,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     private void SetToolBar() {
         setSupportActionBar(toolbar);
     }
+
     private void SetupDrawer() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         navController = navHostFragment.getNavController();
@@ -107,11 +107,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<List<BaiHat>> call, @NonNull Response<List<BaiHat>> response) {
                 baiHatArrayList = (ArrayList<BaiHat>) response.body();
+                Log.e("BBB", "SUC");
             }
 
             @Override
             public void onFailure(@NonNull Call<List<BaiHat>> call, @NonNull Throwable t) {
-
+                Log.e("BBB", "Failed");
             }
         });
     }

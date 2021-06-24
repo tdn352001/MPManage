@@ -22,6 +22,9 @@ public class BaiHat implements Parcelable {
     @SerializedName("LinkBaiHat")
     @Expose
     private String linkBaiHat;
+    @SerializedName("IdCaSi")
+    @Expose
+    private List<String> idCaSi = null;
     @SerializedName("CaSi")
     @Expose
     private List<String> caSi = null;
@@ -84,7 +87,13 @@ public class BaiHat implements Parcelable {
     public void setLinkBaiHat(String linkBaiHat) {
         this.linkBaiHat = linkBaiHat;
     }
+    public List<String> getIdCaSi() {
+        return idCaSi;
+    }
 
+    public void setIdCaSi(List<String> idCaSi) {
+        this.idCaSi = idCaSi;
+    }
     public List<String> getCaSi() {
         return caSi;
     }
