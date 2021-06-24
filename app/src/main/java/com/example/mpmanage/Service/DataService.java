@@ -3,8 +3,11 @@ package com.example.mpmanage.Service;
 
 
 import com.example.mpmanage.Model.Admin;
+import com.example.mpmanage.Model.Album;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.Model.CaSi;
+import com.example.mpmanage.Model.ChuDeTheLoai;
+import com.example.mpmanage.Model.Playlist;
 import com.example.mpmanage.Model.QuangCao;
 
 import java.util.List;
@@ -43,17 +46,17 @@ public interface DataService {
 
 
     @GET("getallalbums.php")
-    Call<List<BaiHat>> GetAllAlbum();
+    Call<List<Album>> GetAllAlbum();
 
 
     @GET("getallplaylist.php")
-    Call<List<BaiHat>> GetAllPlaylist();
+    Call<List<Playlist>> GetAllPlaylist();
 
 
     @GET("getallchude.php")
-    Call<List<BaiHat>> GetAllChuDe();
+    Call<List<ChuDeTheLoai>> GetAllChuDe();
 
 
     @GET("getalltheloai.php")
-    Call<List<BaiHat>> GetAllTheLoai();
+    Call<List<ChuDeTheLoai>> GetAllTheLoai();
 }
