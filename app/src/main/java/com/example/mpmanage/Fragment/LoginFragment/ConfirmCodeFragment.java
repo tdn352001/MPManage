@@ -44,7 +44,7 @@ public class ConfirmCodeFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             Code = bundle.getInt("code");
-            IdUser = bundle.getString("iduser");
+            IdUser = bundle.getString("idadmin");
         }
     }
 
@@ -55,7 +55,7 @@ public class ConfirmCodeFragment extends Fragment {
                 String Vcode = edtCode.getText().toString();
                 if (Vcode.equals(Code + "")) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("iduser", IdUser);
+                    bundle.putString("idadmin", IdUser);
                     Navigation.findNavController(view).navigate(R.id.action_confirmCodeFragment_to_changePasswordFragment, bundle);
                 } else {
                     if (Vcode.equals("")) {

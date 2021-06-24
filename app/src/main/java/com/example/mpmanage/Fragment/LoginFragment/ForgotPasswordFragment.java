@@ -3,6 +3,7 @@ package com.example.mpmanage.Fragment.LoginFragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,7 @@ public class ForgotPasswordFragment extends Fragment {
         btnCofirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (edtEmail.getText().toString().equals("")) {
+                if (edtEmail.getText().toString().trim().equals("")) {
                     edtEmail.setError("Vui Lòng Nhập Email");
                     Toast.makeText(getContext(), "Vui Lòng Nhập Email", Toast.LENGTH_SHORT).show();
                 } else {
@@ -70,8 +71,8 @@ public class ForgotPasswordFragment extends Fragment {
                     callback.enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
-                            String iduser = response.body();
-                            if (iduser == null) {
+                            String idadmin = response.body();
+                            if (idadmin == null) {
                                 progressDialog.dismiss();
                                 Toast.makeText(getContext(), "Không Tìm Thấy Email Trên Hệ Thống", Toast.LENGTH_SHORT).show();
                             } else {
@@ -82,8 +83,9 @@ public class ForgotPasswordFragment extends Fragment {
                                     progressDialog.dismiss();
                                     Toast.makeText(getContext(), "Mã Xác Nhận Đã Được Gửi Đến Email Của Bạn", Toast.LENGTH_SHORT).show();
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("iduser", iduser);
+                                    bundle.putString("idadmin", idadmin);
                                     bundle.putInt("code", code);
+                                    Log.e("CODE", code + "");
                                     Navigation.findNavController(view).navigate(R.id.action_forgotPasswordFragment_to_confirmCodeFragment, bundle);
                                 } else {
                                     Toast.makeText(getContext(), "Hệ Thống Lỗi! Vui Lòng Thử Lại Sau", Toast.LENGTH_LONG).show();
@@ -94,7 +96,7 @@ public class ForgotPasswordFragment extends Fragment {
 
                         @Override
                         public void onFailure(Call<String> call, Throwable t) {
-                            Toast.makeText(getContext(), "Hệ Thống Lỗi! Vui Lòng Thử Lại Sau", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Lỗi Kết Nối! Vui Lòng Thử Lại Sau", Toast.LENGTH_LONG).show();
                             progressDialog.dismiss();
                         }
                     });

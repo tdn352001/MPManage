@@ -2,6 +2,7 @@ package com.example.mpmanage.Fragment.LoginFragment;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,10 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.mpmanage.Model.Md5;
 import com.example.mpmanage.R;
 import com.example.mpmanage.Service.APIService;
+import com.example.mpmanage.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -27,7 +30,7 @@ public class ChangePasswordFragment extends Fragment {
     TextInputEditText edtPW, edtCF;
     MaterialButton btnCf;
     TextView btnLogin;
-    String IdUser;
+    String IdAdmin;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +52,8 @@ public class ChangePasswordFragment extends Fragment {
     private void GetUser() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            IdUser = bundle.getString("iduser");
+            IdAdmin = bundle.getString("idadmin");
+
         }
     }
 
@@ -78,7 +82,8 @@ public class ChangePasswordFragment extends Fragment {
                     } else {
                         if (password.equals(cpassword)) {
                             ProgressDialog progressDialog = ProgressDialog.show(getContext(), "Đang Thực Hiện", "Vui Lòng Chờ....!!!", false, false);
-                            Call<String> callback = APIService.getService().ChangePassword(password, IdUser);
+                            DataService dataService = APIService.getService();
+                            Call<String> callback = dataService.ChangePassword(IdAdmin, Md5.endcode(password));
                             callback.enqueue(new Callback<String>() {
                                 @Override
                                 public void onResponse(Call<String> call, Response<String> response) {

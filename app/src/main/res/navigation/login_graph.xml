@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.example.manageappmusic.Fragment.LoginFragment.ForgotPasswordFragment"
+        android:name="com.example.mpmanage.Fragment.LoginFragment.ForgotPasswordFragment"
         android:label="fragment_forgot_password"
         tools:layout="@layout/fragment_forgot_password">
         <action
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.example.manageappmusic.Fragment.LoginFragment.ChangePasswordFragment"
+        android:name="com.example.mpmanage.Fragment.LoginFragment.ChangePasswordFragment"
         android:label="fragment_change_password"
         tools:layout="@layout/fragment_change_password">
         <action
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/confirmCodeFragment"
-        android:name="com.example.manageappmusic.Fragment.LoginFragment.ConfirmCodeFragment"
+        android:name="com.example.mpmanage.Fragment.LoginFragment.ConfirmCodeFragment"
         android:label="fragment_confirm_code"
         tools:layout="@layout/fragment_confirm_code">
         <action

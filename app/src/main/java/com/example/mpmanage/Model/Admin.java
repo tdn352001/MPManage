@@ -7,39 +7,36 @@ import java.io.Serializable;
 
 public class Admin implements Serializable {
 
-    @SerializedName("IdUser")
+    @SerializedName("IdAdmin")
     @Expose
-    private String idUser;
-    @SerializedName("UserName")
+    private String idAdmin;
+    @SerializedName("IsSupper")
     @Expose
-    private String userName;
+    private String isSupper;
     @SerializedName("Email")
     @Expose
     private String email;
     @SerializedName("Password")
     @Expose
     private String password;
-    @SerializedName("Banner")
-    @Expose
-    private String banner;
-    @SerializedName("Avatar")
-    @Expose
-    private String avatar;
 
-    public String getIdUser() {
-        return idUser;
+    public Admin(String idAdmin, String isSupper, String email, String password) {
+        this.idAdmin = idAdmin;
+        this.isSupper = isSupper;
+        this.email = email;
+        this.password = password;
     }
 
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
+    public String getIdAdmin() {
+        return idAdmin;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getIsSupper() {
+        return isSupper;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setIsSupper(String isSupper) {
+        this.isSupper = isSupper;
     }
 
     public String getEmail() {
@@ -57,21 +54,4 @@ public class Admin implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public String getBanner() {
-        return banner;
-    }
-
-    public void setBanner(String banner) {
-        this.banner = banner;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
 }
