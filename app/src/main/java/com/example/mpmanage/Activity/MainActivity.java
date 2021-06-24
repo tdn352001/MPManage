@@ -1,21 +1,29 @@
 package com.example.mpmanage.Activity;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
-import android.os.Bundle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.mpmanage.Model.Admin;
 import com.example.mpmanage.Model.Album;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.Model.CaSi;
 import com.example.mpmanage.Model.ChuDeTheLoai;
+import com.example.mpmanage.Model.Md5;
 import com.example.mpmanage.Model.Playlist;
 import com.example.mpmanage.Model.QuangCao;
 import com.example.mpmanage.R;
 import com.example.mpmanage.Service.APIService;
 import com.example.mpmanage.Service.DataService;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +34,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Dữ Liệu Từ Database
     Admin admin;
     ArrayList<BaiHat> baiHatArrayList;
     ArrayList<QuangCao> quangCaoArrayList;
@@ -34,10 +43,25 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Playlist> playlistArrayList;
     ArrayList<ChuDeTheLoai> theLoaiArrayList;
     ArrayList<ChuDeTheLoai> chuDeArrayList;
+
+
+    // Các Mục Trong layout
+    DrawerLayout drawerLayout;
+    Toolbar toolbar;
+    NavigationView navigationView;
+    AppBarConfiguration appBarConfiguration;
+    NavController navController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Ánh Xạ
+        AnhXa();
+        SetToolBar();
+        SetupDrawer();
+        // Lấy Dữ Liệu
         GetAdminAcount();
         GetListQuangCao();
         GetListBaiHat();
@@ -48,122 +72,151 @@ public class MainActivity extends AppCompatActivity {
         GetListTheLoai();
     }
 
-    private void GetAdminAcount() {
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("admin"))
-            admin = intent.getParcelableExtra("admin");
+
+
+    private void AnhXa() {
+        drawerLayout = findViewById(R.id.drawer_layout);
+        toolbar = findViewById(R.id.toolbar);
+        navigationView = findViewById(R.id.nav_view);
     }
 
-    private void GetListBaiHat(){
+    private void SetToolBar() {
+        setSupportActionBar(toolbar);
+    }
+    private void SetupDrawer() {
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        navController = navHostFragment.getNavController();
+        appBarConfiguration = new AppBarConfiguration.Builder(R.id.bannerFragment, R.id.songFragment,
+                R.id.albumFragment, R.id.singerFragment,
+                R.id.playlistFragment, R.id.categoryFragment).setDrawerLayout(drawerLayout).build();
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(navigationView, navController);
+    }
+
+    private void GetAdminAcount() {
+//        Intent intent = getIntent();
+//        if (intent != null && intent.hasExtra("admin"))
+//            admin = intent.getParcelableExtra("admin");
+        admin = new Admin("1", "1", "tdn352001@gmail.com", Md5.endcode("123456"));
+    }
+
+    private void GetListBaiHat() {
         DataService dataService = APIService.getService();
         Call<List<BaiHat>> callback = dataService.GetAllBaiHat();
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
-            public void onResponse(@NonNull Call<List<BaiHat>> call,@NonNull Response<List<BaiHat>> response) {
+            public void onResponse(@NonNull Call<List<BaiHat>> call, @NonNull Response<List<BaiHat>> response) {
                 baiHatArrayList = (ArrayList<BaiHat>) response.body();
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<BaiHat>> call,@NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<BaiHat>> call, @NonNull Throwable t) {
 
             }
         });
     }
 
-    private void GetListQuangCao(){
+    private void GetListQuangCao() {
         DataService dataService = APIService.getService();
         Call<List<QuangCao>> callback = dataService.GetAllBanner();
         callback.enqueue(new Callback<List<QuangCao>>() {
             @Override
-            public void onResponse(@NonNull Call<List<QuangCao>> call,@NonNull Response<List<QuangCao>> response) {
+            public void onResponse(@NonNull Call<List<QuangCao>> call, @NonNull Response<List<QuangCao>> response) {
                 quangCaoArrayList = (ArrayList<QuangCao>) response.body();
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<QuangCao>> call,@NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<QuangCao>> call, @NonNull Throwable t) {
 
             }
         });
     }
 
-    private void GetListAlbum(){
+    private void GetListAlbum() {
         DataService dataService = APIService.getService();
         Call<List<Album>> callback = dataService.GetAllAlbum();
         callback.enqueue(new Callback<List<Album>>() {
             @Override
-            public void onResponse(@NonNull Call<List<Album>> call,@NonNull Response<List<Album>> response) {
+            public void onResponse(@NonNull Call<List<Album>> call, @NonNull Response<List<Album>> response) {
                 albumArrayList = (ArrayList<Album>) response.body();
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Album>> call,@NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<Album>> call, @NonNull Throwable t) {
 
             }
         });
     }
-    private void GetListCaSi(){
+
+    private void GetListCaSi() {
         DataService dataService = APIService.getService();
         Call<List<CaSi>> callback = dataService.GetAllCaSi();
         callback.enqueue(new Callback<List<CaSi>>() {
             @Override
-            public void onResponse(@NonNull Call<List<CaSi>> call,@NonNull Response<List<CaSi>> response) {
+            public void onResponse(@NonNull Call<List<CaSi>> call, @NonNull Response<List<CaSi>> response) {
                 caSiArrayList = (ArrayList<CaSi>) response.body();
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<CaSi>> call,@NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<CaSi>> call, @NonNull Throwable t) {
 
             }
         });
     }
 
-    private void GetListPlaylist(){
+    private void GetListPlaylist() {
         DataService dataService = APIService.getService();
         Call<List<Playlist>> callback = dataService.GetAllPlaylist();
         callback.enqueue(new Callback<List<Playlist>>() {
             @Override
-            public void onResponse(@NonNull Call<List<Playlist>> call,@NonNull Response<List<Playlist>> response) {
+            public void onResponse(@NonNull Call<List<Playlist>> call, @NonNull Response<List<Playlist>> response) {
                 playlistArrayList = (ArrayList<Playlist>) response.body();
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Playlist>> call,@NonNull  Throwable t) {
+            public void onFailure(@NonNull Call<List<Playlist>> call, @NonNull Throwable t) {
 
             }
         });
     }
 
-    private void GetListChuDe(){
+    private void GetListChuDe() {
         DataService dataService = APIService.getService();
         Call<List<ChuDeTheLoai>> callback = dataService.GetAllChuDe();
         callback.enqueue(new Callback<List<ChuDeTheLoai>>() {
             @Override
-            public void onResponse(@NonNull Call<List<ChuDeTheLoai>> call,@NonNull Response<List<ChuDeTheLoai>> response) {
+            public void onResponse(@NonNull Call<List<ChuDeTheLoai>> call, @NonNull Response<List<ChuDeTheLoai>> response) {
                 chuDeArrayList = (ArrayList<ChuDeTheLoai>) response.body();
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<ChuDeTheLoai>> call,@NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<ChuDeTheLoai>> call, @NonNull Throwable t) {
 
             }
         });
     }
 
-    private void GetListTheLoai(){
+    private void GetListTheLoai() {
         DataService dataService = APIService.getService();
         Call<List<ChuDeTheLoai>> callback = dataService.GetAllTheLoai();
         callback.enqueue(new Callback<List<ChuDeTheLoai>>() {
             @Override
-            public void onResponse(@NonNull Call<List<ChuDeTheLoai>> call,@NonNull Response<List<ChuDeTheLoai>> response) {
+            public void onResponse(@NonNull Call<List<ChuDeTheLoai>> call, @NonNull Response<List<ChuDeTheLoai>> response) {
                 theLoaiArrayList = (ArrayList<ChuDeTheLoai>) response.body();
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<ChuDeTheLoai>> call,@NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<ChuDeTheLoai>> call, @NonNull Throwable t) {
 
             }
         });
     }
 
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        return NavigationUI.navigateUp(navController, appBarConfiguration)
+                || super.onSupportNavigateUp();
+    }
 
 }

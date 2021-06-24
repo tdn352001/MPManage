@@ -78,4 +78,6 @@
     <string name="bxh">Bảng Xếp Hạng</string>
     <string name="edit_info_user">Chỉnh Sửa Thông Tin</string>
     <string name="logout">Đăng Xuất</string>
+    <string name="banner">Quảng Cáo</string>
+    <string name="header_nav_main">header_nav_main</string>
 </resources>
