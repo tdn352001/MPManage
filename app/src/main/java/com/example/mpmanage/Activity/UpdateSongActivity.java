@@ -1,15 +1,18 @@
 package com.example.mpmanage.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -51,8 +54,12 @@ import com.google.android.material.button.MaterialButton;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -196,10 +203,12 @@ public class UpdateSongActivity extends AppCompatActivity {
 
         // Chọn File Nhạc
         btnGetFileNhac.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setType("audio/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            FileAnhResult.launch(Intent.createChooser(intent, " Chọn File Nhạc"));
+            if (checkPermission()) {
+                Intent intent = new Intent();
+                intent.setType("audio/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                FileNhacResult.launch(Intent.createChooser(intent, " Chọn File Nhạc"));
+            }
         });
 
 
@@ -228,6 +237,19 @@ public class UpdateSongActivity extends AppCompatActivity {
             if (CheckValidate()) {
                 progressDialog = ProgressDialog.show(UpdateSongActivity.this, "Đang Cập Nhật", " Vui Lòng Chờ");
                 if (CheckSongChange()) {
+
+                    if (rdNhac.getCheckedRadioButtonId() == R.id.rd_file_hinh) {
+                        String TenHinh = edtTenBaiHat.getText().toString() + baiHat.getIdBaiHat() + ".jpg";
+                        UpLoadFile(RealPathHinh, TenHinh);
+                        return;
+                    }
+
+                    if (rdNhac.getCheckedRadioButtonId() == R.id.rd_file_nhac) {
+                        String TenFile = edtTenBaiHat.getText().toString() + baiHat.getIdBaiHat() + ".mp3";
+                        UpLoadFile(RealPathNhac, TenFile);
+                        return;
+                    }
+
                     UpdateSong();
                     return;
                 }
@@ -399,6 +421,7 @@ public class UpdateSongActivity extends AppCompatActivity {
                     });
                 }
             }
+
             @Override
             public void onFailure(Call<String> call, Throwable t) {
 
@@ -423,6 +446,39 @@ public class UpdateSongActivity extends AppCompatActivity {
         Toast.makeText(this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
         progressDialog.dismiss();
         finish();
+    }
+
+    private void UpLoadFile(String RealPath, String FileName) {
+        if (RealPath == null)
+            return;
+        File file = new File(RealPath);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", FileName, requestBody);
+        Call<String> callback = APIService.getFile().UploadFile(body);
+        callback.enqueue(new Callback<String>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (RealPath == RealPathHinh) {
+                    String LinkHinh = "https://filenhacmp3.000webhostapp.com/file/";
+                    edtHinhBaiHat.setText(LinkHinh + FileName);
+                    if (rdNhac.getCheckedRadioButtonId() == R.id.rd_file_nhac) {
+                        String TenFile = edtTenBaiHat.getText().toString() + baiHat.getIdBaiHat() + ".mp3";
+                        UpLoadFile(RealPathNhac, TenFile);
+                    } else {
+                        UpdateSong();
+                    }
+                } else {
+                    String LinkNhac = "https://filenhacmp3.000webhostapp.com/file/";
+                    edtFileBaiHat.setText(LinkNhac + FileName);
+                    UpdateSong();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+            }
+        });
     }
 
     private void OpenDiaLogAddCaSi() {
@@ -484,13 +540,26 @@ public class UpdateSongActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    public String getRealPathFromURI(Uri contentUri) {
+        String path = null;
+        String[] proj = {MediaStore.MediaColumns.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+            path = cursor.getString(column_index);
+        }
+        cursor.close();
+        return path;
+    }
 
     private final ActivityResultLauncher<Intent> FileAnhResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == RESULT_OK) {
                     Intent data = result.getData();
+                    assert data != null;
                     uriHinh = data.getData();
-                    RealPathHinh = RealPathUtil.getRealPath(this, uriHinh);
+                    Log.e("BBB", uriHinh.toString());
+                    RealPathHinh = getRealPathFromURI(uriHinh);
                     if (RealPathHinh == null) {
                         Toast.makeText(this, "Không Thể Lấy File", Toast.LENGTH_SHORT).show();
                         return;
@@ -503,13 +572,11 @@ public class UpdateSongActivity extends AppCompatActivity {
             result -> {
                 if (result.getResultCode() == RESULT_OK) {
                     Intent data = result.getData();
-                    uriHinh = data.getData();
-                    RealPathNhac = RealPathUtil.getRealPath(this, uriHinh);
+                    uriNhac = data.getData();
+                    RealPathNhac = RealPathUtil.getRealPath(this, uriNhac);
                     if (RealPathNhac == null) {
                         Toast.makeText(this, "Không Thể Lấy File", Toast.LENGTH_SHORT).show();
-                        return;
                     }
-                    Picasso.with(this).load(uriNhac).into(imgBaiHat);
                 }
             });
 

@@ -11,11 +11,14 @@ import com.example.mpmanage.Model.QuangCao;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface DataService {
 
@@ -70,4 +73,8 @@ public interface DataService {
     @FormUrlEncoded
     @POST("updatesongsinger.php")
     Call<String> UpdateSongSinger(@Field("idbaihat") String idbaihat, @Field("idcasi") String idcasi);
+
+    @Multipart
+    @POST("uploadfile.php")
+    Call<String> UploadFile(@Part MultipartBody.Part Anh);
 }
