@@ -2,6 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_gradient"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -26,7 +27,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/tenbaihat"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
 
@@ -40,11 +41,10 @@
             android:layout_marginTop="5dp"
             android:inputType="textLongMessage"
             app:boxStrokeColor="#05789C"
-            app:endIconMode="clear_text"
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_hinh_baihat"
+                android:id="@+id/edt_ten_baihat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/tenbaihat"
@@ -76,7 +76,7 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/hinh_bai_hat"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <RadioGroup
@@ -86,7 +86,7 @@
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/btn_linkbaihat"
+                    android:id="@+id/rd_link_hinh"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="#036A7E"
@@ -95,7 +95,7 @@
                     tools:targetApi="lollipop" />
 
                 <RadioButton
-                    android:id="@+id/btn_filebaihat"
+                    android:id="@+id/rd_file_hinh"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
@@ -124,12 +124,12 @@
                         android:layout_marginTop="5dp"
                         android:inputType="textLongMessage"
                         app:boxStrokeColor="#05789C"
-                        app:endIconMode="clear_text"
                         app:hintEnabled="false"
                         app:prefixTextColor="#05789C"
                         app:suffixTextColor="#05789C">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_link_hinh_baihat"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/link_hinh_bai_hat"
@@ -137,6 +137,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_get_hinh_bai_hat"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="match_parent"
                         android:layout_height="65dp"
@@ -146,14 +147,14 @@
                         android:textColor="#373737"
                         android:visibility="gone" />
 
-
                 </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/img_hinh"
+                <com.makeramen.roundedimageview.RoundedImageView
+                    app:riv_corner_radius="12dp"
+                    android:id="@+id/img_hinh_bai_hat"
                     android:layout_width="40mm"
                     android:layout_height="40mm"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="30dp"
                     android:contentDescription="@string/img_baihat"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_image"
@@ -186,7 +187,7 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/file_bai_hat"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <RadioGroup
@@ -196,7 +197,7 @@
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/btn_linkbaihat_file"
+                    android:id="@+id/rd_link_nhac"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="#036A7E"
@@ -205,7 +206,7 @@
                     tools:ignore="UnusedAttribute" />
 
                 <RadioButton
-                    android:id="@+id/btn_filebaihat_file"
+                    android:id="@+id/rd_file_nhac"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
@@ -228,10 +229,10 @@
                     android:layout_marginTop="5dp"
                     android:inputType="textLongMessage"
                     app:boxStrokeColor="#05789C"
-                    app:endIconMode="clear_text"
                     app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_link_file_baihat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/link_flie_bai_hat"
@@ -239,6 +240,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_get_file_bai_hat"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="65dp"
@@ -278,7 +280,7 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/casi"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -307,6 +309,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_finish_update_bai_hat"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#018893"
@@ -316,6 +319,7 @@
                 tools:targetApi="lollipop" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel_update_bai_hat"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"

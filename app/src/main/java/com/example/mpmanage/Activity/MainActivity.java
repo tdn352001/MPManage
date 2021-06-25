@@ -1,11 +1,15 @@
 package com.example.mpmanage.Activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -34,6 +38,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final int PERMISSION_READ = 123;
     // Dữ Liệu Từ Database
     Admin admin;
     public static ArrayList<BaiHat> baiHatArrayList;
@@ -61,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         AnhXa();
         SetToolBar();
         SetupDrawer();
+        checkPermission();
+
         // Lấy Dữ Liệu
         GetAdminAcount();
         GetListQuangCao();
@@ -213,6 +220,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public boolean checkPermission() {
+        int READ_EXTERNAL_PERMISSION = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if ((READ_EXTERNAL_PERMISSION != PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_READ);
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public boolean onSupportNavigateUp() {

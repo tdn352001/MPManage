@@ -95,4 +95,5 @@
     <string name="link_flie_bai_hat">Link File Bài Hát</string>
     <string name="select_file">Click Vào Đây Để Chọn File</string>
     <string name="casi">Ca Sĩ</string>
+    <string name="ten_ca_si">Tên Ca Sĩ</string>
 </resources>

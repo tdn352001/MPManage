@@ -6,7 +6,9 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
+
 
 public class BaiHat implements Parcelable {
 
@@ -32,16 +34,14 @@ public class BaiHat implements Parcelable {
     @Expose
     private String luotThich;
 
-    public BaiHat() {
-        luotThich = "0";
-    }
-
     protected BaiHat(Parcel in) {
         idBaiHat = in.readString();
         tenBaiHat = in.readString();
         hinhBaiHat = in.readString();
         linkBaiHat = in.readString();
+        idCaSi = in.createStringArrayList();
         caSi = in.createStringArrayList();
+        luotThich = in.readString();
     }
 
     public static final Creator<BaiHat> CREATOR = new Creator<BaiHat>() {
@@ -83,21 +83,6 @@ public class BaiHat implements Parcelable {
     public String getLinkBaiHat() {
         return linkBaiHat;
     }
-
-    public void setLinkBaiHat(String linkBaiHat) {
-        this.linkBaiHat = linkBaiHat;
-    }
-    public List<String> getIdCaSi() {
-        return idCaSi;
-    }
-
-    public void setIdCaSi(List<String> idCaSi) {
-        this.idCaSi = idCaSi;
-    }
-    public List<String> getCaSi() {
-        return caSi;
-    }
-
     public String getTenAllCaSi() {
         String TenCaSi = "";
         if (caSi != null) {
@@ -115,9 +100,32 @@ public class BaiHat implements Parcelable {
         return TenCaSi;
     }
 
+    public void setLinkBaiHat(String linkBaiHat) {
+        this.linkBaiHat = linkBaiHat;
+    }
+
+    public List<String> getIdCaSi() {
+        return idCaSi;
+    }
+
+    public void setIdCaSi(List<String> idCaSi) {
+        this.idCaSi = idCaSi;
+    }
+
+    public List<String> getCaSi() {
+        return caSi;
+    }
 
     public void setCaSi(List<String> caSi) {
         this.caSi = caSi;
+    }
+
+    public String getLuotThich() {
+        return luotThich;
+    }
+
+    public void setLuotThich(String luotThich) {
+        this.luotThich = luotThich;
     }
 
     @Override
@@ -131,15 +139,8 @@ public class BaiHat implements Parcelable {
         dest.writeString(tenBaiHat);
         dest.writeString(hinhBaiHat);
         dest.writeString(linkBaiHat);
+        dest.writeStringList(idCaSi);
         dest.writeStringList(caSi);
+        dest.writeString(luotThich);
     }
-
-    public String getLuotThich() {
-        return luotThich;
-    }
-
-    public void setLuotThich(String luotThich) {
-        this.luotThich = luotThich;
-    }
-
 }
