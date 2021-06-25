@@ -2,9 +2,9 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/background_gradient"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_gradient">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -80,6 +80,7 @@
                 android:textStyle="bold" />
 
             <RadioGroup
+                android:id="@+id/rd_hinh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -124,6 +125,7 @@
                         android:layout_marginTop="5dp"
                         android:inputType="textLongMessage"
                         app:boxStrokeColor="#05789C"
+                        app:errorEnabled="false"
                         app:hintEnabled="false"
                         app:prefixTextColor="#05789C"
                         app:suffixTextColor="#05789C">
@@ -150,7 +152,6 @@
                 </RelativeLayout>
 
                 <com.makeramen.roundedimageview.RoundedImageView
-                    app:riv_corner_radius="12dp"
                     android:id="@+id/img_hinh_bai_hat"
                     android:layout_width="40mm"
                     android:layout_height="40mm"
@@ -158,6 +159,7 @@
                     android:contentDescription="@string/img_baihat"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_image"
+                    app:riv_corner_radius="12dp"
                     tools:ignore="InOrMmUsage" />
             </LinearLayout>
         </LinearLayout>
@@ -191,6 +193,7 @@
                 android:textStyle="bold" />
 
             <RadioGroup
+                android:id="@+id/rd_nhac"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -283,11 +286,30 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_casi"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginHorizontal="45dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center|start"
+                android:text="@string/add_singer"
+                android:textAllCaps="false"
+                android:textColor="#018893"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_add"
+                app:iconPadding="45dp"
+                app:iconTint="#018893"
+                app:cornerRadius="10dp"
+                app:strokeColor="#9A9A99" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_casi_baihat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginHorizontal="45dp"
                 android:layout_marginTop="5dp" />
         </LinearLayout>
 
