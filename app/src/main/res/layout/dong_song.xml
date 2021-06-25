@@ -61,7 +61,7 @@
         android:layout_toStartOf="@id/txt_tenbaihat"
         android:layout_toLeftOf="@id/txt_tenbaihat"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_delete"
+        android:src="@drawable/ic_options"
         tools:ignore="ContentDescription" />
 
 </RelativeLayout>

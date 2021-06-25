@@ -81,4 +81,18 @@
     <string name="banner">Quảng Cáo</string>
     <string name="header_nav_main">header_nav_main</string>
     <string name="music_player_vjp_pro">Music Player Vip Pro</string>
+    <string name="list_song">Danh Sách Bài Hát</string>
+    <string name="hide">Ẩn Bớt</string>
+    <string name="view_more">Xem Thêm</string>
+    <string name="search">Tìm Kiếm</string>
+    <string name="tenbaihat">Tên Bài Hát</string>
+    <string name="link_hinh_bai_hat">Link Hình Bài Hát</string>
+    <string name="hinh_bai_hat">Hình Bài hát:</string>
+    <string name="link">Link</string>
+    <string name="file">File</string>
+    <string name="img_baihat">img_baihat</string>
+    <string name="file_bai_hat">File Bài hát:</string>
+    <string name="link_flie_bai_hat">Link File Bài Hát</string>
+    <string name="select_file">Click Vào Đây Để Chọn File</string>
+    <string name="casi">Ca Sĩ</string>
 </resources>

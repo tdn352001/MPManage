@@ -1,46 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:paddingTop="12dp"
-    android:layout_height="match_parent"
-    tools:context=".Fragment.MainFragment.SongFragment">
+    android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_song"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
     <RelativeLayout
-        android:id="@+id/txt_noinfo_add_online"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20mm"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:textAlignment="center"
-        android:visibility="gone"
-        tools:ignore="InOrMmUsage">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="12dp"
+        tools:context=".Fragment.MainFragment.SongFragment">
 
-        <ImageView
-            android:id="@+id/img_noinfo"
-            android:layout_width="30mm"
-            android:layout_height="30mm"
-            android:layout_centerHorizontal="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_sorry"
-            tools:ignore="ContentDescription" />
 
         <TextView
+            android:id="@+id/txt_danhsachbaihat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/img_noinfo"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif"
-            android:text="@string/no_data"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:text="@string/list_song"
             android:textColor="@color/black"
-            android:textSize="30sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_song"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/txt_danhsachbaihat"
+            android:layout_marginTop="10dp" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/rv_song"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="10dp"
+            android:background="#6A6A6A" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_viewless_baihat"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="@string/hide"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_left"
+                app:iconTint="@color/black"
+                app:strokeColor="@color/black" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_viewmore_baihat"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:text="@string/view_more"
+                android:textColor="#67068A"
+                android:textSize="12sp"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_right"
+                app:iconGravity="textEnd"
+                app:strokeColor="@color/black" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/txt_noinfo_add_online"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/txt_danhsachbaihat"
+            android:layout_marginTop="15mm"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:textAlignment="center"
+            android:visibility="gone"
+            tools:ignore="InOrMmUsage">
+
+            <ImageView
+                android:id="@+id/img_noinfo"
+                android:layout_width="30mm"
+                android:layout_height="30mm"
+                android:layout_centerHorizontal="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_sorry"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_noinfo"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="sans-serif"
+                android:text="@string/no_data"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+        </RelativeLayout>
+
+
     </RelativeLayout>
-
-
-</RelativeLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,6 +1,7 @@
 package com.example.mpmanage.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,12 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mpmanage.Activity.UpdateSongActivity;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.R;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -26,11 +29,15 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
     Context context;
     ArrayList<BaiHat> arrayList;
     ArrayList<BaiHat> mArrayList;
+    int View;
+    String IdBaiHatChange;
 
     public SongAdapter(Context context, ArrayList<BaiHat> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         mArrayList = arrayList;
+        View = 40;
+        IdBaiHatChange = "-1";
     }
 
     @Override
@@ -46,13 +53,39 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
         Picasso.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.song).into(holder.Avatar);
         holder.txtBaiHat.setText(baiHat.getTenBaiHat());
         holder.txtCaSi.setText(baiHat.getTenAllCaSi());
+
+        holder.relativeLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(context, UpdateSongActivity.class);
+            intent.putExtra("baihat", baiHat);
+            IdBaiHatChange = baiHat.getIdBaiHat();
+            context.startActivity(intent);
+        });
     }
 
     @Override
     public int getItemCount() {
-        if (arrayList != null)
-            return arrayList.size();
+        if (arrayList != null) {
+            if (View <= arrayList.size() && View > 0)
+                return View;
+            else
+                return arrayList.size();
+        }
         return 0;
+    }
+
+    public void ViewMore(boolean viewmore) {
+        if (viewmore) {
+            View += 40;
+            if (View > arrayList.size())
+                View = arrayList.size();
+        } else {
+            if (View == arrayList.size())
+                View -= arrayList.size() % 40;
+            else
+                View -= 40;
+            if (View <= 0)
+                View = 40;
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -70,6 +103,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
             txtBaiHat = itemView.findViewById(R.id.txt_tenbaihat);
         }
     }
+
+
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -77,7 +112,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
             protected FilterResults performFiltering(CharSequence constraint) {
                 String query = (String) constraint;
                 if (query.equals("")) {
-                    arrayList = mArrayList;
+                    {
+                        arrayList = mArrayList;
+                        View = 40;
+                    }
                 } else {
                     List<BaiHat> baiHats = new ArrayList<>();
                     for (BaiHat baiHat : mArrayList) {
@@ -85,6 +123,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
                             baiHats.add(baiHat);
                         }
                     }
+                    View = 0;
                     arrayList = (ArrayList<BaiHat>) baiHats;
                 }
 
