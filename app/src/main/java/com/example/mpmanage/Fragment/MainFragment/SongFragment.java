@@ -3,6 +3,7 @@ package com.example.mpmanage.Fragment.MainFragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mpmanage.Activity.MainActivity;
+import com.example.mpmanage.Activity.UpdateSongActivity;
 import com.example.mpmanage.Adapter.SongAdapter;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.R;
@@ -33,8 +35,8 @@ public class SongFragment extends Fragment {
 
     View view;
     RecyclerView recyclerView;
-    SongAdapter songAdapter;
-    ArrayList<BaiHat> baiHatArrayList;
+    static SongAdapter songAdapter;
+    static ArrayList<BaiHat> baiHatArrayList;
     MaterialButton btnViewMore, btnViewLess;
     SearchView searchView;
     TextView title;
@@ -100,6 +102,37 @@ public class SongFragment extends Fragment {
         });
     }
 
+    public static void UpdateSong(BaiHat baiHat) {
+        int Id = Integer.parseInt(baiHat.getIdBaiHat());
+        int Position = GetPositionById(0, baiHatArrayList.size() - 1, Id);
+        if(Position == -1){
+            return;
+        }
+        baiHatArrayList.get(Position).setTenBaiHat(baiHat.getTenBaiHat());
+        baiHatArrayList.get(Position).setHinhBaiHat(baiHat.getHinhBaiHat());
+        baiHatArrayList.get(Position).setLinkBaiHat(baiHat.getLinkBaiHat());
+        baiHatArrayList.get(Position).setIdCaSi(baiHat.getIdCaSi());
+        baiHatArrayList.get(Position).setCaSi(baiHat.getCaSi());
+        songAdapter.notifyItemChanged(Position);
+
+    }
+
+    private static int GetPositionById(int left, int right, int IdBaiHat) {
+        if (right > left) {
+            int mid = left + (right - left) / 2;
+            int Id = Integer.parseInt(baiHatArrayList.get(mid).getIdBaiHat());
+            if(Id == IdBaiHat)
+                return mid;
+
+            if(Id > IdBaiHat)
+                return GetPositionById(left, mid - 1, IdBaiHat);
+
+            return GetPositionById(mid + 1, right, IdBaiHat);
+        }
+
+        return -1;
+    }
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);
@@ -137,12 +170,12 @@ public class SongFragment extends Fragment {
                     @Override
                     public void run() {
                         handler.postDelayed(this, 100);
-                        if( i[0] >= 3)
+                        if (i[0] >= 3)
                             handler.removeCallbacks(this);
 
                         if (songAdapter.getItemCount() == 0) {
                             SearchNoDataResult.setVisibility(View.VISIBLE);
-                        }else
+                        } else
                             SearchNoDataResult.setVisibility(View.GONE);
                         i[0]++;
                     }

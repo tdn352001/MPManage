@@ -2,6 +2,7 @@ package com.example.mpmanage.Activity;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -12,17 +13,21 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -35,15 +40,22 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.mpmanage.Adapter.SongSingerAdapter;
+import com.example.mpmanage.Fragment.MainFragment.SongFragment;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.Model.CaSi;
 import com.example.mpmanage.Model.RealPathUtil;
 import com.example.mpmanage.R;
+import com.example.mpmanage.Service.APIService;
+import com.example.mpmanage.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.example.mpmanage.Activity.MainActivity.PERMISSION_READ;
 
@@ -51,8 +63,10 @@ public class UpdateSongActivity extends AppCompatActivity {
 
 
     BaiHat baiHat;
-    ArrayList<CaSi> caSiArrayList;
-    SongSingerAdapter songSingerAdapter;
+    public ArrayList<CaSi> caSiArrayList;
+    private ArrayList<CaSi> tempArrayList;
+    public SongSingerAdapter songSingerAdapter;
+    ProgressDialog progressDialog;
 
     Toolbar toolbar;
     EditText edtTenBaiHat, edtHinhBaiHat, edtFileBaiHat;
@@ -120,9 +134,9 @@ public class UpdateSongActivity extends AppCompatActivity {
             edtTenBaiHat.setText(baiHat.getTenBaiHat());
             edtHinhBaiHat.setText(baiHat.getHinhBaiHat());
             edtFileBaiHat.setText(baiHat.getLinkBaiHat());
-            Picasso.with(this).load(baiHat.getHinhBaiHat()).error(R.drawable.ic_image).into(imgBaiHat);
-
+            SetImageView(baiHat.getHinhBaiHat());
             caSiArrayList = new ArrayList<>();
+            tempArrayList = new ArrayList<>();
             songSingerAdapter = new SongSingerAdapter(this, caSiArrayList);
             rvCaSi.setAdapter(songSingerAdapter);
             rvCaSi.setLayoutManager(new LinearLayoutManager(UpdateSongActivity.this, RecyclerView.VERTICAL, false));
@@ -132,6 +146,7 @@ public class UpdateSongActivity extends AppCompatActivity {
                     String idSinger = MainActivity.caSiArrayList.get(j).getIdCaSi();
                     if (idsingerSong.equals(idSinger)) {
                         caSiArrayList.add(MainActivity.caSiArrayList.get(j));
+                        tempArrayList.add(MainActivity.caSiArrayList.get(j));
                         songSingerAdapter.notifyItemInserted(caSiArrayList.size() - 1);
                     }
                 }
@@ -196,21 +211,7 @@ public class UpdateSongActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Glide.with(getApplicationContext()).load(edtHinhBaiHat.getText().toString()).error(R.drawable.ic_image).listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        LoadImageSuccess = false;
-                        Log.e("BBB", "setImageFalse");
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        LoadImageSuccess = true;
-                        Log.e("BBB", "setImageSuccess");
-                        return false;
-                    }
-                }).into(imgBaiHat);
+                SetImageView(edtHinhBaiHat.getText().toString().trim());
             }
 
             @Override
@@ -220,9 +221,208 @@ public class UpdateSongActivity extends AppCompatActivity {
         });
 
         btnAddCaSi.setOnClickListener(v -> {
-           OpenDiaLogAddCaSi();
+            OpenDiaLogAddCaSi();
         });
 
+        btnFinish.setOnClickListener(v -> {
+            if (CheckValidate()) {
+                progressDialog = ProgressDialog.show(UpdateSongActivity.this, "Đang Cập Nhật", " Vui Lòng Chờ");
+                if (CheckSongChange()) {
+                    UpdateSong();
+                    return;
+                }
+
+                if (CheckSingerChange()) {
+                    UpdateSinger();
+                    return;
+                }
+
+                progressDialog.dismiss();
+                finish();
+            }
+
+
+        });
+    }
+
+    private void SetImageView(String url) {
+        Glide.with(getApplicationContext()).load(url).error(R.drawable.ic_image).listener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                LoadImageSuccess = false;
+                Log.e("BBB", "setImageFalse");
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                LoadImageSuccess = true;
+                return false;
+            }
+        }).into(imgBaiHat);
+    }
+
+    private boolean CheckValidate() {
+        if (edtTenBaiHat.getText().toString().trim().equals("")) {
+            edtTenBaiHat.setError("Tên Bài Hát Không Được Trống");
+            Toast.makeText(this, "Tên Bài Hát Không Được Trống", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (rdHinh.getCheckedRadioButtonId() == R.id.rd_link_hinh) {
+            if (!LoadImageSuccess) {
+                edtHinhBaiHat.setError("Link Bài Hát Không Hợp Lệ");
+                Toast.makeText(this, "Link Bài Hát Không Hợp Lệ", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+
+        if (rdHinh.getCheckedRadioButtonId() == R.id.rd_file_hinh) {
+            if (RealPathHinh == null) {
+                Toast.makeText(this, "File Hình Không Hợp Lệ", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+
+        if (rdNhac.getCheckedRadioButtonId() == R.id.rd_link_nhac) {
+            String linkNhac = edtFileBaiHat.getText().toString().trim();
+            if (!Patterns.WEB_URL.matcher(linkNhac).matches()) {
+                edtFileBaiHat.setError("Link Nhạc Không Hợp Lệ");
+                Toast.makeText(this, "Link Nhạc Không Hợp Lệ", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (!((linkNhac.endsWith(".mp3") || linkNhac.endsWith(".m4a")))) {
+                edtFileBaiHat.setError("Link Nhạc Không Hợp Lệ");
+                Toast.makeText(this, "Link Nhạc Không Hợp Lệ", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+
+        if (rdNhac.getCheckedRadioButtonId() == R.id.rd_file_nhac) {
+            if (RealPathNhac == null) {
+                Toast.makeText(this, "File Nhạc Không Hợp Lệ", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean CheckSongChange() {
+        String TenBaiHat = edtTenBaiHat.getText().toString().trim();
+
+        if (!baiHat.getTenBaiHat().equals(TenBaiHat))
+            return true;
+
+        if (rdHinh.getCheckedRadioButtonId() == R.id.rd_file_hinh)
+            return true;
+
+        String HinhBaiHat = edtHinhBaiHat.getText().toString().trim();
+        if (!baiHat.getHinhBaiHat().equals(HinhBaiHat))
+            return true;
+
+        if (rdNhac.getCheckedRadioButtonId() == R.id.rd_file_nhac)
+            return true;
+
+        String LinkBaiHat = edtFileBaiHat.getText().toString().trim();
+        if (!baiHat.getLinkBaiHat().equals(LinkBaiHat))
+            return true;
+
+        return false;
+    }
+
+    private boolean CheckSingerChange() {
+        if (caSiArrayList.equals(tempArrayList))
+            return false;
+
+        return true;
+    }
+
+    private void UpdateSong() {
+        Log.e("BBB", "Update Song");
+        DataService dataService = APIService.getService();
+        String TenBaiHat = edtTenBaiHat.getText().toString().trim();
+        String HinhBaiHat = edtHinhBaiHat.getText().toString().trim();
+        String LinkBaiHat = edtFileBaiHat.getText().toString().trim();
+        Call<String> callback = dataService.UpdateSong(baiHat.getIdBaiHat(), TenBaiHat, HinhBaiHat, LinkBaiHat);
+        callback.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body();
+                if (result == null) {
+                    finish();
+                    return;
+                }
+                if (result.equals("F")) {
+                    finish();
+                    return;
+                }
+
+                if (CheckSingerChange())
+                    UpdateSinger();
+                else {
+                    UpdateArrayList();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void UpdateSinger() {
+        Log.e("BBB", "Update Singer");
+        DataService dataService = APIService.getService();
+        Call<String> callback = dataService.DeleteSongSinger(baiHat.getIdBaiHat());
+        callback.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                for (int i = 0; i < caSiArrayList.size(); i++) {
+                    Call<String> callback2 = dataService.UpdateSongSinger(baiHat.getIdBaiHat(), caSiArrayList.get(i).getIdCaSi());
+                    int finalI = i;
+                    callback2.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            if (finalI >= caSiArrayList.size() - 1) {
+                                UpdateArrayList();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            progressDialog.dismiss();
+                            Toast.makeText(UpdateSongActivity.this, "Vui Lòng", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void UpdateArrayList() {
+        baiHat.setTenBaiHat(edtTenBaiHat.getText().toString());
+        baiHat.setHinhBaiHat(edtHinhBaiHat.getText().toString());
+        baiHat.setLinkBaiHat(edtFileBaiHat.getText().toString());
+        ArrayList<String> idCasi = new ArrayList<>();
+        ArrayList<String> tenCasi = new ArrayList<>();
+        for (int i = 0; i < caSiArrayList.size(); i++) {
+            idCasi.add(caSiArrayList.get(i).getIdCaSi());
+            tenCasi.add(caSiArrayList.get(i).getTenCaSi());
+        }
+        baiHat.setIdCaSi(idCasi);
+        baiHat.setCaSi(tenCasi);
+        SongFragment.UpdateSong(baiHat);
+        Toast.makeText(this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
+        progressDialog.dismiss();
+        finish();
     }
 
     private void OpenDiaLogAddCaSi() {
@@ -239,8 +439,51 @@ public class UpdateSongActivity extends AppCompatActivity {
         layoutParams.gravity = Gravity.CENTER;
         window.setAttributes(layoutParams);
         dialog.setCancelable(true);
+
+        // Các Thành Phần Trong Dialog
+        TextView tvFinish;
+        SearchView searchView;
+        RecyclerView recyclerView;
+        RelativeLayout layoutNoinfo;
+
+        // Dữ Liệu
+        ArrayList<CaSi> arrayList = MainActivity.caSiArrayList;
+        SongSingerAdapter adapter = new SongSingerAdapter(UpdateSongActivity.this, arrayList);
+
+        // Ánh Xạ
+
+        tvFinish = dialog.findViewById(R.id.tv_finish_dialog);
+        searchView = dialog.findViewById(R.id.search_view_add_ca_si);
+        recyclerView = dialog.findViewById(R.id.rv_add_casi_dialog);
+        layoutNoinfo = dialog.findViewById(R.id.txt_noinfo_casi);
+
+        // Set Dữ Liệu
+        adapter.setDialog(true);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+
+        tvFinish.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+
+
         dialog.show();
     }
+
 
     private final ActivityResultLauncher<Intent> FileAnhResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {

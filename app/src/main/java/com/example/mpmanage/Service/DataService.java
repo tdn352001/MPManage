@@ -1,7 +1,6 @@
 package com.example.mpmanage.Service;
 
 
-
 import com.example.mpmanage.Model.Admin;
 import com.example.mpmanage.Model.Album;
 import com.example.mpmanage.Model.BaiHat;
@@ -59,4 +58,16 @@ public interface DataService {
 
     @GET("getalltheloai.php")
     Call<List<ChuDeTheLoai>> GetAllTheLoai();
+
+    @FormUrlEncoded
+    @POST("updatesong.php")
+    Call<String> UpdateSong(@Field("idbaihat") String id, @Field("tenbaihat") String ten, @Field("hinhbaihat") String hinh, @Field("linkbaihat") String nhac);
+
+    @FormUrlEncoded
+    @POST("deletesongsinger.php")
+    Call<String> DeleteSongSinger(@Field("idbaihat") String id);
+
+    @FormUrlEncoded
+    @POST("updatesongsinger.php")
+    Call<String> UpdateSongSinger(@Field("idbaihat") String idbaihat, @Field("idcasi") String idcasi);
 }
