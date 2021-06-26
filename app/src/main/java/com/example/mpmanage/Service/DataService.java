@@ -81,4 +81,9 @@ public interface DataService {
     @Multipart
     @POST("uploadfile.php")
     Call<String> UploadFile(@Part MultipartBody.Part Anh);
+
+    @FormUrlEncoded
+    @POST("deletesong.php")
+    Call<String> DeleteSong(@Field("idbaihat") String IdBaiHat);
+
 }

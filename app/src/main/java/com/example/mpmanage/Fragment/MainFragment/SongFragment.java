@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
@@ -26,9 +25,15 @@ import com.example.mpmanage.Activity.MainActivity;
 import com.example.mpmanage.Adapter.SongAdapter;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.R;
+import com.example.mpmanage.Service.APIService;
+import com.example.mpmanage.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.view.View.GONE;
 
@@ -36,8 +41,8 @@ public class SongFragment extends Fragment {
 
     View view;
     RecyclerView recyclerView;
-    static SongAdapter songAdapter;
-    static ArrayList<BaiHat> baiHatArrayList;
+    public static SongAdapter songAdapter;
+    public static ArrayList<BaiHat> baiHatArrayList;
     MaterialButton btnViewMore, btnViewLess;
     SearchView searchView;
     TextView title;
@@ -105,7 +110,6 @@ public class SongFragment extends Fragment {
 
     public static void UpdateSong(BaiHat baiHat) {
         int Position = GetPositionById(baiHat.getIdBaiHat());
-        Log.e("BBB", Position + "");
         if (Position == -1) {
             return;
         }
@@ -119,9 +123,28 @@ public class SongFragment extends Fragment {
 
     }
 
-    public static void AddSong(BaiHat baihat){
+    public static void AddSong(BaiHat baihat) {
         baiHatArrayList.add(0, baihat);
         songAdapter.notifyDataSetChanged();
+    }
+
+    public static void DeleteSong(BaiHat baiHat) {
+        int Pos = baiHatArrayList.indexOf(baiHat);
+        baiHatArrayList.remove(Pos);
+        songAdapter.notifyItemRemoved(Pos);
+        songAdapter.notifyItemRangeChanged(Pos, baiHatArrayList.size());
+        DataService dataService = APIService.getService();
+        Call<String> callback = dataService.DeleteSong(baiHat.getIdBaiHat());
+        callback.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+            }
+        });
     }
 
     private static int GetPositionById(String IdBaiHat) {
@@ -199,8 +222,6 @@ public class SongFragment extends Fragment {
 
         super.onCreateOptionsMenu(menu, inflater);
     }
-
-
 
 
 }

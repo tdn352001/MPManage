@@ -99,4 +99,9 @@
     <string name="add_singer">Thêm Ca Sĩ</string>
     <string name="xong">Xong</string>
     <string name="them">Thêm</string>
+    <string name="infomation">Thông Tin</string>
+    <string name="id_bai_hat">Id Bài Hát:</string>
+    <string name="link_hinh">Link Hình</string>
+    <string name="link_nhac">Link Nhac</string>
+    <string name="like">Lượt Thích</string>
 </resources>
