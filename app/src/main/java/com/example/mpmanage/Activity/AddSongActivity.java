@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -50,6 +51,7 @@ import com.example.mpmanage.R;
 import com.example.mpmanage.Service.APIService;
 import com.example.mpmanage.Service.DataService;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -90,6 +92,7 @@ public class AddSongActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_song);
         AnhXa();
         SetUpInfo();
+        SetToolbar();
         EventListener();
     }
 
@@ -120,6 +123,14 @@ public class AddSongActivity extends AppCompatActivity {
         rvCaSi.setAdapter(adapter);
         rvCaSi.setLayoutManager(new LinearLayoutManager(AddSongActivity.this, RecyclerView.VERTICAL, false));
         baiHat = new BaiHat();
+    }
+    private void SetToolbar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Thêm Bài Hát");
+        toolbar.setNavigationOnClickListener(v -> {
+            OpenDialogFinish();
+        });
     }
 
     private void EventListener() {
@@ -216,7 +227,7 @@ public class AddSongActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                OpenDialogFinish();
             }
         });
     }
@@ -350,11 +361,42 @@ public class AddSongActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 singeradapter.getFilter().filter(newText);
+                Handler handler = new Handler();
+                final int[] i = {0};
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(i[0] >=4)
+                            handler.removeCallbacks(this);
+
+                        if(adapter.getItemCount() == 0)
+                            layoutNoinfo.setVisibility(View.VISIBLE);
+                        else
+                            layoutNoinfo.setVisibility(View.GONE);
+
+                        i[0]++;
+                    }
+                }, 120);
+
                 return true;
             }
         });
 
 
+        dialog.show();
+    }
+
+    private void OpenDialogFinish(){
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
+        dialog.setTitle("Thoát");
+        dialog.setIcon(R.drawable.ic_exit);
+        dialog.setMessage("Bạn Có Chắc muốn Thoát?");
+        dialog.setNegativeButton("Đồng Ý", (dialog1, which) -> {
+            finish();
+        });
+
+        dialog.setPositiveButton("Hủy", (dialog12, which) -> dialog12.dismiss());
         dialog.show();
     }
 
@@ -448,8 +490,6 @@ public class AddSongActivity extends AppCompatActivity {
         }
     }
 
-
-
     private final ActivityResultLauncher<Intent> FileAnhResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == RESULT_OK) {
@@ -482,4 +522,8 @@ public class AddSongActivity extends AppCompatActivity {
                 }
             });
 
+    @Override
+    public void onBackPressed() {
+        OpenDialogFinish();
+    }
 }
