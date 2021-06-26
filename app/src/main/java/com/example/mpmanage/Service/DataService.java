@@ -74,6 +74,10 @@ public interface DataService {
     @POST("updatesongsinger.php")
     Call<String> UpdateSongSinger(@Field("idbaihat") String idbaihat, @Field("idcasi") String idcasi);
 
+    @FormUrlEncoded
+    @POST("addsong.php")
+    Call<String> AddSong(@Field("tenbaihat") String ten, @Field("hinhbaihat") String hinh, @Field("linkbaihat") String nhac);
+
     @Multipart
     @POST("uploadfile.php")
     Call<String> UploadFile(@Part MultipartBody.Part Anh);

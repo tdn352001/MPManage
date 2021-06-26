@@ -60,6 +60,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
             IdBaiHatChange = baiHat.getIdBaiHat();
             context.startActivity(intent);
         });
+
+        holder.btnDelete.setOnClickListener(v -> {
+
+        });
     }
 
     @Override

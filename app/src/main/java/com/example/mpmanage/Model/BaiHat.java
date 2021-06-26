@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.List;
 
 
@@ -42,6 +41,9 @@ public class BaiHat implements Parcelable {
         idCaSi = in.createStringArrayList();
         caSi = in.createStringArrayList();
         luotThich = in.readString();
+    }
+
+    public BaiHat() {
     }
 
     public static final Creator<BaiHat> CREATOR = new Creator<BaiHat>() {
@@ -83,6 +85,7 @@ public class BaiHat implements Parcelable {
     public String getLinkBaiHat() {
         return linkBaiHat;
     }
+
     public String getTenAllCaSi() {
         String TenCaSi = "";
         if (caSi != null) {

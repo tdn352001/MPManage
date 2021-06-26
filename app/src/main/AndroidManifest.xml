@@ -4,6 +4,9 @@
     package="com.example.mpmanage">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
     <application
         android:icon="@mipmap/ic_launcher"
@@ -12,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MPManage"
         tools:ignore="AllowBackup">
-        <activity android:name=".Activity.UpdateSongActivity"></activity>
+        <activity android:name=".Activity.AddSongActivity"/>
+        <activity android:name=".Activity.UpdateSongActivity" />
         <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.MainActivity">
             <intent-filter>

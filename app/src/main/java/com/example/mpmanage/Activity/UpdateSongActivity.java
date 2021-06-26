@@ -6,13 +6,12 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -42,7 +41,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.mpmanage.Adapter.SongSingerAdapter;
+import com.example.mpmanage.Adapter.UpdateSongSingerAdapter;
 import com.example.mpmanage.Fragment.MainFragment.SongFragment;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.Model.CaSi;
@@ -51,6 +50,7 @@ import com.example.mpmanage.R;
 import com.example.mpmanage.Service.APIService;
 import com.example.mpmanage.Service.DataService;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -72,7 +72,7 @@ public class UpdateSongActivity extends AppCompatActivity {
     BaiHat baiHat;
     public ArrayList<CaSi> caSiArrayList;
     private ArrayList<CaSi> tempArrayList;
-    public SongSingerAdapter songSingerAdapter;
+    public UpdateSongSingerAdapter updateSongSingerAdapter;
     ProgressDialog progressDialog;
 
     Toolbar toolbar;
@@ -117,7 +117,15 @@ public class UpdateSongActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Cập Nhật Bài Hát");
-        toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setNavigationOnClickListener(v -> {
+            if(!CheckSingerChange())
+                if(!CheckSongChange())
+                {
+                    finish();
+                    return;
+                }
+            OpenDialogFinish();
+        });
     }
 
     public boolean checkPermission() {
@@ -144,8 +152,8 @@ public class UpdateSongActivity extends AppCompatActivity {
             SetImageView(baiHat.getHinhBaiHat());
             caSiArrayList = new ArrayList<>();
             tempArrayList = new ArrayList<>();
-            songSingerAdapter = new SongSingerAdapter(this, caSiArrayList);
-            rvCaSi.setAdapter(songSingerAdapter);
+            updateSongSingerAdapter = new UpdateSongSingerAdapter(this, caSiArrayList);
+            rvCaSi.setAdapter(updateSongSingerAdapter);
             rvCaSi.setLayoutManager(new LinearLayoutManager(UpdateSongActivity.this, RecyclerView.VERTICAL, false));
             for (int i = 0; i < baiHat.getIdCaSi().size(); i++) {
                 String idsingerSong = baiHat.getIdCaSi().get(i);
@@ -154,7 +162,7 @@ public class UpdateSongActivity extends AppCompatActivity {
                     if (idsingerSong.equals(idSinger)) {
                         caSiArrayList.add(MainActivity.caSiArrayList.get(j));
                         tempArrayList.add(MainActivity.caSiArrayList.get(j));
-                        songSingerAdapter.notifyItemInserted(caSiArrayList.size() - 1);
+                        updateSongSingerAdapter.notifyItemInserted(caSiArrayList.size() - 1);
                     }
                 }
             }
@@ -164,7 +172,6 @@ public class UpdateSongActivity extends AppCompatActivity {
 
     private void EventListener() {
 
-        // Mục Radio Hình Ảnh
         rdHinh.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rd_link_hinh) {
                 edtHinhBaiHat.setVisibility(View.VISIBLE);
@@ -180,7 +187,6 @@ public class UpdateSongActivity extends AppCompatActivity {
                 Picasso.with(this).load(uriHinh).error(R.drawable.ic_image).into(imgBaiHat);
             }
         });
-
 
         // Mục Radio Nhạc
         rdNhac.setOnCheckedChangeListener((group, checkedId) -> {
@@ -203,7 +209,7 @@ public class UpdateSongActivity extends AppCompatActivity {
 
         // Chọn File Nhạc
         btnGetFileNhac.setOnClickListener(v -> {
-            if (checkPermission()) {
+            {
                 Intent intent = new Intent();
                 intent.setType("audio/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -238,14 +244,14 @@ public class UpdateSongActivity extends AppCompatActivity {
                 progressDialog = ProgressDialog.show(UpdateSongActivity.this, "Đang Cập Nhật", " Vui Lòng Chờ");
                 if (CheckSongChange()) {
 
-                    if (rdNhac.getCheckedRadioButtonId() == R.id.rd_file_hinh) {
-                        String TenHinh = edtTenBaiHat.getText().toString() + baiHat.getIdBaiHat() + ".jpg";
+                    if (rdHinh.getCheckedRadioButtonId() == R.id.rd_file_hinh) {
+                        String TenHinh =baiHat.getIdBaiHat() + "BaiHat" + edtTenBaiHat.getText().toString().replaceAll(" ", "") + ".jpg";
                         UpLoadFile(RealPathHinh, TenHinh);
                         return;
                     }
 
                     if (rdNhac.getCheckedRadioButtonId() == R.id.rd_file_nhac) {
-                        String TenFile = edtTenBaiHat.getText().toString() + baiHat.getIdBaiHat() + ".mp3";
+                        String TenFile = baiHat.getIdBaiHat() +"file" + edtTenBaiHat.getText().toString().replaceAll(" ", "")  + ".mp3";
                         UpLoadFile(RealPathNhac, TenFile);
                         return;
                     }
@@ -264,6 +270,19 @@ public class UpdateSongActivity extends AppCompatActivity {
             }
 
 
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!CheckSingerChange())
+                    if(!CheckSongChange())
+                    {
+                        finish();
+                        return;
+                    }
+                OpenDialogFinish();
+            }
         });
     }
 
@@ -327,6 +346,11 @@ public class UpdateSongActivity extends AppCompatActivity {
             }
         }
 
+        if(caSiArrayList.size() == 0){
+            Toast.makeText(this, "Phải có ít nhất 1 ca sĩ", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         return true;
     }
 
@@ -361,7 +385,6 @@ public class UpdateSongActivity extends AppCompatActivity {
     }
 
     private void UpdateSong() {
-        Log.e("BBB", "Update Song");
         DataService dataService = APIService.getService();
         String TenBaiHat = edtTenBaiHat.getText().toString().trim();
         String HinhBaiHat = edtHinhBaiHat.getText().toString().trim();
@@ -449,6 +472,7 @@ public class UpdateSongActivity extends AppCompatActivity {
     }
 
     private void UpLoadFile(String RealPath, String FileName) {
+        Log.e("BBB", "upload file: " + RealPath);
         if (RealPath == null)
             return;
         File file = new File(RealPath);
@@ -463,7 +487,7 @@ public class UpdateSongActivity extends AppCompatActivity {
                     String LinkHinh = "https://filenhacmp3.000webhostapp.com/file/";
                     edtHinhBaiHat.setText(LinkHinh + FileName);
                     if (rdNhac.getCheckedRadioButtonId() == R.id.rd_file_nhac) {
-                        String TenFile = edtTenBaiHat.getText().toString() + baiHat.getIdBaiHat() + ".mp3";
+                        String TenFile = baiHat.getIdBaiHat()  + "file" + edtTenBaiHat.getText().toString().replaceAll(" ", "") + ".mp3";
                         UpLoadFile(RealPathNhac, TenFile);
                     } else {
                         UpdateSong();
@@ -504,7 +528,7 @@ public class UpdateSongActivity extends AppCompatActivity {
 
         // Dữ Liệu
         ArrayList<CaSi> arrayList = MainActivity.caSiArrayList;
-        SongSingerAdapter adapter = new SongSingerAdapter(UpdateSongActivity.this, arrayList);
+        UpdateSongSingerAdapter adapter = new UpdateSongSingerAdapter(UpdateSongActivity.this, arrayList);
 
         // Ánh Xạ
 
@@ -532,6 +556,23 @@ public class UpdateSongActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 adapter.getFilter().filter(newText);
+                Handler handler = new Handler();
+                final int[] i = {0};
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(i[0] >=4)
+                            handler.removeCallbacks(this);
+
+                        if(adapter.getItemCount() == 0)
+                            layoutNoinfo.setVisibility(View.VISIBLE);
+                        else
+                            layoutNoinfo.setVisibility(View.GONE);
+
+                        i[0]++;
+                    }
+                }, 120);
+
                 return true;
             }
         });
@@ -540,16 +581,18 @@ public class UpdateSongActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public String getRealPathFromURI(Uri contentUri) {
-        String path = null;
-        String[] proj = {MediaStore.MediaColumns.DATA};
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-            path = cursor.getString(column_index);
-        }
-        cursor.close();
-        return path;
+    private void OpenDialogFinish(){
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
+        dialog.setTitle("Thoát");
+        dialog.setIcon(R.drawable.ic_exit);
+        dialog.setMessage("Bạn Có Chắc muốn Thoát Mà Không Lưu Kết Quả?");
+        dialog.setNegativeButton("Đồng Ý", (dialog1, which) -> {
+            finish();
+        });
+
+        dialog.setPositiveButton("Hủy", (dialog12, which) -> dialog12.dismiss());
+        dialog.show();
     }
 
     private final ActivityResultLauncher<Intent> FileAnhResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -558,12 +601,12 @@ public class UpdateSongActivity extends AppCompatActivity {
                     Intent data = result.getData();
                     assert data != null;
                     uriHinh = data.getData();
-                    Log.e("BBB", uriHinh.toString());
-                    RealPathHinh = getRealPathFromURI(uriHinh);
+                    RealPathHinh = RealPathUtil.getRealPath(this, uriHinh);
                     if (RealPathHinh == null) {
                         Toast.makeText(this, "Không Thể Lấy File", Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    Toast.makeText(this, "Lấy File Thành Công", Toast.LENGTH_SHORT).show();
                     Picasso.with(this).load(uriHinh).into(imgBaiHat);
                 }
             });
@@ -572,13 +615,27 @@ public class UpdateSongActivity extends AppCompatActivity {
             result -> {
                 if (result.getResultCode() == RESULT_OK) {
                     Intent data = result.getData();
+                    assert data != null;
                     uriNhac = data.getData();
                     RealPathNhac = RealPathUtil.getRealPath(this, uriNhac);
                     if (RealPathNhac == null) {
                         Toast.makeText(this, "Không Thể Lấy File", Toast.LENGTH_SHORT).show();
+                        return;
                     }
+
+                    Toast.makeText(this, "Lấy File Thành Công", Toast.LENGTH_SHORT).show();
                 }
             });
 
 
+    @Override
+    public void onBackPressed() {
+        if(!CheckSingerChange())
+            if(!CheckSingerChange())
+            {
+                finish();
+                return;
+            }
+        OpenDialogFinish();
+    }
 }

@@ -28,7 +28,8 @@
                 android:background="@drawable/custom_toolbar_main"
                 android:gravity="center_horizontal"
                 android:textAlignment="center"
-                app:elevation="3dp" />
+                app:elevation="3dp"
+                app:layout_scrollFlags="scroll|enterAlways" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

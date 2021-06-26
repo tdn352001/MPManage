@@ -1,6 +1,7 @@
 package com.example.mpmanage.Fragment.MainFragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -20,8 +21,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mpmanage.Activity.AddSongActivity;
 import com.example.mpmanage.Activity.MainActivity;
-import com.example.mpmanage.Activity.UpdateSongActivity;
 import com.example.mpmanage.Adapter.SongAdapter;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.R;
@@ -103,11 +104,12 @@ public class SongFragment extends Fragment {
     }
 
     public static void UpdateSong(BaiHat baiHat) {
-        int Id = Integer.parseInt(baiHat.getIdBaiHat());
-        int Position = GetPositionById(0, baiHatArrayList.size() - 1, Id);
-        if(Position == -1){
+        int Position = GetPositionById(baiHat.getIdBaiHat());
+        Log.e("BBB", Position + "");
+        if (Position == -1) {
             return;
         }
+        Log.e("BBB", baiHatArrayList.get(Position).getTenBaiHat());
         baiHatArrayList.get(Position).setTenBaiHat(baiHat.getTenBaiHat());
         baiHatArrayList.get(Position).setHinhBaiHat(baiHat.getHinhBaiHat());
         baiHatArrayList.get(Position).setLinkBaiHat(baiHat.getLinkBaiHat());
@@ -117,17 +119,15 @@ public class SongFragment extends Fragment {
 
     }
 
-    private static int GetPositionById(int left, int right, int IdBaiHat) {
-        if (right > left) {
-            int mid = left + (right - left) / 2;
-            int Id = Integer.parseInt(baiHatArrayList.get(mid).getIdBaiHat());
-            if(Id == IdBaiHat)
-                return mid;
+    public static void AddSong(BaiHat baihat){
+        baiHatArrayList.add(0, baihat);
+        songAdapter.notifyDataSetChanged();
+    }
 
-            if(Id > IdBaiHat)
-                return GetPositionById(left, mid - 1, IdBaiHat);
-
-            return GetPositionById(mid + 1, right, IdBaiHat);
+    private static int GetPositionById(String IdBaiHat) {
+        for (int i = 0; i < baiHatArrayList.size(); i++) {
+            if (baiHatArrayList.get(i).getIdBaiHat().equals(IdBaiHat))
+                return i;
         }
 
         return -1;
@@ -136,8 +136,8 @@ public class SongFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);
-        MenuItem menuItem = menu.findItem(R.id.search_view);
-        searchView = (SearchView) menuItem.getActionView();
+        MenuItem searchItem = menu.findItem(R.id.search_view);
+        searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Tìm Kiếm Bài Hát");
         searchView.setIconifiedByDefault(true);
         searchView.setMaxWidth(Integer.MAX_VALUE);
@@ -186,8 +186,21 @@ public class SongFragment extends Fragment {
             }
         });
 
+        MenuItem addItem = menu.findItem(R.id.add_item);
+        addItem.setTitle(R.string.add_song);
+        addItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(getActivity(), AddSongActivity.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+
 
 
 }

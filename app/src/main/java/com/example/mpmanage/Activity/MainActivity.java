@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         AnhXa();
         SetToolBar();
         SetupDrawer();
-        checkPermission();
+//        checkPermission();
 
         // Lấy Dữ Liệu
         GetAdminAcount();
