@@ -104,4 +104,8 @@
     <string name="link_hinh">Link Hình</string>
     <string name="link_nhac">Link Nhac</string>
     <string name="like">Lượt Thích</string>
+    <string name="list_song_banner">Danh Sách Quảng Cáo</string>
+    <string name="content">Nội Dung</string>
+    <string name="poster">Poster</string>
+    <string name="change_song">Đổi bài Hát</string>
 </resources>

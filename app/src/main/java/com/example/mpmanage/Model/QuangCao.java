@@ -3,8 +3,10 @@ package com.example.mpmanage.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 
-public class QuangCao {
+
+public class QuangCao implements Serializable{
 
 @SerializedName("IdQuangCao")
 @Expose

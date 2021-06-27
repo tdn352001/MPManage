@@ -230,6 +230,17 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public static int GetPostionBaiHatById(String IdBaiHat) {
+        if (MainActivity.baiHatArrayList != null) {
+            for (int i = 0; i < MainActivity.baiHatArrayList.size(); i++) {
+                if (MainActivity.baiHatArrayList.get(i).getIdBaiHat().equals(IdBaiHat))
+                    return i;
+            }
+        }
+
+        return  -1;
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, appBarConfiguration)

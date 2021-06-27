@@ -35,7 +35,7 @@ public interface DataService {
     Call<String> ChangePassword(@Field("idadmin") String idadmin, @Field("password") String password);
 
 
-    @GET("getallbanner.php")
+    @GET("songbanner.php")
     Call<List<QuangCao>> GetAllBanner();
 
 
@@ -85,5 +85,18 @@ public interface DataService {
     @FormUrlEncoded
     @POST("deletesong.php")
     Call<String> DeleteSong(@Field("idbaihat") String IdBaiHat);
+
+
+    @FormUrlEncoded
+    @POST("addbanner.php")
+    Call<String> AddBanner(@Field("poster") String poster, @Field("noidung") String noidung, @Field("idbaihat") String idbaihat);
+
+    @FormUrlEncoded
+    @POST("updatebanner.php")
+    Call<String> UpdateBanner(@Field("idbanner")String idbanner, @Field("poster") String poster, @Field("noidung") String noidung, @Field("idbaihat") String idbaihat);
+
+    @FormUrlEncoded
+    @POST("deletebanner.php")
+    Call<String> DeleteBanner(@Field("idbanner") String idbanner);
 
 }

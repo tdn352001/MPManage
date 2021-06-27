@@ -16,9 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MPManage"
         tools:ignore="AllowBackup">
-        <activity android:name=".Activity.InfoSongActivity"></activity>
-        <activity android:name=".Activity.AddSongActivity" />
-        <activity android:name=".Activity.UpdateSongActivity" />
+        <activity android:name=".Activity.BannerActivity.UpdateBannerActivity"/>
+        <activity android:name=".Activity.BannerActivity.AddBannerActivity"/>
+        <activity android:name=".Activity.SongActivity.InfoSongActivity" />
+        <activity android:name=".Activity.SongActivity.AddSongActivity" />
+        <activity android:name=".Activity.SongActivity.UpdateSongActivity" />
         <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.MainActivity">
             <intent-filter>

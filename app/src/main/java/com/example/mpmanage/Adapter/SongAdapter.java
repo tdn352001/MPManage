@@ -22,8 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mpmanage.Activity.InfoSongActivity;
-import com.example.mpmanage.Activity.UpdateSongActivity;
+import com.example.mpmanage.Activity.SongActivity.InfoSongActivity;
+import com.example.mpmanage.Activity.SongActivity.UpdateSongActivity;
 import com.example.mpmanage.Fragment.MainFragment.SongFragment;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.R;
@@ -99,7 +99,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
                 } else {
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
                     dialog.setBackground(context.getResources().getDrawable(R.drawable.custom_diaglog_background));
-                    dialog.setTitle("Thoát");
+                    dialog.setTitle("Xóa?");
                     dialog.setIcon(R.drawable.ic_delete);
                     dialog.setMessage("Bạn Có Chắc muốn xóa bài hát này?");
                     dialog.setNegativeButton("Đồng Ý", (dialog1, which) -> {

@@ -15,13 +15,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mpmanage.Activity.AddSongActivity;
 import com.example.mpmanage.Activity.MainActivity;
+import com.example.mpmanage.Activity.SongActivity.AddSongActivity;
 import com.example.mpmanage.Adapter.SongAdapter;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.R;
@@ -41,7 +42,7 @@ public class SongFragment extends Fragment {
 
     View view;
     RecyclerView recyclerView;
-    public static SongAdapter songAdapter;
+    static SongAdapter songAdapter;
     public static ArrayList<BaiHat> baiHatArrayList;
     MaterialButton btnViewMore, btnViewLess;
     SearchView searchView;
@@ -68,8 +69,10 @@ public class SongFragment extends Fragment {
     }
 
     private void GetDataBaiHat() {
-        if (baiHatArrayList != null)
+        if (baiHatArrayList != null) {
+            SetRecycleView();
             return;
+        }
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -147,12 +150,13 @@ public class SongFragment extends Fragment {
         });
     }
 
-    private static int GetPositionById(String IdBaiHat) {
-        for (int i = 0; i < baiHatArrayList.size(); i++) {
-            if (baiHatArrayList.get(i).getIdBaiHat().equals(IdBaiHat))
-                return i;
+    public static int GetPositionById(String IdBaiHat) {
+        if (baiHatArrayList != null) {
+            for (int i = 0; i < baiHatArrayList.size(); i++) {
+                if (baiHatArrayList.get(i).getIdBaiHat().equals(IdBaiHat))
+                    return i;
+            }
         }
-
         return -1;
     }
 

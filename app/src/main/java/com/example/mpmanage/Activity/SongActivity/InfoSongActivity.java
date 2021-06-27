@@ -1,4 +1,4 @@
-package com.example.mpmanage.Activity;
+package com.example.mpmanage.Activity.SongActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
