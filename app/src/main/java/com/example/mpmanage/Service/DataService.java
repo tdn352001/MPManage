@@ -99,4 +99,29 @@ public interface DataService {
     @POST("deletebanner.php")
     Call<String> DeleteBanner(@Field("idbanner") String idbanner);
 
+    @FormUrlEncoded
+    @POST("getdanhsachbaihat.php")
+    Call<List<BaiHat>> GetBaiHatPlaylist(@Field("IdPlaylist") String IdPlaylist);
+
+    @FormUrlEncoded
+    @POST("getdanhsachbaihat.php")
+    Call<List<BaiHat>> GetBaiHatAlbum(@Field("IdAlbum") String IdAlbum);
+
+    @FormUrlEncoded
+    @POST("getdanhsachbaihat.php")
+    Call<List<BaiHat>> GetBaiHatCaSi(@Field("IdCaSi") String IdCaSi);
+
+    @FormUrlEncoded
+    @POST("getalbumcasi.php")
+    Call<List<Album>> GetAlbumCaSi(@Field("IdCaSi") String IdCaSi);
+
+    @FormUrlEncoded
+    @POST("getdanhsachbaihat.php")
+    Call<List<BaiHat>> GetBaiHatChuDe(@Field("IdChuDe") String IdChuDe);
+
+
+    @FormUrlEncoded
+    @POST("getdanhsachbaihat.php")
+    Call<List<BaiHat>> GetBaiHatTheLoai(@Field("IdTheLoai") String IdPlaylist);
+
 }

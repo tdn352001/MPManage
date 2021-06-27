@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="10dp"
     android:layout_marginVertical="5dp"
-    android:background="@drawable/item_corner"
-    android:paddingVertical="10dp"
+    android:paddingStart="10dp"
     android:paddingLeft="10dp"
-    android:paddingStart="10dp">
+    tools:ignore="RtlSymmetry">
 
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/img_song_singer"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:id="@+id/img_category"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:scaleType="fitXY"
         app:riv_corner_radius="10dp" />
 
     <TextView
-        android:id="@+id/tv_song_singer"
+        android:id="@+id/tv_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginHorizontal="5dp"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
-        android:layout_toStartOf="@id/btn_delete_song_singer"
-        android:layout_toLeftOf="@id/btn_delete_song_singer"
-        android:layout_toEndOf="@id/img_song_singer"
-        android:layout_toRightOf="@id/img_song_singer"
+        android:layout_toStartOf="@id/btn_delete_category"
+        android:layout_toLeftOf="@id/btn_delete_category"
+        android:layout_toEndOf="@id/img_category"
+        android:layout_toRightOf="@id/img_category"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="@string/ten_ca_si"
+        android:text="@string/category"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
     <ImageView
-        android:id="@+id/btn_delete_song_singer"
+        android:id="@+id/btn_delete_category"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_alignParentEnd="true"
@@ -44,6 +45,6 @@
         android:layout_marginEnd="5dp"
         android:layout_marginRight="10dp"
         android:contentDescription="@string/delete"
-        android:src="@drawable/ic_clear" />
+        android:src="@drawable/ic_delete" />
 
 </RelativeLayout>

@@ -13,19 +13,19 @@
 
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/update_banner_toolbar"
+            android:id="@+id/update_categoty_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/tv_noi_dung_quang_cao"
+            android:id="@+id/tv_ten_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/update_banner_toolbar"
+            android:layout_below="@id/update_categoty_toolbar"
             android:layout_marginStart="30dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
-            android:text="@string/content"
+            android:text="@string/name"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -36,7 +36,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_noi_dung_quang_cao"
+            android:layout_below="@id/tv_ten_category"
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="5dp"
             android:inputType="textLongMessage"
@@ -44,7 +44,7 @@
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_content_banner"
+                android:id="@+id/edt_ten_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/content"
@@ -74,20 +74,20 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"
-                android:text="@string/poster"
+                android:text="@string/hinh_minh_hoa"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <RadioGroup
-                android:id="@+id/rd_hinh_poster"
+                android:id="@+id/rd_hinh_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/rd_link_hinh_poster"
+                    android:id="@+id/rd_link_hinh_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="#036A7E"
@@ -96,7 +96,7 @@
                     tools:targetApi="lollipop" />
 
                 <RadioButton
-                    android:id="@+id/rd_file_hinh_poster"
+                    android:id="@+id/rd_file_hinh_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
@@ -134,12 +134,12 @@
                             android:id="@+id/edt_link_hinh_poster"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/link_poster"
+                            android:hint="@string/link_hinh"
                             android:textColor="@color/black" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_get_hinh_poster"
+                        android:id="@+id/btn_get_hinh_category"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="match_parent"
                         android:layout_height="65dp"
@@ -152,7 +152,7 @@
                 </RelativeLayout>
 
                 <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/img_hinh_poster"
+                    android:id="@+id/img_hinh_category"
                     android:layout_width="match_parent"
                     android:layout_marginHorizontal="20dp"
                     android:layout_height="40mm"
@@ -195,14 +195,14 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_add_song_banner"
+                android:id="@+id/btn_add_song_category"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:layout_marginHorizontal="45dp"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="5dp"
                 android:gravity="center|start"
-                android:text="@string/change_song"
+                android:text="@string/add_song"
                 android:textAllCaps="false"
                 android:textColor="#018893"
                 android:textSize="16sp"
@@ -214,10 +214,10 @@
                 app:strokeColor="#9A9A99" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_baihat_banner"
+                android:id="@+id/rv_baihat_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="45dp"
+                android:layout_marginHorizontal="5dp"
                 android:layout_marginTop="5dp" />
         </LinearLayout>
 
@@ -239,7 +239,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_finish_update_quang_cao"
+                android:id="@+id/btn_finish_update_category"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#018893"
@@ -249,7 +249,7 @@
                 tools:targetApi="lollipop" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_cancel_update_quang_cao"
+                android:id="@+id/btn_cancel_update_category"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"

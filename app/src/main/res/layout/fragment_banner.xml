@@ -20,7 +20,7 @@
             android:layout_marginLeft="15dp"
             android:text="@string/list_song_banner"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
 

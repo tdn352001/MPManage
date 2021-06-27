@@ -108,4 +108,7 @@
     <string name="content">Nội Dung</string>
     <string name="poster">Poster</string>
     <string name="change_song">Đổi bài Hát</string>
+    <string name="name">Tên</string>
+    <string name="hinh_minh_hoa">Hình Minh Họa</string>
+    <string name="link_poster">Link Poster</string>
 </resources>
