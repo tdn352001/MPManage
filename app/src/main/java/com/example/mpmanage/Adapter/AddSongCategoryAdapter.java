@@ -7,6 +7,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,6 +52,29 @@ public class AddSongCategoryAdapter extends RecyclerView.Adapter<AddSongCategory
         holder.tvTenBaiHat.setText(baiHat.getTenBaiHat());
         Picasso.with(context).load(baiHat.getHinhBaiHat().toString()).into(holder.imgBaihat);
 
+        if(context.CheckAddBefore(baiHat)){
+            holder.imageView.setImageResource(R.drawable.ic_clear);
+        }else
+            holder.imageView.setImageResource(R.drawable.ic_add);
+
+        if(isDialog){
+            holder.itemView.setOnClickListener(v -> {
+                if(context.CheckAddBefore(baiHat)){
+                    context.DeleteSong(baiHat);
+                    holder.imageView.setImageResource(R.drawable.ic_add);
+                    Toast.makeText(context, "Đã Xóa" + baiHat.getTenBaiHat(), Toast.LENGTH_SHORT).show();
+                }else{
+                    context.AddSong(baiHat);
+                    holder.imageView.setImageResource(R.drawable.ic_clear);
+                    Toast.makeText(context, "Đã Thêm " + baiHat.getTenBaiHat(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }else{
+            holder.imageView.setOnClickListener(v -> {
+                context.DeleteSong(baiHat);
+            });
+        }
 
     }
 

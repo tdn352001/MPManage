@@ -124,4 +124,44 @@ public interface DataService {
     @POST("getdanhsachbaihat.php")
     Call<List<BaiHat>> GetBaiHatTheLoai(@Field("IdTheLoai") String IdPlaylist);
 
+    @FormUrlEncoded
+    @POST("updatetheloai.php")
+    Call<String> UpdateTheLoai(@Field("id") String idchude, @Field("ten") String tenchude, @Field("hinh") String hinhanh);
+
+    @FormUrlEncoded
+    @POST("updatebaihattheloai.php")
+    Call<String> UpdateBaiHatTheLoai(@Field("id") String idchude, @Field("idbaihat") String idbaihat);
+
+    @FormUrlEncoded
+    @POST("deletebaihattheloai.php")
+    Call<String> DeleteBaiHatTheLoai(@Field("id") String idchude);
+
+    @FormUrlEncoded
+    @POST("deleletheloai.php")
+    Call<String> DeleteTheLoai(@Field("id") String idtheloai);
+
+    @FormUrlEncoded
+    @POST("addchude.php")
+    Call<String> AddTheLoai(@Field("ten") String tenchude, @Field("anh") String hinhchude);
+
+    @FormUrlEncoded
+    @POST("updatechude.php")
+    Call<String> UpdateChuDe(@Field("id") String idchude, @Field("ten") String tenchude, @Field("hinh") String hinhanh);
+
+    @FormUrlEncoded
+    @POST("updatebaihatchude.php")
+    Call<String> UpdateBaiHatChuDe(@Field("id") String idchude, @Field("idbaihat") String idbaihat);
+
+    @FormUrlEncoded
+    @POST("deletebaihatchude.php")
+    Call<String> DeleteBaiHatChuDe(@Field("id") String idchude);
+
+    @FormUrlEncoded
+    @POST("delelechude.php")
+    Call<String> DeleteChuDe(@Field("id") String idtheloai);
+
+    @FormUrlEncoded
+    @POST("addchude.php")
+    Call<String> AddChuDe(@Field("ten") String tenchude, @Field("hinh") String hinhchude);
+
 }
