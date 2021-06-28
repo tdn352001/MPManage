@@ -45,6 +45,7 @@ import com.example.mpmanage.R;
 import com.example.mpmanage.Service.APIService;
 import com.example.mpmanage.Service.DataService;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -75,14 +76,13 @@ public class UpdateCategoryActivity extends AppCompatActivity {
     ChuDeTheLoai category;
     ChuDeTheLoai tempcategory;
     public ArrayList<BaiHat> arrayList;
-    ArrayList<BaiHat> temparrayList;
+    private ArrayList<BaiHat> temparrayList;
     public AddSongCategoryAdapter adapter;
     String loai;
     boolean LoadImageSuccess;
     private String RealPath;
     private Uri uriHinh;
     Dialog dialog;
-
 
 
     @Override
@@ -145,7 +145,14 @@ public class UpdateCategoryActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(title);
 
         toolbar.setNavigationOnClickListener(v -> {
-            finish();
+            if (category.getId() == null) {
+                OpenDialogFinish();
+                return;
+            }
+            if (CheckChange()) {
+                OpenDialogFinish();
+            } else
+                finish();
         });
     }
 
@@ -191,6 +198,8 @@ public class UpdateCategoryActivity extends AppCompatActivity {
                 arrayList = (ArrayList<BaiHat>) response.body();
                 if (arrayList == null)
                     Log.e("BBB", "null");
+                for (BaiHat baiHat : arrayList)
+                    temparrayList.add(baiHat);
                 SetRv();
             }
 
@@ -210,6 +219,8 @@ public class UpdateCategoryActivity extends AppCompatActivity {
                 arrayList = (ArrayList<BaiHat>) response.body();
                 if (arrayList == null)
                     arrayList = new ArrayList<>();
+                for (BaiHat baiHat : arrayList)
+                    temparrayList.add(baiHat);
                 SetRv();
             }
 
@@ -266,28 +277,39 @@ public class UpdateCategoryActivity extends AppCompatActivity {
             OpenDialogAddSong();
         });
 
-        btnFinish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (CheckValidate()) {
-                    progressDialog = ProgressDialog.show(UpdateCategoryActivity.this, "Đang Cập Nhật", " Vui Lòng Chờ");
-                    if (category.getId().equals("")) {
+        btnFinish.setOnClickListener(v -> {
+            if (CheckValidate()) {
+                progressDialog = ProgressDialog.show(UpdateCategoryActivity.this, "Đang Cập Nhật", " Vui Lòng Chờ");
+                if (category.getId() == null) {
+                    if (rdHinh.getCheckedRadioButtonId() == R.id.rd_file_hinh_category) {
+                        UpLoadFile(loai + category.getTen() + System.currentTimeMillis() + ".jpg");
+                    } else {
+                        AddCategory();
+                    }
+                } else {
+                    if (CheckChange()) {
                         if (rdHinh.getCheckedRadioButtonId() == R.id.rd_file_hinh_category) {
-                            UpLoadFile(loai + category.getTen() + System.currentTimeMillis() + ".jpg");
+                            UpLoadFile(category.getId() + loai + category.getTen() + ".jpg");
                         } else {
-                            AddCategory();
+                            UpdateCategory();
                         }
                     } else {
-                        if (CheckChange()) {
-                            if (rdHinh.getCheckedRadioButtonId() == R.id.rd_file_hinh_category) {
-                                UpLoadFile(category.getId() + loai + category.getTen() + ".jpg");
-                            } else {
-                                UpdateCategory();
-                            }
-                        }
+                        progressDialog.dismiss();
+                        finish();
                     }
                 }
             }
+        });
+
+        btnCancel.setOnClickListener(v -> {
+            if (category.getId() == null) {
+                OpenDialogFinish();
+                return;
+            }
+            if (CheckChange()) {
+                OpenDialogFinish();
+            } else
+                finish();
         });
     }
 
@@ -362,6 +384,20 @@ public class UpdateCategoryActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private void OpenDialogFinish() {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
+        dialog.setTitle("Thoát");
+        dialog.setIcon(R.drawable.ic_exit);
+        dialog.setMessage("Bạn Có Chắc muốn Thoát Mà Không Lưu Kết Quả?");
+        dialog.setNegativeButton("Đồng Ý", (dialog1, which) -> {
+            finish();
+        });
+
+        dialog.setPositiveButton("Hủy", (dialog12, which) -> dialog12.dismiss());
+        dialog.show();
+    }
+
     public boolean CheckAddBefore(BaiHat baiHat) {
         for (BaiHat baiHat1 : arrayList) {
             if (baiHat1.getIdBaiHat().equals(baiHat.getIdBaiHat()))
@@ -393,12 +429,13 @@ public class UpdateCategoryActivity extends AppCompatActivity {
             return false;
         }
 
-        if (rdHinh.getCheckedRadioButtonId() == R.id.rd_link_hinh_poster) {
+        if (rdHinh.getCheckedRadioButtonId() == R.id.rd_link_hinh_category) {
             if (!LoadImageSuccess) {
                 Toast.makeText(this, "Link Hình Không Hợp Lệ", Toast.LENGTH_SHORT).show();
                 return false;
             }
-        } else {
+        }
+        if (rdHinh.getCheckedRadioButtonId() == R.id.rd_file_hinh_category) {
             if (RealPath == null) {
                 Toast.makeText(this, "Không Tìm Được File Hình", Toast.LENGTH_SHORT).show();
                 return false;
@@ -418,7 +455,9 @@ public class UpdateCategoryActivity extends AppCompatActivity {
 
         if (rdHinh.getCheckedRadioButtonId() == R.id.rd_file_hinh_category)
             return true;
-        if (rdHinh.getCheckedRadioButtonId() == R.id.rd_file_hinh_category) {
+
+
+        if (rdHinh.getCheckedRadioButtonId() == R.id.rd_link_hinh_category) {
             if (!edtLink.getText().toString().equals(category.getHinh()))
                 return true;
         }
@@ -474,12 +513,16 @@ public class UpdateCategoryActivity extends AppCompatActivity {
                     category.setId(Id);
                     CategoryFragment.AddCategory(loai, category);
                     UpdateBaiHatCategory();
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(UpdateCategoryActivity.this, "Thêm Thất Bại", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
+                progressDialog.dismiss();
+                Toast.makeText(UpdateCategoryActivity.this, "Thêm Thất Bại", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -500,12 +543,17 @@ public class UpdateCategoryActivity extends AppCompatActivity {
                 CategoryFragment.UpdateCategoty(loai, category);
                 if (!arrayList.equals(temparrayList)) {
                     DeleteBaiHatCategory();
+                    return;
                 }
+                finish();
+                progressDialog.dismiss();
+                Toast.makeText(UpdateCategoryActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
+
+
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
             }
         });
     }
@@ -526,7 +574,6 @@ public class UpdateCategoryActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
             }
         });
 
@@ -550,7 +597,7 @@ public class UpdateCategoryActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-
+                        Log.e("BBB", "Update Bài Hát Thất Bại");
                     }
                 });
             }
@@ -562,13 +609,16 @@ public class UpdateCategoryActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if (finalI >= arrayList.size() - 1) {
+                            finish();
+                            progressDialog.dismiss();
+                            Toast.makeText(UpdateCategoryActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
 
                         }
                     }
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-
+                        Log.e("BBB", "Update Thất Bại");
                     }
                 });
             }

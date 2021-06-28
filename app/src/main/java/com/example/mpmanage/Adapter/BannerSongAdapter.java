@@ -1,6 +1,5 @@
 package com.example.mpmanage.Adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mpmanage.Activity.BannerActivity.UpdateBannerActivity;
+import com.example.mpmanage.Activity.UpdateBannerActivity;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.R;
 import com.makeramen.roundedimageview.RoundedImageView;

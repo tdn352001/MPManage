@@ -1,4 +1,4 @@
-package com.example.mpmanage.Activity.BannerActivity;
+package com.example.mpmanage.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

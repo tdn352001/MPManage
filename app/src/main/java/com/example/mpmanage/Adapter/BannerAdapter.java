@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mpmanage.Activity.BannerActivity.UpdateBannerActivity;
+import com.example.mpmanage.Activity.UpdateBannerActivity;
 import com.example.mpmanage.Fragment.MainFragment.BannerFragment;
 import com.example.mpmanage.Model.QuangCao;
 import com.example.mpmanage.R;

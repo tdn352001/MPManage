@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mpmanage.Activity.BannerActivity.UpdateBannerActivity;
 import com.example.mpmanage.Activity.UpdateCategoryActivity;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.R;

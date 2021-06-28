@@ -1,4 +1,4 @@
-package com.example.mpmanage.Activity.BannerActivity;
+package com.example.mpmanage.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -36,7 +36,6 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.mpmanage.Activity.MainActivity;
 import com.example.mpmanage.Adapter.BannerSongAdapter;
 import com.example.mpmanage.Fragment.MainFragment.BannerFragment;
 import com.example.mpmanage.Fragment.MainFragment.SongFragment;

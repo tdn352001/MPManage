@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mpmanage.Activity.SongActivity.AddSongActivity;
+import com.example.mpmanage.Activity.AddSongActivity;
 import com.example.mpmanage.Model.CaSi;
 import com.example.mpmanage.R;
 import com.makeramen.roundedimageview.RoundedImageView;

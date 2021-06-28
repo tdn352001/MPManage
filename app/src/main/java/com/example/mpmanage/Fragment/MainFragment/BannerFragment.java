@@ -1,6 +1,5 @@
 package com.example.mpmanage.Fragment.MainFragment;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,21 +13,17 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mpmanage.Activity.BannerActivity.UpdateBannerActivity;
+import com.example.mpmanage.Activity.UpdateBannerActivity;
 import com.example.mpmanage.Activity.MainActivity;
-import com.example.mpmanage.Activity.SongActivity.AddSongActivity;
 import com.example.mpmanage.Adapter.BannerAdapter;
 import com.example.mpmanage.Model.QuangCao;
 import com.example.mpmanage.R;
 
 import java.util.ArrayList;
-
-import static android.view.View.GONE;
 
 public class BannerFragment extends Fragment {
 

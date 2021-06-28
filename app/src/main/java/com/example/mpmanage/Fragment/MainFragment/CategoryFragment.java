@@ -1,24 +1,30 @@
 package com.example.mpmanage.Fragment.MainFragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mpmanage.Activity.MainActivity;
+import com.example.mpmanage.Activity.UpdateCategoryActivity;
 import com.example.mpmanage.Adapter.CategoryAdapter;
 import com.example.mpmanage.Model.ChuDeTheLoai;
 import com.example.mpmanage.R;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 
 public class CategoryFragment extends Fragment {
@@ -35,6 +41,7 @@ public class CategoryFragment extends Fragment {
         AnhXa();
         SetDataChuDe();
         SetDataTheLoai();
+        setHasOptionsMenu(true);
         return view;
     }
 
@@ -105,19 +112,28 @@ public class CategoryFragment extends Fragment {
 
     public static void UpdateCategoty(String loai, ChuDeTheLoai category){
         if(loai.equals("chude")){
-            int index = arrayListChuDe.indexOf(category);
-            if(index == -1)
+            int i = 0;
+            for(i = 0; i < arrayListChuDe.size(); i++)
+                if(arrayListChuDe.get(i).getId().equals(category.getId())){
+                    break;
+                }
+            if(i >= arrayListChuDe.size())
                 return;
-            arrayListChuDe.get(index).setTen(category.getTen());
-            arrayListChuDe.get(index).setHinh(category.getHinh());
-            adapterChuDe.notifyItemChanged(index);
+            Log.e("BBB", "Cap nhat chu de: " + category.getTen());
+            arrayListChuDe.get(i).setTen(category.getTen());
+            arrayListChuDe.get(i).setHinh(category.getHinh());
+            adapterChuDe.notifyItemChanged(i);
         }else{
-            int index = arrayListTheLoai.indexOf(category);
-            if(index == -1)
+            int i = 0;
+            for(i = 0; i < arrayListTheLoai.size(); i++)
+                if(arrayListTheLoai.get(i).getId().equals(category.getId())){
+                    break;
+                }
+            if(i >= arrayListTheLoai.size())
                 return;
-            arrayListTheLoai.get(index).setTen(category.getTen());
-            arrayListTheLoai.get(index).setHinh(category.getHinh());
-            adapterTheLoai.notifyItemChanged(index);
+            arrayListTheLoai.get(i).setTen(category.getTen());
+            arrayListTheLoai.get(i).setHinh(category.getHinh());
+            adapterTheLoai.notifyItemChanged(i);
         }
     }
 
@@ -138,6 +154,30 @@ public class CategoryFragment extends Fragment {
             adapterTheLoai.notifyItemRangeChanged(index, arrayListTheLoai.size());
         }
     }
+
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_category, menu);
+
+        MenuItem addchude = menu.findItem(R.id.add_chu_de);
+        addchude.setOnMenuItemClickListener(item -> {
+            Intent intent = new Intent(getActivity(), UpdateCategoryActivity.class);
+            intent.putExtra("loai", "chude");
+            startActivity(intent);
+            return true;
+        });
+
+        MenuItem addtheloai = menu.findItem(R.id.add_the_loai);
+        addtheloai.setOnMenuItemClickListener(item -> {
+            Intent intent = new Intent(getActivity(), UpdateCategoryActivity.class);
+            intent.putExtra("loai", "theloai");
+            startActivity(intent);
+            return true;
+        });
+
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
 
 
 }

@@ -137,12 +137,12 @@ public interface DataService {
     Call<String> DeleteBaiHatTheLoai(@Field("id") String idchude);
 
     @FormUrlEncoded
-    @POST("deleletheloai.php")
+    @POST("deletetheloai.php")
     Call<String> DeleteTheLoai(@Field("id") String idtheloai);
 
     @FormUrlEncoded
-    @POST("addchude.php")
-    Call<String> AddTheLoai(@Field("ten") String tenchude, @Field("anh") String hinhchude);
+    @POST("addtheloai.php")
+    Call<String> AddTheLoai(@Field("ten") String tenchude, @Field("hinh") String hinhchude);
 
     @FormUrlEncoded
     @POST("updatechude.php")
@@ -157,7 +157,7 @@ public interface DataService {
     Call<String> DeleteBaiHatChuDe(@Field("id") String idchude);
 
     @FormUrlEncoded
-    @POST("delelechude.php")
+    @POST("deletechude.php")
     Call<String> DeleteChuDe(@Field("id") String idtheloai);
 
     @FormUrlEncoded

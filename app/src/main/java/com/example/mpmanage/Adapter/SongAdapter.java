@@ -22,8 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mpmanage.Activity.SongActivity.InfoSongActivity;
-import com.example.mpmanage.Activity.SongActivity.UpdateSongActivity;
+import com.example.mpmanage.Activity.InfoSongActivity;
+import com.example.mpmanage.Activity.UpdateSongActivity;
 import com.example.mpmanage.Fragment.MainFragment.SongFragment;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.R;
