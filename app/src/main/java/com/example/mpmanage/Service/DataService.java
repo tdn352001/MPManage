@@ -164,4 +164,23 @@ public interface DataService {
     @POST("addchude.php")
     Call<String> AddChuDe(@Field("ten") String tenchude, @Field("hinh") String hinhchude);
 
+    @FormUrlEncoded
+    @POST("addplaylist.php")
+    Call<String> AddPlaylist(@Field("ten") String tenchude, @Field("hinh") String hinhchude);
+
+    @FormUrlEncoded
+    @POST("updateplaylist.php")
+    Call<String> UpdatePlaylist(@Field("id") String idchude, @Field("ten") String tenchude, @Field("hinh") String hinhanh);
+
+    @FormUrlEncoded
+    @POST("deleteplaylist.php")
+    Call<String> DeletePlaylist(@Field("id") String idtheloai);
+
+    @FormUrlEncoded
+    @POST("deletebaihatplaylist.php")
+    Call<String> DeleteBaiHatPlaylist(@Field("id") String idchude);
+
+    @FormUrlEncoded
+    @POST("updatebaihatplaylist.php")
+    Call<String> UpdateBaiHatPlaylist(@Field("id") String idchude, @Field("idbaihat") String idbaihat);
 }

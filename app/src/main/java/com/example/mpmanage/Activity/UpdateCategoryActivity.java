@@ -82,7 +82,6 @@ public class UpdateCategoryActivity extends AppCompatActivity {
     boolean LoadImageSuccess;
     private String RealPath;
     private Uri uriHinh;
-    Dialog dialog;
 
 
     @Override
@@ -315,7 +314,7 @@ public class UpdateCategoryActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void OpenDialogAddSong() {
-        dialog = new Dialog(UpdateCategoryActivity.this);
+        Dialog dialog = new Dialog(UpdateCategoryActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_change_baihat_quangcao);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

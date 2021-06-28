@@ -1,9 +1,268 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Activity.UpdatePlaylistActivity">
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_gradient">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="16dp">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/update_playlist_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_ten_playlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/update_playlist_toolbar"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/name_playlist"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_ten_playlist"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_ten_playlist"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="5dp"
+            android:inputType="textLongMessage"
+            app:boxStrokeColor="#05789C"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_ten_playlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/content"
+                android:textColor="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/til_ten_playlist"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="25dp"
+            android:background="#A5A1A1" />
+
+        <LinearLayout
+            android:id="@+id/linear_poster"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/hinh_minh_hoa_playlist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/hinh_minh_hoa"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/rd_hinh_playlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rd_link_hinh_playlist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="#036A7E"
+                    android:checked="true"
+                    android:text="@string/link"
+                    tools:targetApi="lollipop" />
+
+                <RadioButton
+                    android:id="@+id/rd_file_hinh_playlist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:buttonTint="#036A7E"
+                    android:text="@string/file"
+                    tools:ignore="UnusedAttribute" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_link_hinh_plaaylist"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="30dp"
+                        android:layout_marginTop="5dp"
+                        android:inputType="textLongMessage"
+                        app:boxStrokeColor="#05789C"
+                        app:errorEnabled="false"
+                        app:hintEnabled="false"
+                        app:prefixTextColor="#05789C"
+                        app:suffixTextColor="#05789C">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_link_hinh_playlist"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/link_hinh"
+                            android:textColor="@color/black" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_get_hinh_playlist"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="65dp"
+                        android:layout_marginHorizontal="30dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/select_file"
+                        android:textColor="#373737"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/img_hinh_playlist"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_height="40mm"
+                    android:layout_marginTop="30dp"
+                    android:contentDescription="@string/img_baihat"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_image"
+                    app:riv_corner_radius="8dp"
+                    tools:ignore="InOrMmUsage" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/linear_poster"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="25dp"
+            android:background="#A5A1A1" />
+
+
+        <LinearLayout
+            android:id="@+id/linear_casi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_casi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/song"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_song_playlist"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center|start"
+                android:text="@string/add_song"
+                android:textAllCaps="false"
+                android:textColor="#018893"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_add"
+                app:iconPadding="45dp"
+                app:iconTint="#018893"
+                app:cornerRadius="10dp"
+                app:strokeColor="#9A9A99" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_baihat_playlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginTop="5dp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/linear_casi"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="25dp"
+            android:background="#A5A1A1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view4"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_finish_update_playlist"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#018893"
+                android:paddingVertical="12dp"
+                android:text="@string/finish"
+                android:textAllCaps="false"
+                tools:targetApi="lollipop" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel_update_playlist"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="50dp"
+                android:paddingVertical="12dp"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                app:strokeColor="@color/black" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>
+
