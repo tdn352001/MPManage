@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<List<Album>> call, @NonNull Response<List<Album>> response) {
                 albumArrayList = (ArrayList<Album>) response.body();
+                Log.e("BBB", albumArrayList.get(0).getTenAlbum());
             }
 
             @Override

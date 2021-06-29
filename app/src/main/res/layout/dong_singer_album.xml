@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="5dp"
+    android:background="@drawable/item_corner"
+    android:paddingVertical="10dp"
+    android:paddingLeft="10dp"
+    android:paddingStart="10dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/img_song_singer"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:scaleType="fitXY"
+        app:riv_corner_radius="10dp" />
+
+    <TextView
+        android:id="@+id/tv_song_singer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_toEndOf="@id/img_song_singer"
+        android:layout_toRightOf="@id/img_song_singer"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/ten_ca_si"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+</RelativeLayout>

@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MPManage"
         tools:ignore="AllowBackup">
-        <activity android:name=".Activity.UpdatePlaylistActivity"></activity>
+        <activity android:name=".Activity.UpdateAlbumActivity"></activity>
+        <activity android:name=".Activity.UpdatePlaylistActivity" />
         <activity android:name=".Activity.UpdateCategoryActivity" />
         <activity android:name=".Activity.UpdateBannerActivity" />
         <activity android:name=".Activity.AddBannerActivity" />

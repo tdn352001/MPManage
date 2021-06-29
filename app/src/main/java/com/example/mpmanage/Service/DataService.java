@@ -47,7 +47,7 @@ public interface DataService {
     Call<List<CaSi>> GetAllCaSi();
 
 
-    @GET("getallalbums.php")
+    @GET("getallalbum.php")
     Call<List<Album>> GetAllAlbum();
 
 
@@ -183,4 +183,25 @@ public interface DataService {
     @FormUrlEncoded
     @POST("updatebaihatplaylist.php")
     Call<String> UpdateBaiHatPlaylist(@Field("id") String idchude, @Field("idbaihat") String idbaihat);
+
+    @FormUrlEncoded
+    @POST("addalbum.php")
+    Call<String> AddAlbum(@Field("idcasi") String idcasi, @Field("ten") String ten, @Field("hinh") String hinh);
+
+    @FormUrlEncoded
+    @POST("updatealbum.php")
+    Call<String> UpdateAlbum(@Field("idalbum")String idalbum, @Field("idcasi") String idcasi, @Field("ten") String ten, @Field("hinh") String hinh);
+
+    @FormUrlEncoded
+    @POST("deletebaihatalbum.php")
+    Call<String> DeleteBaiHatAlbum(@Field("idalbum") String idalbum);
+
+    @FormUrlEncoded
+    @POST("updatebaihatalbum.php")
+    Call<String> UpdateBaiHatAlbum(@Field("idalbum") String idalbum,  @Field("idbaihat") String idbaihat);
+
+    @FormUrlEncoded
+    @POST("deleltealbum.php")
+    Call<String> DeleteAlbum(@Field("idalbum") String idalbum);
+
 }

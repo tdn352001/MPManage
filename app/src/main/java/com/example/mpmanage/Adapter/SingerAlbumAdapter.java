@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mpmanage.Activity.AddSongActivity;
+import com.example.mpmanage.Activity.UpdateAlbumActivity;
 import com.example.mpmanage.Model.CaSi;
 import com.example.mpmanage.R;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -21,13 +22,13 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddSongSingerAdapter extends RecyclerView.Adapter<AddSongSingerAdapter.ViewHolder> implements Filterable {
-    AddSongActivity context;
+public class SingerAlbumAdapter extends RecyclerView.Adapter<SingerAlbumAdapter.ViewHolder> implements Filterable {
+    UpdateAlbumActivity context;
     ArrayList<CaSi> arrayList;
     ArrayList<CaSi> mArrayList;
     boolean isDialog;
 
-    public AddSongSingerAdapter(AddSongActivity context, ArrayList<CaSi> arrayList) {
+    public SingerAlbumAdapter(UpdateAlbumActivity context, ArrayList<CaSi> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         mArrayList = arrayList;
@@ -38,7 +39,7 @@ public class AddSongSingerAdapter extends RecyclerView.Adapter<AddSongSingerAdap
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.dong_singer_album, parent, false);
+        View view = inflater.inflate(R.layout.dong_baihat_casi, parent, false);
         return new ViewHolder(view);
     }
 
@@ -46,37 +47,14 @@ public class AddSongSingerAdapter extends RecyclerView.Adapter<AddSongSingerAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CaSi caSi = arrayList.get(position);
         holder.tvTenCaSi.setText(caSi.getTenCaSi());
-        Picasso.with(context).load(caSi.getHinhCaSi().toString()).into(holder.imgCaSi);
-        if (!isDialog) {
-            holder.btnDelete.setOnClickListener(v -> {
-                if (arrayList.size() == 1) {
-                    Toast.makeText(context, "Phải Có Ít Nhất Một Ca Sĩ", Toast.LENGTH_SHORT).show();
-                } else {
-                    for(int i = 0; i < context.caSiArrayList.size(); i++){
-                        if(context.caSiArrayList.get(i).getIdCaSi().equals(caSi.getIdCaSi())){
-                            context.caSiArrayList.remove(i);
-                            context.adapter.notifyItemRemoved(i);
-                            break;
-                        }
-                    }
+        Picasso.with(context).load(caSi.getHinhCaSi().toString()).error(R.drawable.song).into(holder.imgCaSi);
 
-                }
-            });
-        } else {
-            if (!context.caSiArrayList.contains(caSi))
-                holder.btnDelete.setImageResource(R.drawable.ic_add);
-
-            holder.itemView.setOnClickListener(v -> {
-                if (context.caSiArrayList.contains(caSi)) {
-                    Toast.makeText(context, "Đã Thêm Trước Đó", Toast.LENGTH_SHORT).show();
-                } else {
-                    context.caSiArrayList.add(caSi);
-                    context.adapter.notifyItemInserted(context.caSiArrayList.size());
-                    holder.btnDelete.setImageResource(R.drawable.ic_clear);
-                    Toast.makeText(context, "Đã Thêm", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    context.ChangeSinger(caSi);
+            }
+        });
     }
 
     @Override
@@ -86,24 +64,14 @@ public class AddSongSingerAdapter extends RecyclerView.Adapter<AddSongSingerAdap
         return 0;
     }
 
-    public boolean isDialog() {
-        return isDialog;
-    }
-
-    public void setDialog(boolean dialog) {
-        isDialog = dialog;
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         RoundedImageView imgCaSi;
         TextView tvTenCaSi;
-        ImageView btnDelete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgCaSi = itemView.findViewById(R.id.img_song_singer);
             tvTenCaSi = itemView.findViewById(R.id.tv_song_singer);
-            btnDelete = itemView.findViewById(R.id.btn_delete_song_singer);
         }
     }
 

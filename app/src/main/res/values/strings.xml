@@ -114,4 +114,6 @@
     <string name="add_chude">Thêm Chủ Đề</string>
     <string name="add_theloai">Thêm Thể Loại</string>
     <string name="List_playlists">Danh Sách Playlist</string>
+    <string name="list_album">Danh Sách Album</string>
+    <string name="add_album">Thêm Album</string>
 </resources>

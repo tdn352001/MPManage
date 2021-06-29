@@ -9,6 +9,9 @@ public class Album implements Serializable {
     @SerializedName("IdAlbum")
     @Expose
     private String idAlbum;
+    @SerializedName("IdCaSi")
+    @Expose
+    private String idCaSi;
     @SerializedName("TenCaSi")
     @Expose
     private String tenCaSi;
@@ -25,6 +28,14 @@ public class Album implements Serializable {
 
     public void setIdAlbum(String idAlbum) {
         this.idAlbum = idAlbum;
+    }
+
+    public String getIdCaSi() {
+        return idCaSi;
+    }
+
+    public void setIdCaSi(String idCaSi) {
+        this.idCaSi = idCaSi;
     }
 
     public String getTenCaSi() {
@@ -50,4 +61,5 @@ public class Album implements Serializable {
     public void setHinhAlbum(String hinhAlbum) {
         this.hinhAlbum = hinhAlbum;
     }
+
 }
