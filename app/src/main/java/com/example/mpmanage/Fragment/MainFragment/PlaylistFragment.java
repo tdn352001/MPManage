@@ -27,8 +27,6 @@ import com.example.mpmanage.R;
 
 import java.util.ArrayList;
 
-import static android.view.View.GONE;
-
 public class PlaylistFragment extends Fragment {
 
     View view;

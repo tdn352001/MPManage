@@ -20,21 +20,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mpmanage.Activity.AddSongActivity;
 import com.example.mpmanage.Activity.MainActivity;
 import com.example.mpmanage.Activity.UpdateAlbumActivity;
 import com.example.mpmanage.Adapter.AlbumAdapter;
 import com.example.mpmanage.Model.Album;
-import com.example.mpmanage.Model.CaSi;
 import com.example.mpmanage.R;
-import com.example.mpmanage.Service.APIService;
-import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static android.view.View.GONE;
 
@@ -45,7 +37,7 @@ public class AlbumFragment extends Fragment {
     RecyclerView recyclerView;
     SearchView searchView;
     RelativeLayout relativeLayout;
-    static ArrayList<Album> arrayList;
+    public static ArrayList<Album> arrayList;
     static AlbumAdapter adapter;
 
     @Override
@@ -92,7 +84,6 @@ public class AlbumFragment extends Fragment {
 
     public static void UpdateAlbum(Album album) {
         int i = 0;
-        Log.e("BBB", "Update Album");
         for (i = 0; i < arrayList.size(); i++) {
             if (album.getIdAlbum().equals(arrayList.get(i).getIdAlbum())) {
                 Log.e("BBB", album.getTenCaSi());
@@ -100,7 +91,8 @@ public class AlbumFragment extends Fragment {
                 arrayList.get(i).setTenCaSi(album.getTenCaSi());
                 arrayList.get(i).setHinhAlbum(album.getHinhAlbum());
                 arrayList.get(i).setTenAlbum(album.getTenAlbum());
-                adapter.notifyItemChanged(i);
+                if (adapter != null)
+                    adapter.notifyItemChanged(i);
                 return;
             }
         }
@@ -141,7 +133,7 @@ public class AlbumFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText.equals("")) {
-                    title.setText(R.string.list_song);
+                    title.setText(R.string.list_album);
                     relativeLayout.setVisibility(GONE);
                 } else {
                     title.setText("Tìm Kiếm Từ Khóa: " + newText);

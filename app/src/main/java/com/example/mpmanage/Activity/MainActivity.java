@@ -16,6 +16,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.mpmanage.Fragment.MainFragment.AlbumFragment;
+import com.example.mpmanage.Fragment.MainFragment.SongFragment;
 import com.example.mpmanage.Model.Admin;
 import com.example.mpmanage.Model.Album;
 import com.example.mpmanage.Model.BaiHat;
@@ -114,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<List<BaiHat>> call, @NonNull Response<List<BaiHat>> response) {
                 baiHatArrayList = (ArrayList<BaiHat>) response.body();
+                SongFragment.baiHatArrayList = baiHatArrayList;
                 Log.e("BBB", "SUC");
             }
 
@@ -147,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<List<Album>> call, @NonNull Response<List<Album>> response) {
                 albumArrayList = (ArrayList<Album>) response.body();
-                Log.e("BBB", albumArrayList.get(0).getTenAlbum());
+                AlbumFragment.arrayList= albumArrayList;
             }
 
             @Override

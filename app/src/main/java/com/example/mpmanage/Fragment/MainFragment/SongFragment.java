@@ -20,8 +20,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mpmanage.Activity.MainActivity;
 import com.example.mpmanage.Activity.AddSongActivity;
+import com.example.mpmanage.Activity.MainActivity;
 import com.example.mpmanage.Adapter.SongAdapter;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.R;
@@ -121,7 +121,8 @@ public class SongFragment extends Fragment {
         baiHatArrayList.get(Position).setLinkBaiHat(baiHat.getLinkBaiHat());
         baiHatArrayList.get(Position).setIdCaSi(baiHat.getIdCaSi());
         baiHatArrayList.get(Position).setCaSi(baiHat.getCaSi());
-        songAdapter.notifyItemChanged(Position);
+        if (songAdapter != null)
+            songAdapter.notifyItemChanged(Position);
 
     }
 

@@ -204,4 +204,18 @@ public interface DataService {
     @POST("deleltealbum.php")
     Call<String> DeleteAlbum(@Field("idalbum") String idalbum);
 
+    @FormUrlEncoded
+    @POST("updatecasi.php")
+    Call<String> UpdateSinger(@Field("idcasi")String IdcaSI, @Field("tencasi") String TenCaSi, @Field("hinhcasi") String hinhcasi);
+
+    @FormUrlEncoded
+    @POST("addcasi.php")
+    Call<String> AddSinger(@Field("tencasi") String TenCaSi, @Field("hinhcasi") String hinhcasi);
+
+
+    @FormUrlEncoded
+    @POST("deletecasi.php")
+    Call<String> DeleteSinger(@Field("idcasi")String IdcaSi);
+
+
 }

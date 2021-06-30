@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="5dp"
+    android:paddingStart="10dp"
+    android:paddingLeft="10dp"
+    tools:ignore="RtlSymmetry">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/img_playlist"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        app:riv_corner_radius="10dp" />
+
+    <TextView
+        android:id="@+id/tv_playlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_toStartOf="@id/btn_delete_playlist"
+        android:layout_toLeftOf="@id/btn_delete_playlist"
+        android:layout_toEndOf="@id/img_playlist"
+        android:layout_toRightOf="@id/img_playlist"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/name_singer"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:layout_marginEnd="15dp" />
+
+    <ImageView
+        android:id="@+id/btn_delete_playlist"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="10dp"
+        android:contentDescription="@string/delete"
+        android:src="@drawable/ic_options" />
+
+</RelativeLayout>

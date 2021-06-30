@@ -36,7 +36,6 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.mpmanage.Adapter.AddSongCategoryAdapter;
 import com.example.mpmanage.Adapter.SongPlaylistAdapter;
 import com.example.mpmanage.Fragment.MainFragment.PlaylistFragment;
 import com.example.mpmanage.Model.BaiHat;
@@ -53,7 +52,6 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.List;
 import java.util.Objects;
 

@@ -10,13 +10,15 @@
         tools:ignore="ScopedStorage" />
 
     <application
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/mppro"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/mppro"
         android:supportsRtl="true"
         android:theme="@style/Theme.MPManage"
         tools:ignore="AllowBackup">
-        <activity android:name=".Activity.UpdateAlbumActivity"></activity>
+        <activity android:name=".Activity.UpdateCaSiActivity"></activity>
+        <activity android:name=".Activity.UpdateSingerActivity" />
+        <activity android:name=".Activity.UpdateAlbumActivity" />
         <activity android:name=".Activity.UpdatePlaylistActivity" />
         <activity android:name=".Activity.UpdateCategoryActivity" />
         <activity android:name=".Activity.UpdateBannerActivity" />

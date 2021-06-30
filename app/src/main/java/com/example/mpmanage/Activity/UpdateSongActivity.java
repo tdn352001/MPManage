@@ -85,6 +85,7 @@ public class UpdateSongActivity extends AppCompatActivity {
     String RealPathHinh, RealPathNhac;
     Uri uriHinh, uriNhac;
     boolean LoadImageSuccess;
+    boolean isSingerActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,9 +119,8 @@ public class UpdateSongActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Cập Nhật Bài Hát");
         toolbar.setNavigationOnClickListener(v -> {
-            if(!CheckSingerChange())
-                if(!CheckSongChange())
-                {
+            if (!CheckSingerChange())
+                if (!CheckSongChange()) {
                     finish();
                     return;
                 }
@@ -140,6 +140,11 @@ public class UpdateSongActivity extends AppCompatActivity {
 
     private void GetBaiHat() {
         Intent intent = getIntent();
+        if (intent.hasExtra("casifragment"))
+            isSingerActivity = true;
+        else
+            isSingerActivity = false;
+
         if (intent.hasExtra("baihat")) {
             baiHat = intent.getParcelableExtra("baihat");
             if (baiHat == null) {
@@ -245,13 +250,13 @@ public class UpdateSongActivity extends AppCompatActivity {
                 if (CheckSongChange()) {
 
                     if (rdHinh.getCheckedRadioButtonId() == R.id.rd_file_hinh) {
-                        String TenHinh =baiHat.getIdBaiHat() + "BaiHat" + edtTenBaiHat.getText().toString().replaceAll(" ", "") + ".jpg";
+                        String TenHinh = baiHat.getIdBaiHat() + "BaiHat" + edtTenBaiHat.getText().toString().replaceAll(" ", "") + ".jpg";
                         UpLoadFile(RealPathHinh, TenHinh);
                         return;
                     }
 
                     if (rdNhac.getCheckedRadioButtonId() == R.id.rd_file_nhac) {
-                        String TenFile = baiHat.getIdBaiHat() +"file" + edtTenBaiHat.getText().toString().replaceAll(" ", "")  + ".mp3";
+                        String TenFile = baiHat.getIdBaiHat() + "file" + edtTenBaiHat.getText().toString().replaceAll(" ", "") + ".mp3";
                         UpLoadFile(RealPathNhac, TenFile);
                         return;
                     }
@@ -275,9 +280,8 @@ public class UpdateSongActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!CheckSingerChange())
-                    if(!CheckSongChange())
-                    {
+                if (!CheckSingerChange())
+                    if (!CheckSongChange()) {
                         finish();
                         return;
                     }
@@ -346,7 +350,7 @@ public class UpdateSongActivity extends AppCompatActivity {
             }
         }
 
-        if(caSiArrayList.size() == 0){
+        if (caSiArrayList.size() == 0) {
             Toast.makeText(this, "Phải có ít nhất 1 ca sĩ", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -419,7 +423,6 @@ public class UpdateSongActivity extends AppCompatActivity {
     }
 
     private void UpdateSinger() {
-        Log.e("BBB", "Update Singer");
         DataService dataService = APIService.getService();
         Call<String> callback = dataService.DeleteSongSinger(baiHat.getIdBaiHat());
         callback.enqueue(new Callback<String>() {
@@ -466,6 +469,9 @@ public class UpdateSongActivity extends AppCompatActivity {
         baiHat.setIdCaSi(idCasi);
         baiHat.setCaSi(tenCasi);
         SongFragment.UpdateSong(baiHat);
+        if (isSingerActivity) {
+            UpdateSingerActivity.UpdateSong(baiHat);
+        }
         Toast.makeText(this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
         progressDialog.dismiss();
         finish();
@@ -487,7 +493,7 @@ public class UpdateSongActivity extends AppCompatActivity {
                     String LinkHinh = "https://filenhacmp3.000webhostapp.com/file/";
                     edtHinhBaiHat.setText(LinkHinh + FileName);
                     if (rdNhac.getCheckedRadioButtonId() == R.id.rd_file_nhac) {
-                        String TenFile = baiHat.getIdBaiHat()  + "file" + edtTenBaiHat.getText().toString().replaceAll(" ", "") + ".mp3";
+                        String TenFile = baiHat.getIdBaiHat() + "file" + edtTenBaiHat.getText().toString().replaceAll(" ", "") + ".mp3";
                         UpLoadFile(RealPathNhac, TenFile);
                     } else {
                         UpdateSong();
@@ -561,10 +567,10 @@ public class UpdateSongActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(i[0] >=4)
+                        if (i[0] >= 4)
                             handler.removeCallbacks(this);
 
-                        if(adapter.getItemCount() == 0)
+                        if (adapter.getItemCount() == 0)
                             layoutNoinfo.setVisibility(View.VISIBLE);
                         else
                             layoutNoinfo.setVisibility(View.GONE);
@@ -581,7 +587,7 @@ public class UpdateSongActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void OpenDialogFinish(){
+    private void OpenDialogFinish() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
         dialog.setTitle("Thoát");
@@ -630,9 +636,8 @@ public class UpdateSongActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(!CheckSingerChange())
-            if(!CheckSingerChange())
-            {
+        if (!CheckSingerChange())
+            if (!CheckSingerChange()) {
                 finish();
                 return;
             }

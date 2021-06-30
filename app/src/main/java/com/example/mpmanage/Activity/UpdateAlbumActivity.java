@@ -86,6 +86,7 @@ public class UpdateAlbumActivity extends AppCompatActivity {
     private Uri uriHinh;
     SongAlbumAdapter adapter;
     Dialog dialogcs;
+    boolean isSingerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +119,10 @@ public class UpdateAlbumActivity extends AppCompatActivity {
         Intent intent = getIntent();
         album = new Album();
         caSi = new CaSi();
+        if (intent.hasExtra("casifragment"))
+            isSingerFragment = true;
+        else
+            isSingerFragment = false;
         if (intent.hasExtra("album")) {
             album = (Album) intent.getSerializableExtra("album");
             edtTitle.setText(album.getTenAlbum());
@@ -216,7 +221,10 @@ public class UpdateAlbumActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(title + "Album");
 
         toolbar.setNavigationOnClickListener(v -> {
-            finish();
+            if (CheckChange()) {
+                OpenDialogFinish();
+            } else
+                finish();
         });
     }
 
@@ -296,7 +304,7 @@ public class UpdateAlbumActivity extends AppCompatActivity {
                 progressDialog = ProgressDialog.show(UpdateAlbumActivity.this, "Đang Cập Nhật", " Vui Lòng Chờ");
                 if (album.getIdAlbum() == null) {
                     if (rdHinh.getCheckedRadioButtonId() == R.id.rd_file_hinh_album) {
-                        UpLoadFile(album.getTenAlbum() + System.currentTimeMillis() + ".jpg");
+                        UpLoadFile(edtTitle.getText().toString() + System.currentTimeMillis() + ".jpg");
                     } else {
                         AddAlbum();
                     }
@@ -329,10 +337,6 @@ public class UpdateAlbumActivity extends AppCompatActivity {
         album.setTenCaSi(caSi.getTenCaSi());
         album.setTenAlbum(edtTitle.getText().toString());
         album.setHinhAlbum(edtLink.getText().toString());
-
-        Log.e("BBB", album.getTenCaSi());
-        Log.e("BBB", album.getTenAlbum());
-        Log.e("BBB", album.getHinhAlbum());
 
         DataService dataService = APIService.getService();
         Call<String> callback = dataService.AddAlbum(album.getIdCaSi(), album.getTenAlbum(), album.getHinhAlbum());
@@ -388,6 +392,9 @@ public class UpdateAlbumActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (arrayList.equals(temparrayList)) {
+                    if (isSingerFragment) {
+                        UpdateSingerActivity.UpdateAlbum(album);
+                    }
                     AlbumFragment.UpdateAlbum(album);
                     Toast.makeText(UpdateAlbumActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
                     finish();
@@ -487,9 +494,9 @@ public class UpdateAlbumActivity extends AppCompatActivity {
                 String Linkroot = "https://filenhacmp3.000webhostapp.com/file/";
                 String LinkHinh = Linkroot + FileName;
                 edtLink.setText(LinkHinh);
-                if(album.getIdAlbum() == null){
+                if (album.getIdAlbum() == null) {
                     AddAlbum();
-                }else{
+                } else {
                     UpdateAlbum();
                 }
             }

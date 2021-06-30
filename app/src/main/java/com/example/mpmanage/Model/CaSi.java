@@ -8,40 +8,39 @@ import java.io.Serializable;
 
 public class CaSi implements Serializable {
 
-@SerializedName("IdCaSi")
-@Expose
-private String idCaSi;
-@SerializedName("TenCaSi")
-@Expose
-private String tenCaSi;
-@SerializedName("HinhCaSi")
-@Expose
-private String hinhCaSi;
+    @SerializedName("IdCaSi")
+    @Expose
+    private String idCaSi;
+    @SerializedName("TenCaSi")
+    @Expose
+    private String tenCaSi;
+    @SerializedName("HinhCaSi")
+    @Expose
+    private String hinhCaSi;
 
-public String getIdCaSi() {
-return idCaSi;
-}
+    public String getIdCaSi() {
+        return idCaSi;
+    }
 
-public void setIdCaSi(String idCaSi) {
-this.idCaSi = idCaSi;
-}
+    public void setIdCaSi(String idCaSi) {
+        this.idCaSi = idCaSi;
+    }
 
-public String getTenCaSi() {
-return tenCaSi;
-}
+    public String getTenCaSi() {
+        return tenCaSi;
+    }
 
-public void setTenCaSi(String tenCaSi) {
-this.tenCaSi = tenCaSi;
-}
+    public void setTenCaSi(String tenCaSi) {
+        this.tenCaSi = tenCaSi;
+    }
 
-public String getHinhCaSi() {
-return hinhCaSi;
-}
+    public String getHinhCaSi() {
+        return hinhCaSi;
+    }
 
-public void setHinhCaSi(String hinhCaSi) {
-this.hinhCaSi = hinhCaSi;
-}
-
+    public void setHinhCaSi(String hinhCaSi) {
+        this.hinhCaSi = hinhCaSi;
+    }
 
 
 }

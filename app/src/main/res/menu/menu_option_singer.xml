@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/info_singer"
+        android:title="@string/info" />
+    <item
+        android:id="@+id/pulish_singer"
+        android:title="@string/da_phat_hanh" />
+    <item
+        android:id="@+id/delete_singer"
+        android:title="@string/delete" />
+</menu>

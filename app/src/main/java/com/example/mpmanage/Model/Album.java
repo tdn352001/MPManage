@@ -39,6 +39,8 @@ public class Album implements Serializable {
     }
 
     public String getTenCaSi() {
+        if(tenCaSi == null)
+            return "Unknown";
         return tenCaSi;
     }
 

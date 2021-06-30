@@ -54,8 +54,8 @@
     <string name="no_song">Không có bài hát</string>
     <string name="start_time_play">00:00</string>
     <string name="name_singer">Tên Ca Sĩ</string>
-    <string name="name_playlist">Ten Playlist</string>
-    <string name="name_album">Ten Album</string>
+    <string name="name_playlist">Tên Playlist</string>
+    <string name="name_album">Tên Album</string>
     <string name="delete">Xóa</string>
     <string name="stt">stt</string>
     <string name="no_info">Không Có Dữ Liệu :(</string>
@@ -116,4 +116,7 @@
     <string name="List_playlists">Danh Sách Playlist</string>
     <string name="list_album">Danh Sách Album</string>
     <string name="add_album">Thêm Album</string>
+    <string name="list_singer">Danh Sách Ca Sĩ</string>
+    <string name="info">Thông Tin</string>
+    <string name="da_phat_hanh">Đã Phát Hành</string>
 </resources>
