@@ -10,11 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mpmanage.Activity.UpdateAlbumActivity;
 import com.example.mpmanage.Model.CaSi;
 import com.example.mpmanage.R;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,14 +44,9 @@ public class SingerAlbumAdapter extends RecyclerView.Adapter<SingerAlbumAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CaSi caSi = arrayList.get(position);
         holder.tvTenCaSi.setText(caSi.getTenCaSi());
-        Picasso.with(context).load(caSi.getHinhCaSi().toString()).error(R.drawable.song).into(holder.imgCaSi);
+        Glide.with(context).load(caSi.getHinhCaSi()).error(R.drawable.song).into(holder.imgCaSi);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    context.ChangeSinger(caSi);
-            }
-        });
+        holder.itemView.setOnClickListener(v -> context.ChangeSinger(caSi));
     }
 
     @Override
@@ -85,7 +80,7 @@ public class SingerAlbumAdapter extends RecyclerView.Adapter<SingerAlbumAdapter.
                 } else {
                     List<CaSi> caSis = new ArrayList<>();
                     for (CaSi caSi : mArrayList) {
-                        if (caSi.getTenCaSi().toString().toLowerCase().contains(query.toLowerCase())) {
+                        if (caSi.getTenCaSi().toLowerCase().contains(query.toLowerCase())) {
                             caSis.add(caSi);
                         }
                     }

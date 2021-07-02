@@ -49,10 +49,10 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -84,6 +84,7 @@ public class UpdateBannerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_banner);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
         AnhXa();
         SetUpData();
         EventListener();
@@ -166,7 +167,7 @@ public class UpdateBannerActivity extends AppCompatActivity {
 
     private void SetToolBar(String title) {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(title);
 
         toolbar.setNavigationOnClickListener(v -> {
@@ -194,7 +195,7 @@ public class UpdateBannerActivity extends AppCompatActivity {
                     imgPoster.setImageResource(R.drawable.ic_image);
                     return;
                 }
-                Picasso.with(getApplicationContext()).load(uriHinh).into(imgPoster);
+                Glide.with(getApplicationContext()).load(uriHinh).into(imgPoster);
 
             }
         });
@@ -206,12 +207,7 @@ public class UpdateBannerActivity extends AppCompatActivity {
             FileAnhResult.launch(Intent.createChooser(intent, " Chọn Hình Ảnh"));
         });
 
-        btnChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenDialogChangeBannerSong();
-            }
-        });
+        btnChange.setOnClickListener(v -> OpenDialogChangeBannerSong());
 
         edtPoster.addTextChangedListener(new TextWatcher() {
             @Override
@@ -230,49 +226,43 @@ public class UpdateBannerActivity extends AppCompatActivity {
             }
         });
 
-        btnFinish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (CheckVaidate()) {
-                    progressDialog = ProgressDialog.show(UpdateBannerActivity.this, "Đang Cập Nhật", "Vui Lòng Chờ");
-                    if (banner.getIdBaiHat() != null) {
-                        if (CheckChange()) {
-                            // Có Thay đổi
-                            if (radioGroup.getCheckedRadioButtonId() == R.id.rd_link_hinh_poster) {
-                                UpdateBanner();
-                            } else {
-                                String FileName = banner.getIdBaiHat() + "poster" + banner.getTenBaiHat() + ".jpg";
-                                UpLoadFile(FileName);
-                            }
+        btnFinish.setOnClickListener(v -> {
+            if (CheckVaidate()) {
+                progressDialog = ProgressDialog.show(UpdateBannerActivity.this, "Đang Cập Nhật", "Vui Lòng Chờ");
+                if (banner.getIdBaiHat() != null) {
+                    if (CheckChange()) {
+                        // Có Thay đổi
+                        if (radioGroup.getCheckedRadioButtonId() == R.id.rd_link_hinh_poster) {
+                            UpdateBanner();
                         } else {
-                            //Không Thay đổi
-                            progressDialog.dismiss();
-                            finish();
-                        }
-                    } else {
-                        if (radioGroup.getCheckedRadioButtonId() == R.id.rd_link_hinh_poster)
-                            AddBanner();
-                        else {
                             String FileName = banner.getIdBaiHat() + "poster" + banner.getTenBaiHat() + ".jpg";
                             UpLoadFile(FileName);
                         }
+                    } else {
+                        //Không Thay đổi
+                        progressDialog.dismiss();
+                        finish();
+                    }
+                } else {
+                    if (radioGroup.getCheckedRadioButtonId() == R.id.rd_link_hinh_poster)
+                        AddBanner();
+                    else {
+                        String FileName = banner.getIdBaiHat() + "poster" + banner.getTenBaiHat() + ".jpg";
+                        UpLoadFile(FileName);
                     }
                 }
             }
         });
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (banner.getIdQuangCao() == null) {
-                    OpenDialogFinish();
-                    return;
-                }
-                if (CheckChange()) {
-                    OpenDialogFinish();
-                } else
-                    finish();
+        btnCancel.setOnClickListener(v -> {
+            if (banner.getIdQuangCao() == null) {
+                OpenDialogFinish();
+                return;
             }
+            if (CheckChange()) {
+                OpenDialogFinish();
+            } else
+                finish();
         });
     }
 
@@ -510,9 +500,15 @@ public class UpdateBannerActivity extends AppCompatActivity {
                         return;
                     }
                     Toast.makeText(this, "Lấy File Thành Công", Toast.LENGTH_SHORT).show();
-                    Picasso.with(this).load(uriHinh).into(imgPoster);
+                    Glide.with(this).load(uriHinh).into(imgPoster);
                 }
             });
 
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
+
+    }
 }

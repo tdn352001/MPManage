@@ -12,11 +12,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mpmanage.Activity.UpdateSongActivity;
 import com.example.mpmanage.Model.CaSi;
 import com.example.mpmanage.R;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ public class UpdateSongSingerAdapter extends RecyclerView.Adapter<UpdateSongSing
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CaSi caSi = arrayList.get(position);
         holder.tvTenCaSi.setText(caSi.getTenCaSi());
-        Picasso.with(context).load(caSi.getHinhCaSi().toString()).into(holder.imgCaSi);
+        Glide.with(context).load(caSi.getHinhCaSi()).into(holder.imgCaSi);
         if (!isDialog) {
             holder.btnDelete.setOnClickListener(v -> {
                 if (arrayList.size() == 1) {

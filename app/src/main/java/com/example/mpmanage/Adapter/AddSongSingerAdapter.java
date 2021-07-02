@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mpmanage.Activity.AddSongActivity;
 import com.example.mpmanage.Model.CaSi;
 import com.example.mpmanage.R;
@@ -46,7 +47,7 @@ public class AddSongSingerAdapter extends RecyclerView.Adapter<AddSongSingerAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CaSi caSi = arrayList.get(position);
         holder.tvTenCaSi.setText(caSi.getTenCaSi());
-        Picasso.with(context).load(caSi.getHinhCaSi().toString()).into(holder.imgCaSi);
+        Glide.with(context).load(caSi.getHinhCaSi()).into(holder.imgCaSi);
         if (!isDialog) {
             holder.btnDelete.setOnClickListener(v -> {
                 if (arrayList.size() == 1) {
@@ -120,7 +121,7 @@ public class AddSongSingerAdapter extends RecyclerView.Adapter<AddSongSingerAdap
                 } else {
                     List<CaSi> caSis = new ArrayList<>();
                     for (CaSi caSi : mArrayList) {
-                        if (caSi.getTenCaSi().toString().toLowerCase().contains(query.toLowerCase())) {
+                        if (caSi.getTenCaSi().toLowerCase().contains(query.toLowerCase())) {
                             caSis.add(caSi);
                         }
                     }

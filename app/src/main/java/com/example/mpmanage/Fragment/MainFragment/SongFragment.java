@@ -98,11 +98,13 @@ public class SongFragment extends Fragment {
 
     private void EventClick() {
         btnViewMore.setOnClickListener(v -> {
-            songAdapter.ViewMore(true);
-            songAdapter.notifyDataSetChanged();
-            btnViewLess.setVisibility(View.VISIBLE);
-            if (songAdapter.getItemCount() == baiHatArrayList.size())
-                btnViewMore.setVisibility(GONE);
+            if (songAdapter != null) {
+                songAdapter.ViewMore(true);
+                songAdapter.notifyDataSetChanged();
+                btnViewLess.setVisibility(View.VISIBLE);
+                if (songAdapter.getItemCount() == baiHatArrayList.size())
+                    btnViewMore.setVisibility(GONE);
+            }
         });
 
         btnViewLess.setOnClickListener(v -> {
@@ -119,14 +121,15 @@ public class SongFragment extends Fragment {
         if (Position == -1) {
             return;
         }
-        Log.e("BBB", baiHatArrayList.get(Position).getTenBaiHat());
         baiHatArrayList.get(Position).setTenBaiHat(baiHat.getTenBaiHat());
         baiHatArrayList.get(Position).setHinhBaiHat(baiHat.getHinhBaiHat());
         baiHatArrayList.get(Position).setLinkBaiHat(baiHat.getLinkBaiHat());
         baiHatArrayList.get(Position).setIdCaSi(baiHat.getIdCaSi());
         baiHatArrayList.get(Position).setCaSi(baiHat.getCaSi());
-        if (songAdapter != null)
+        if (songAdapter != null) {
+            songAdapter.setItemchange(Position);
             songAdapter.notifyItemChanged(Position);
+        }
 
     }
 

@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mpmanage.Adapter.AlbumSingerAdaper;
 import com.example.mpmanage.Adapter.SongSingerAdapter;
 import com.example.mpmanage.Model.Album;
@@ -21,10 +22,10 @@ import com.example.mpmanage.Model.CaSi;
 import com.example.mpmanage.R;
 import com.example.mpmanage.Service.APIService;
 import com.example.mpmanage.Service.DataService;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -149,13 +150,13 @@ public class UpdateSingerActivity extends AppCompatActivity {
     }
 
     private void setInfoCaSi() {
-        Picasso.with(this).load(caSi.getHinhCaSi()).into(imageView);
+        Glide.with(this).load(caSi.getHinhCaSi()).into(imageView);
         toolbar.setTitle(caSi.getTenCaSi());
     }
 
     private void setupToolBar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 

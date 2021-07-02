@@ -164,15 +164,17 @@ public class PlaylistFragment extends Fragment {
 
         if (i >= arrayList.size())
             return;
-       arrayList.get(i).setTen(playlist.getTen());
-       arrayList.get(i).setHinhAnh(playlist.getHinhAnh());
-       adapter.notifyItemChanged(i);
+        arrayList.get(i).setTen(playlist.getTen());
+        arrayList.get(i).setHinhAnh(playlist.getHinhAnh());
+        if (adapter != null) {
+            adapter.setItemchange(i);
+            adapter.notifyItemChanged(i);
+        }
     }
 
-    public static void DeletePlaylist(Playlist playlist){
+    public static void DeletePlaylist(Playlist playlist) {
         int index = arrayList.indexOf(playlist);
-        if(index != -1)
-        {
+        if (index != -1) {
             arrayList.remove(index);
             adapter.notifyItemRemoved(index);
             adapter.notifyItemRangeChanged(index, arrayList.size());

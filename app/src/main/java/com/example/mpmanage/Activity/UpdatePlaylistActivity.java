@@ -48,7 +48,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -84,6 +83,7 @@ public class UpdatePlaylistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_playlist);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
         AnhXa();
         GetDataPlaylist();
         EventListener();
@@ -218,7 +218,7 @@ public class UpdatePlaylistActivity extends AppCompatActivity {
                     imgPlaylist.setImageResource(R.drawable.ic_image);
                     return;
                 }
-                Picasso.with(getApplicationContext()).load(uriHinh).into(imgPlaylist);
+                Glide.with(getApplicationContext()).load(uriHinh).into(imgPlaylist);
             }
         });
 
@@ -559,9 +559,13 @@ public class UpdatePlaylistActivity extends AppCompatActivity {
                         return;
                     }
                     Toast.makeText(this, "Lấy File Thành Công", Toast.LENGTH_SHORT).show();
-                    Picasso.with(this).load(uriHinh).into(imgPlaylist);
+                    Glide.with(this).load(uriHinh).into(imgPlaylist);
                 }
             });
 
-
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
+    }
 }

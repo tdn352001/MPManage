@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -21,9 +20,9 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mpmanage.Activity.UpdateCaSiActivity;
 import com.example.mpmanage.Activity.UpdateSingerActivity;
-import com.example.mpmanage.Fragment.MainFragment.PlaylistFragment;
 import com.example.mpmanage.Fragment.MainFragment.SingerFragment;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.Model.CaSi;
@@ -44,11 +43,13 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
     Context context;
     ArrayList<CaSi> arrayList;
     ArrayList<CaSi> mArrayList;
+    int itemchange;
 
     public SingerAdapter(Context context, ArrayList<CaSi> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         mArrayList = arrayList;
+        itemchange = -1;
     }
 
     @NonNull
@@ -63,7 +64,15 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CaSi caSi = arrayList.get(position);
-        Glide.with(context).load(caSi.getHinhCaSi().toString()).into(holder.imageView);
+        if (itemchange == position) {
+            Glide.with(context).load(caSi.getHinhCaSi())
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true).into(holder.imageView);
+            itemchange = -1;
+        } else {
+            Glide.with(context).load(caSi.getHinhCaSi()).into(holder.imageView);
+        }
+
         holder.tvTitle.setText(caSi.getTenCaSi());
         holder.btnOptions.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(context, holder.btnOptions);
@@ -71,12 +80,7 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
             popupMenu.show();
         });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewSongAlbumSinger(position);
-            }
-        });
+        holder.itemView.setOnClickListener(v -> ViewSongAlbumSinger(position));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -85,25 +89,26 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
         popupMenu.setGravity(Gravity.RIGHT);
         popupMenu.setForceShowIcon(true);
 
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @SuppressLint("NonConstantResourceId")
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.info_singer:
-                        UpdateInfoSinger(position);
-                        break;
-                    case R.id.pulish_singer:
-                        ViewSongAlbumSinger(position);
-                        break;
-                    case R.id.delete_singer:
-                        DeleteSinger(position);
-                        break;
-                }
-
-                return true;
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.info_singer:
+                    UpdateInfoSinger(position);
+                    break;
+                case R.id.pulish_singer:
+                    ViewSongAlbumSinger(position);
+                    break;
+                case R.id.delete_singer:
+                    DeleteSinger(position);
+                    break;
             }
+
+            return true;
         });
+    }
+
+
+    public void setItemchange(int itemchange) {
+        this.itemchange = itemchange;
     }
 
     private void UpdateInfoSinger(int position) {
@@ -118,7 +123,7 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
         context.startActivity(intent);
     }
 
-    private void DeleteSinger( int position) {
+    private void DeleteSinger(int position) {
         DataService dataService = APIService.getService();
         Call<List<BaiHat>> callback = dataService.GetBaiHatCaSi(arrayList.get(position).getIdCaSi());
         callback.enqueue(new Callback<List<BaiHat>>() {
@@ -128,7 +133,7 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
                 if (baiHatArrayList != null) {
                     Toast.makeText(context, "Không Thể Xóa Ca Sĩ", Toast.LENGTH_SHORT).show();
                     Toast.makeText(context, "Bạn Phải Xóa Hết Bài Hát Và Album Của Ca Sĩ Trước", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     OpenDialogAskDelete(arrayList.get(position));
                     SingerFragment.DeleteCaSi(arrayList.get(position));
                 }
@@ -142,7 +147,8 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
         });
     }
 
-    private void OpenDialogAskDelete(CaSi caSi){
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void OpenDialogAskDelete(CaSi caSi) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
         dialog.setBackground(context.getResources().getDrawable(R.drawable.custom_diaglog_background));
         dialog.setTitle("Thoát");
@@ -168,7 +174,6 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
         dialog.setPositiveButton("Hủy", (dialog12, which) -> dialog12.dismiss());
         dialog.show();
     }
-
 
 
     @Override

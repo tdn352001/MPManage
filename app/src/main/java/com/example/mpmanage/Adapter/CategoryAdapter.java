@@ -1,5 +1,6 @@
 package com.example.mpmanage.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mpmanage.Activity.UpdateCategoryActivity;
 import com.example.mpmanage.Fragment.MainFragment.CategoryFragment;
 import com.example.mpmanage.Model.ChuDeTheLoai;
@@ -29,14 +31,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder>{
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
     Context context;
     ArrayList<ChuDeTheLoai> arrayList;
     String category;
+    int itemchange;
+
     public CategoryAdapter(Context context, ArrayList<ChuDeTheLoai> arrayList, String category) {
         this.context = context;
         this.arrayList = arrayList;
         this.category = category;
+        itemchange = -1;
     }
 
     @NonNull
@@ -47,55 +52,64 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         return new ViewHolder(view);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-       ChuDeTheLoai cdtl = arrayList.get(position);
-       Glide.with(context).load(cdtl.getHinh().toString()).into(holder.imageView);
-       holder.tvTitle.setText(cdtl.getTen());
+        ChuDeTheLoai cdtl = arrayList.get(position);
+        if (itemchange != position)
+            Glide.with(context).load(cdtl.getHinh()).into(holder.imageView);
+        else {
+            Glide.with(context).load(cdtl.getHinh())
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true).into(holder.imageView);
+            itemchange = -1;
+        }
+        holder.tvTitle.setText(cdtl.getTen());
 
-       holder.itemView.setOnClickListener(v -> {
-           Intent intent = new Intent(context, UpdateCategoryActivity.class);
-           intent.putExtra("category", cdtl);
-           intent.putExtra("loai", category);
-           context.startActivity(intent);
-       });
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, UpdateCategoryActivity.class);
+            intent.putExtra("category", cdtl);
+            intent.putExtra("loai", category);
+            context.startActivity(intent);
+        });
 
-       holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               Log.e("BBB", cdtl.getId() + cdtl.getTen());
-               MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
-               dialog.setBackground(context.getResources().getDrawable(R.drawable.custom_diaglog_background));
-               dialog.setTitle("Thoát");
-               dialog.setIcon(R.drawable.ic_delete);
-               dialog.setMessage("Bạn Có Chắc muốn xóa Mục này?");
-               dialog.setNegativeButton("Đồng Ý", (dialog1, which) -> {
-                    DataService dataService = APIService.getService();
-                    Call<String> callback;
-                    if(category.equals("chude")){
-                        callback = dataService.DeleteChuDe(cdtl.getId());
-                    }else
-                        callback = dataService.DeleteTheLoai(cdtl.getId());
+        holder.btnDelete.setOnClickListener(v -> {
+            Log.e("BBB", cdtl.getId() + cdtl.getTen());
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
+            dialog.setBackground(context.getResources().getDrawable(R.drawable.custom_diaglog_background));
+            dialog.setTitle("Thoát");
+            dialog.setIcon(R.drawable.ic_delete);
+            dialog.setMessage("Bạn Có Chắc muốn xóa Mục này?");
+            dialog.setNegativeButton("Đồng Ý", (dialog1, which) -> {
+                DataService dataService = APIService.getService();
+                Call<String> callback;
+                if (category.equals("chude")) {
+                    callback = dataService.DeleteChuDe(cdtl.getId());
+                } else
+                    callback = dataService.DeleteTheLoai(cdtl.getId());
 
-                    callback.enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            Toast.makeText(context, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
-                            CategoryFragment.DeleteCategory(category, cdtl);
-                        }
+                callback.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Toast.makeText(context, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
+                        CategoryFragment.DeleteCategory(category, cdtl);
+                    }
 
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
 
-                        }
-                    });
+                    }
+                });
 
-               });
+            });
 
-               dialog.setPositiveButton("Hủy", (dialog12, which) -> dialog12.dismiss());
-               dialog.show();
-           }
-       });
+            dialog.setPositiveButton("Hủy", (dialog12, which) -> dialog12.dismiss());
+            dialog.show();
+        });
+    }
+
+    public void setItemchange(int itemchange) {
+        this.itemchange = itemchange;
     }
 
     @Override
@@ -106,11 +120,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
 
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         RoundedImageView imageView;
         TextView tvTitle;
         ImageView btnDelete;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.img_category);
@@ -119,36 +133,4 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
     }
 
-//    @Override
-//    public Filter getFilter() {
-//        return new Filter() {
-//            @Override
-//            protected FilterResults performFiltering(CharSequence constraint) {
-//                String query = (String) constraint;
-//                if (query.equals("")) {
-//                    {
-//                        arrayList = mArrayList;
-//                    }
-//                } else {
-//                    List<ChuDeTheLoai> caSis = new ArrayList<>();
-//                    for (ChuDeTheLoai caSi : mArrayList) {
-//                        if (caSi.getTenCaSi().toString().toLowerCase().contains(query.toLowerCase())) {
-//                            caSis.add(caSi);
-//                        }
-//                    }
-//                    arrayList = (ArrayList<ChuDeTheLoai>) caSis;
-//                }
-//
-//                FilterResults filterResults = new FilterResults();
-//                filterResults.values = arrayList;
-//                return filterResults;
-//            }
-//
-//            @Override
-//            protected void publishResults(CharSequence constraint, FilterResults results) {
-//                arrayList = (ArrayList<ChuDeTheLoai>) results.values;
-//                notifyDataSetChanged();
-//            }
-//        };
-//    }
 }

@@ -52,7 +52,6 @@ import com.example.mpmanage.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -88,6 +87,7 @@ public class AddSongActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_song);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
         AnhXa();
         SetUpInfo();
         SetToolbar();
@@ -146,7 +146,7 @@ public class AddSongActivity extends AppCompatActivity {
                     imgBaiHat.setImageResource(R.drawable.ic_image);
                     return;
                 }
-                Picasso.with(this).load(uriHinh).error(R.drawable.ic_image).into(imgBaiHat);
+                Glide.with(this).load(uriHinh).error(R.drawable.ic_image).into(imgBaiHat);
             }
         });
 
@@ -501,7 +501,7 @@ public class AddSongActivity extends AppCompatActivity {
                         return;
                     }
                     Toast.makeText(this, "Lấy File Thành Công", Toast.LENGTH_SHORT).show();
-                    Picasso.with(this).load(uriHinh).into(imgBaiHat);
+                    Glide.with(this).load(uriHinh).into(imgBaiHat);
                 }
             });
 
@@ -524,5 +524,11 @@ public class AddSongActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         OpenDialogFinish();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
     }
 }

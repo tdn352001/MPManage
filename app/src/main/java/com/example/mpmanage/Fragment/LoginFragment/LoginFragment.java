@@ -60,30 +60,22 @@ public class LoginFragment extends Fragment {
     private void EventClick() {
 
         //Đăng Nhập
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnLogin.setClickable(false);
-                String email = edtEmail.getText().toString();
-                String password = edtPassword.getText().toString();
-                if (email.equals(""))
-                    edtEmail.setError("Email trống");
+        btnLogin.setOnClickListener(v -> {
+            btnLogin.setClickable(false);
+            String email = edtEmail.getText().toString().trim();
+            String password = edtPassword.getText().toString().trim();
+            if (email.equals(""))
+                edtEmail.setError("Email trống");
+            else {
+                if (password.equals(""))
+                    edtPassword.setError("Mật Khẩu Trống");
                 else {
-                    if (password.equals(""))
-                        edtPassword.setError("Mật Khẩu Trống");
-                    else {
-                        Login(email, password);
-                    }
+                    Login(email, password);
                 }
             }
         });
 
-        txtForget.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgotPasswordFragment);
-            }
-        });
+        txtForget.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgotPasswordFragment));
 
     }
 

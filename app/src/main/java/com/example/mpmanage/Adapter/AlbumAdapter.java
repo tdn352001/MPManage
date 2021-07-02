@@ -1,5 +1,6 @@
 package com.example.mpmanage.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -16,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mpmanage.Activity.UpdateAlbumActivity;
 import com.example.mpmanage.Fragment.MainFragment.AlbumFragment;
 import com.example.mpmanage.Model.Album;
@@ -23,7 +26,6 @@ import com.example.mpmanage.R;
 import com.example.mpmanage.Service.APIService;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +39,13 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     Context context;
     ArrayList<Album> arrayList;
     ArrayList<Album> mArrayList;
+    int itemchange;
 
     public AlbumAdapter(Context context, ArrayList<Album> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         mArrayList = arrayList;
+        itemchange = -1;
     }
 
     @Override
@@ -51,11 +55,19 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         return new ViewHolder(view);
     }
 
+
+    @SuppressLint("UseCompatLoadingForDrawables")
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Album album = arrayList.get(position);
-        Picasso.with(context).load(album.getHinhAlbum()).error(R.drawable.song).into(holder.Avatar);
+        if (itemchange == position)
+            Glide.with(context).load(album.getHinhAlbum()).error(R.drawable.song).into(holder.Avatar);
+        else {
+            Glide.with(context).load(album.getHinhAlbum()).diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true).error(R.drawable.song).into(holder.Avatar);
+            itemchange = -1;
+        }
         holder.txtBaiHat.setText(album.getTenAlbum());
         holder.txtCaSi.setText(album.getTenCaSi());
 
@@ -94,6 +106,10 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     }
 
 
+    public void setItemchange(int itemchange) {
+        this.itemchange = itemchange;
+    }
+
     @Override
     public int getItemCount() {
         if (arrayList != null) {
@@ -131,7 +147,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
                 } else {
                     List<Album> albums = new ArrayList<>();
                     for (Album baiHat : mArrayList) {
-                        if (baiHat.getTenAlbum().toString().toLowerCase().contains(query.toLowerCase())) {
+                        if (baiHat.getTenAlbum().toLowerCase().contains(query.toLowerCase())) {
                             albums.add(baiHat);
                         }
                     }

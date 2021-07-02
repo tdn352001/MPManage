@@ -1,5 +1,6 @@
 package com.example.mpmanage.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mpmanage.Activity.UpdatePlaylistActivity;
 import com.example.mpmanage.Fragment.MainFragment.PlaylistFragment;
 import com.example.mpmanage.Model.Playlist;
@@ -34,11 +36,13 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     Context context;
     ArrayList<Playlist> arrayList;
     ArrayList<Playlist> mArrayList;
+    int itemchange;
 
     public PlaylistAdapter(Context context, ArrayList<Playlist> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         mArrayList = arrayList;
+        itemchange = -1;
     }
 
     @NonNull
@@ -49,10 +53,18 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         return new ViewHolder(view);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Playlist playlist = arrayList.get(position);
-        Glide.with(context).load(playlist.getHinhAnh().toString()).into(holder.imageView);
+        if(itemchange == position){
+            Glide.with(context).load(playlist.getHinhAnh())
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(holder.imageView);
+            itemchange = -1;
+        }
+        Glide.with(context).load(playlist.getHinhAnh()).into(holder.imageView);
         holder.tvTitle.setText(playlist.getTen());
 
         holder.itemView.setOnClickListener(v -> {
@@ -61,35 +73,36 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
             context.startActivity(intent);
         });
 
-        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
-                dialog.setBackground(context.getResources().getDrawable(R.drawable.custom_diaglog_background));
-                dialog.setTitle("Thoát");
-                dialog.setIcon(R.drawable.ic_delete);
-                dialog.setMessage("Bạn Có Chắc muốn xóa Mục này?");
-                dialog.setNegativeButton("Đồng Ý", (dialog1, which) -> {
-                    Call<String> call = APIService.getService().DeletePlaylist(playlist.getIdPlaylist());
-                    call.enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            PlaylistFragment.DeletePlaylist(playlist);
-                            Toast.makeText(context, "Cập Nhật THành Công", Toast.LENGTH_SHORT).show();
-                        }
+        holder.btnDelete.setOnClickListener(v -> {
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
+            dialog.setBackground(context.getResources().getDrawable(R.drawable.custom_diaglog_background));
+            dialog.setTitle("Thoát");
+            dialog.setIcon(R.drawable.ic_delete);
+            dialog.setMessage("Bạn Có Chắc muốn xóa Mục này?");
+            dialog.setNegativeButton("Đồng Ý", (dialog1, which) -> {
+                Call<String> call = APIService.getService().DeletePlaylist(playlist.getIdPlaylist());
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        PlaylistFragment.DeletePlaylist(playlist);
+                        Toast.makeText(context, "Cập Nhật THành Công", Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
 
-                        }
-                    });
-
+                    }
                 });
 
-                dialog.setPositiveButton("Hủy", (dialog12, which) -> dialog12.dismiss());
-                dialog.show();
-            }
+            });
+
+            dialog.setPositiveButton("Hủy", (dialog12, which) -> dialog12.dismiss());
+            dialog.show();
         });
+    }
+
+    public void setItemchange(int itemchange) {
+        this.itemchange = itemchange;
     }
 
     @Override

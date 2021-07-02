@@ -3,12 +3,6 @@ package com.example.mpmanage.Fragment.MainFragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mpmanage.Activity.MainActivity;
 import com.example.mpmanage.Activity.UpdateCategoryActivity;
@@ -36,6 +35,7 @@ public class CategoryFragment extends Fragment {
     @SuppressLint("StaticFieldLeak")
     static CategoryAdapter adapterChuDe, adapterTheLoai;
     static ArrayList<ChuDeTheLoai> arrayListChuDe, arrayListTheLoai;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class CategoryFragment extends Fragment {
     }
 
     private void SetDataChuDe() {
-        if(arrayListChuDe != null){
+        if (arrayListChuDe != null) {
             SetRvChuDe();
             return;
         }
@@ -62,7 +62,7 @@ public class CategoryFragment extends Fragment {
             @Override
             public void run() {
                 handler.postDelayed(this, 120);
-                if(MainActivity.chuDeArrayList != null){
+                if (MainActivity.chuDeArrayList != null) {
                     arrayListChuDe = MainActivity.chuDeArrayList;
                     SetRvChuDe();
                     handler.removeCallbacks(this);
@@ -80,7 +80,7 @@ public class CategoryFragment extends Fragment {
     }
 
     private void SetDataTheLoai() {
-        if(arrayListTheLoai != null){
+        if (arrayListTheLoai != null) {
             SetRvTheLoai();
             return;
         }
@@ -89,7 +89,7 @@ public class CategoryFragment extends Fragment {
             @Override
             public void run() {
                 handler.postDelayed(this, 120);
-                if(MainActivity.theLoaiArrayList != null){
+                if (MainActivity.theLoaiArrayList != null) {
                     arrayListTheLoai = MainActivity.theLoaiArrayList;
                     SetRvTheLoai();
                     handler.removeCallbacks(this);
@@ -106,54 +106,60 @@ public class CategoryFragment extends Fragment {
         rvTheLoai.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
     }
 
-    public static void AddCategory(String loai, ChuDeTheLoai category){
-        if(loai.equals("chude")){
+    public static void AddCategory(String loai, ChuDeTheLoai category) {
+        if (loai.equals("chude")) {
             arrayListChuDe.add(category);
             adapterChuDe.notifyDataSetChanged();
-        }else{
+        } else {
             arrayListTheLoai.add(category);
             adapterTheLoai.notifyDataSetChanged();
         }
     }
 
-    public static void UpdateCategoty(String loai, ChuDeTheLoai category){
-        if(loai.equals("chude")){
+    public static void UpdateCategoty(String loai, ChuDeTheLoai category) {
+        if (loai.equals("chude")) {
             int i = 0;
-            for(i = 0; i < arrayListChuDe.size(); i++)
-                if(arrayListChuDe.get(i).getId().equals(category.getId())){
+            for (i = 0; i < arrayListChuDe.size(); i++)
+                if (arrayListChuDe.get(i).getId().equals(category.getId())) {
                     break;
                 }
-            if(i >= arrayListChuDe.size())
+            if (i >= arrayListChuDe.size())
                 return;
             Log.e("BBB", "Cap nhat chu de: " + category.getTen());
             arrayListChuDe.get(i).setTen(category.getTen());
             arrayListChuDe.get(i).setHinh(category.getHinh());
-            adapterChuDe.notifyItemChanged(i);
-        }else{
+            if (adapterChuDe != null) {
+                adapterChuDe.setItemchange(i);
+                adapterChuDe.notifyItemChanged(i);
+            }
+        } else {
             int i = 0;
-            for(i = 0; i < arrayListTheLoai.size(); i++)
-                if(arrayListTheLoai.get(i).getId().equals(category.getId())){
+            for (i = 0; i < arrayListTheLoai.size(); i++)
+                if (arrayListTheLoai.get(i).getId().equals(category.getId())) {
                     break;
                 }
-            if(i >= arrayListTheLoai.size())
+            if (i >= arrayListTheLoai.size())
                 return;
             arrayListTheLoai.get(i).setTen(category.getTen());
             arrayListTheLoai.get(i).setHinh(category.getHinh());
-            adapterTheLoai.notifyItemChanged(i);
+            if (adapterTheLoai != null) {
+                adapterTheLoai.setItemchange(i);
+                adapterTheLoai.notifyItemChanged(i);
+            }
         }
     }
 
-    public static void DeleteCategory(String loai, ChuDeTheLoai category){
-        if(loai.equals("chude")){
+    public static void DeleteCategory(String loai, ChuDeTheLoai category) {
+        if (loai.equals("chude")) {
             int index = arrayListChuDe.indexOf(category);
-            if(index == -1)
+            if (index == -1)
                 return;
             arrayListChuDe.remove(index);
             adapterChuDe.notifyItemRemoved(index);
             adapterChuDe.notifyItemRangeChanged(index, arrayListChuDe.size());
-        }else{
+        } else {
             int index = arrayListTheLoai.indexOf(category);
-            if(index == -1)
+            if (index == -1)
                 return;
             arrayListTheLoai.remove(index);
             adapterTheLoai.notifyItemRemoved(index);
@@ -183,7 +189,6 @@ public class CategoryFragment extends Fragment {
 
         super.onCreateOptionsMenu(menu, inflater);
     }
-
 
 
 }

@@ -12,11 +12,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mpmanage.Activity.UpdatePlaylistActivity;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.R;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ public class SongPlaylistAdapter  extends RecyclerView.Adapter<SongPlaylistAdapt
         BaiHat baiHat = arrayList.get(position);
         holder.tvTenCaSi.setText(baiHat.getTenAllCaSi());
         holder.tvTenBaiHat.setText(baiHat.getTenBaiHat());
-        Picasso.with(context).load(baiHat.getHinhBaiHat().toString()).into(holder.imgBaihat);
+        Glide.with(context).load(baiHat.getHinhBaiHat()).into(holder.imgBaihat);
 
         if(context.CheckAddBefore(baiHat)){
             holder.imageView.setImageResource(R.drawable.ic_clear);

@@ -1,12 +1,5 @@
 package com.example.mpmanage.Activity;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,17 +11,20 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.mpmanage.Fragment.MainFragment.AlbumFragment;
 import com.example.mpmanage.Fragment.MainFragment.SingerFragment;
-import com.example.mpmanage.Model.Album;
 import com.example.mpmanage.Model.CaSi;
 import com.example.mpmanage.Model.RealPathUtil;
 import com.example.mpmanage.R;
@@ -37,8 +33,6 @@ import com.example.mpmanage.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
-import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.Objects;
@@ -66,6 +60,7 @@ public class UpdateCaSiActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_ca_si);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
         AnhXa();
         GetDataCaSi();
         EventListener();
@@ -156,7 +151,7 @@ public class UpdateCaSiActivity extends AppCompatActivity {
                     imgCaSi.setImageResource(R.drawable.ic_image);
                     return;
                 }
-                Picasso.with(getApplicationContext()).load(uriHinh).into(imgCaSi);
+                Glide.with(UpdateCaSiActivity.this).load(uriHinh).into(imgCaSi);
             }
         });
 
@@ -172,14 +167,14 @@ public class UpdateCaSiActivity extends AppCompatActivity {
             if (CheckValidate()) {
                 progressDialog = ProgressDialog.show(UpdateCaSiActivity.this, "Đang Cập Nhật", " Vui Lòng Chờ");
                 if (caSi.getIdCaSi() == null) {
-                    if (rdHinh.getCheckedRadioButtonId() == R.id.rd_file_hinh_album) {
+                    if (rdHinh.getCheckedRadioButtonId() == R.id.rd_file_hinh_casi) {
                         UpLoadFile(edtTitle.getText().toString() + System.currentTimeMillis() + ".jpg");
                     } else {
                         AddSinger();
                     }
                 } else {
                     if (CheckChange()) {
-                        if (rdHinh.getCheckedRadioButtonId() == R.id.rd_file_hinh_album) {
+                        if (rdHinh.getCheckedRadioButtonId() == R.id.rd_file_hinh_casi) {
                             UpLoadFile(caSi.getIdCaSi() + "CaSi" + caSi.getTenCaSi() + ".jpg");
                         } else {
                             UpdateCaSi();
@@ -266,7 +261,7 @@ public class UpdateCaSiActivity extends AppCompatActivity {
                 String Linkroot = "https://filenhacmp3.000webhostapp.com/file/";
                 String LinkHinh = Linkroot + FileName;
                 edtLink.setText(LinkHinh);
-
+                UpdateCaSi();
             }
 
             @Override
@@ -345,11 +340,14 @@ public class UpdateCaSiActivity extends AppCompatActivity {
                         return;
                     }
                     Toast.makeText(this, "Lấy File Thành Công", Toast.LENGTH_SHORT).show();
-                    Picasso.with(this).load(uriHinh).into(imgCaSi);
+                    Glide.with(this).load(uriHinh).into(imgCaSi);
                 }
             });
 
 
-
-
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
+    }
 }

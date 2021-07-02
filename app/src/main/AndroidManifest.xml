@@ -23,7 +23,6 @@
         <activity android:name=".Activity.UpdatePlaylistActivity" />
         <activity android:name=".Activity.UpdateCategoryActivity" />
         <activity android:name=".Activity.UpdateBannerActivity" />
-        <activity android:name=".Activity.AddBannerActivity" />
         <activity android:name=".Activity.InfoSongActivity" />
         <activity android:name=".Activity.AddSongActivity" />
         <activity android:name=".Activity.UpdateSongActivity" />

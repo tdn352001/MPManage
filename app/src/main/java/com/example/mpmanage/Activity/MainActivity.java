@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        overridePendingTransition(R.anim.from_bottom, R.anim.to_top);
         //Ánh Xạ
         AnhXa();
         GetAdminAcount();

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mpmanage.Activity.UpdateCategoryActivity;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.R;
@@ -49,7 +50,7 @@ public class AddSongCategoryAdapter extends RecyclerView.Adapter<AddSongCategory
         BaiHat baiHat = arrayList.get(position);
         holder.tvTenCaSi.setText(baiHat.getTenAllCaSi());
         holder.tvTenBaiHat.setText(baiHat.getTenBaiHat());
-        Picasso.with(context).load(baiHat.getHinhBaiHat().toString()).into(holder.imgBaihat);
+        Glide.with(context).load(baiHat.getHinhBaiHat().toString()).into(holder.imgBaihat);
 
         if(context.CheckAddBefore(baiHat)){
             holder.imageView.setImageResource(R.drawable.ic_clear);
@@ -129,7 +130,7 @@ public class AddSongCategoryAdapter extends RecyclerView.Adapter<AddSongCategory
                 } else {
                     List<BaiHat> caSis = new ArrayList<>();
                     for (BaiHat caSi : mArrayList) {
-                        if (caSi.getTenBaiHat().toString().toLowerCase().contains(query.toLowerCase())) {
+                        if (caSi.getTenBaiHat().toLowerCase().contains(query.toLowerCase())) {
                             caSis.add(caSi);
                         }
                     }

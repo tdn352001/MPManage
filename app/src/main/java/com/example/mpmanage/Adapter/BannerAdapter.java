@@ -1,5 +1,6 @@
 package com.example.mpmanage.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -15,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mpmanage.Activity.UpdateBannerActivity;
 import com.example.mpmanage.Fragment.MainFragment.BannerFragment;
 import com.example.mpmanage.Model.QuangCao;
@@ -22,7 +25,6 @@ import com.example.mpmanage.R;
 import com.example.mpmanage.Service.APIService;
 import com.example.mpmanage.Service.DataService;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -34,12 +36,12 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.ViewHolder
 
     Context context;
     ArrayList<QuangCao> arrayList;
-
+    int itemchange;
 
     public BannerAdapter(Context context, ArrayList<QuangCao> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
-
+        itemchange = -1;
     }
 
     @Override
@@ -53,43 +55,47 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         QuangCao banner = arrayList.get(position);
-        Picasso.with(context).load(banner.getHinhAnh()).error(R.drawable.song).into(holder.Avatar);
+        if (itemchange != position)
+            Glide.with(context).load(banner.getHinhAnh()).error(R.drawable.song).into(holder.Avatar);
+        else {
+            Glide.with(context).load(banner.getHinhAnh())
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true).error(R.drawable.song).into(holder.Avatar);
+            itemchange = -1;
+        }
         holder.txtBaiHat.setText(banner.getTenBaiHat());
         holder.txtNoiDung.setText(banner.getNoiDung());
 
-        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
-                dialog.setBackground(context.getResources().getDrawable(R.drawable.custom_diaglog_background));
-                dialog.setTitle("Thoát");
-                dialog.setIcon(R.drawable.ic_delete);
-                dialog.setMessage("Bạn Có Chắc muốn xóa bài hát này?");
-                dialog.setNegativeButton("Đồng Ý", (dialog1, which) -> {
-                    if (arrayList.size() < 4) {
-                        DataService dataService = APIService.getService();
-                        Call<String> callback = dataService.DeleteBanner(banner.getIdQuangCao());
-                        callback.enqueue(new Callback<String>() {
-                            @Override
-                            public void onResponse(Call<String> call, Response<String> response) {
-                                BannerFragment.DeleteBanner(banner);
-                                Toast.makeText(context, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
-                            }
+        holder.btnDelete.setOnClickListener(v -> {
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
+            dialog.setBackground(context.getResources().getDrawable(R.drawable.custom_diaglog_background));
+            dialog.setTitle("Thoát");
+            dialog.setIcon(R.drawable.ic_delete);
+            dialog.setMessage("Bạn Có Chắc muốn xóa bài hát này?");
+            dialog.setNegativeButton("Đồng Ý", (dialog1, which) -> {
+                if (arrayList.size() < 4) {
+                    DataService dataService = APIService.getService();
+                    Call<String> callback = dataService.DeleteBanner(banner.getIdQuangCao());
+                    callback.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            BannerFragment.DeleteBanner(banner);
+                            Toast.makeText(context, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
+                        }
 
-                            @Override
-                            public void onFailure(Call<String> call, Throwable t) {
-                                Toast.makeText(context, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }else{
-                        Toast.makeText(context, "Số Quảng Cáo Tối Thiểu là 3", Toast.LENGTH_SHORT).show();
-                    }
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            Toast.makeText(context, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(context, "Số Quảng Cáo Tối Thiểu là 3", Toast.LENGTH_SHORT).show();
+                }
 
-                });
+            });
 
-                dialog.setPositiveButton("Hủy", (dialog12, which) -> dialog12.dismiss());
-                dialog.show();
-            }
+            dialog.setPositiveButton("Hủy", (dialog12, which) -> dialog12.dismiss());
+            dialog.show();
         });
 
         holder.itemView.setOnClickListener(v -> {
@@ -99,6 +105,10 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.ViewHolder
             context.startActivity(intent);
         });
 
+    }
+
+    public void setItemchange(int itemchange) {
+        this.itemchange = itemchange;
     }
 
     @Override

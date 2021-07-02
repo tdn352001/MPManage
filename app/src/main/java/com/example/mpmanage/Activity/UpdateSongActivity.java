@@ -52,10 +52,10 @@ import com.example.mpmanage.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -91,6 +91,7 @@ public class UpdateSongActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_song);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
         AnhXa();
         SetToolbar();
         GetBaiHat();
@@ -116,7 +117,7 @@ public class UpdateSongActivity extends AppCompatActivity {
 
     private void SetToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Cập Nhật Bài Hát");
         toolbar.setNavigationOnClickListener(v -> {
             if (!CheckSingerChange())
@@ -181,7 +182,7 @@ public class UpdateSongActivity extends AppCompatActivity {
             if (checkedId == R.id.rd_link_hinh) {
                 edtHinhBaiHat.setVisibility(View.VISIBLE);
                 btnGetFileHinh.setVisibility(View.GONE);
-                Picasso.with(this).load(edtHinhBaiHat.getText().toString()).error(R.drawable.ic_image).into(imgBaiHat);
+                Glide.with(this).load(edtHinhBaiHat.getText().toString()).error(R.drawable.ic_image).into(imgBaiHat);
             } else {
                 edtHinhBaiHat.setVisibility(View.GONE);
                 btnGetFileHinh.setVisibility(View.VISIBLE);
@@ -189,7 +190,7 @@ public class UpdateSongActivity extends AppCompatActivity {
                     imgBaiHat.setImageResource(R.drawable.ic_image);
                     return;
                 }
-                Picasso.with(this).load(uriHinh).error(R.drawable.ic_image).into(imgBaiHat);
+                Glide.with(this).load(uriHinh).error(R.drawable.ic_image).into(imgBaiHat);
             }
         });
 
@@ -277,16 +278,13 @@ public class UpdateSongActivity extends AppCompatActivity {
 
         });
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!CheckSingerChange())
-                    if (!CheckSongChange()) {
-                        finish();
-                        return;
-                    }
-                OpenDialogFinish();
-            }
+        btnCancel.setOnClickListener(v -> {
+            if (!CheckSingerChange())
+                if (!CheckSongChange()) {
+                    finish();
+                    return;
+                }
+            OpenDialogFinish();
         });
     }
 
@@ -478,7 +476,6 @@ public class UpdateSongActivity extends AppCompatActivity {
     }
 
     private void UpLoadFile(String RealPath, String FileName) {
-        Log.e("BBB", "upload file: " + RealPath);
         if (RealPath == null)
             return;
         File file = new File(RealPath);
@@ -587,6 +584,7 @@ public class UpdateSongActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void OpenDialogFinish() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
@@ -614,7 +612,7 @@ public class UpdateSongActivity extends AppCompatActivity {
                             return;
                         }
                         Toast.makeText(this, "Lấy File Thành Công", Toast.LENGTH_SHORT).show();
-                        Picasso.with(this).load(uriHinh).into(imgBaiHat);
+                        Glide.with(this).load(uriHinh).into(imgBaiHat);
 
                     } catch (Exception e) {
                         Toast.makeText(this, "Không Thể Lấy File", Toast.LENGTH_SHORT).show();
@@ -645,11 +643,17 @@ public class UpdateSongActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (!CheckSingerChange())
+        if (!CheckSongChange())
             if (!CheckSingerChange()) {
                 finish();
                 return;
             }
         OpenDialogFinish();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
     }
 }

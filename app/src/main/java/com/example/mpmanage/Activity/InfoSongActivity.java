@@ -19,6 +19,8 @@ public class InfoSongActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_song);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
+
         AnhXa();
         SetToolBar();
         SetThongTinBaiHat();
@@ -60,5 +62,11 @@ public class InfoSongActivity extends AppCompatActivity {
             tvNhac.setText("Link Nhạc: " + baiHat.getLinkBaiHat());
             tvLuotThich.setText("Lượt Thích: " + baiHat.getLuotThich());
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
     }
 }

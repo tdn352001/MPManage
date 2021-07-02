@@ -21,7 +21,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mpmanage.Activity.AddSongActivity;
 import com.example.mpmanage.Activity.MainActivity;
 import com.example.mpmanage.Activity.UpdateCaSiActivity;
 import com.example.mpmanage.Adapter.SingerAdapter;
@@ -60,7 +59,7 @@ public class SingerFragment extends Fragment {
     }
 
     private void GetDanhSachCaSi() {
-        if(arrayList != null){
+        if (arrayList != null) {
             SetRV();
             return;
         }
@@ -69,7 +68,7 @@ public class SingerFragment extends Fragment {
             @Override
             public void run() {
                 handler.postDelayed(this, 120);
-                if(MainActivity.caSiArrayList != null){
+                if (MainActivity.caSiArrayList != null) {
                     arrayList = MainActivity.caSiArrayList;
                     SetRV();
                     handler.removeCallbacks(this);
@@ -86,24 +85,28 @@ public class SingerFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
     }
 
-    public static void UpdateCaSi(CaSi caSi){
+    public static void UpdateCaSi(CaSi caSi) {
         int i = 0;
-        for(i =0; i <arrayList.size(); i++)
-            if(arrayList.get(i).getIdCaSi().equals(caSi.getIdCaSi()))
-            {
+        for (i = 0; i < arrayList.size(); i++)
+            if (arrayList.get(i).getIdCaSi().equals(caSi.getIdCaSi())) {
                 arrayList.get(i).setTenCaSi(caSi.getTenCaSi());
                 arrayList.get(i).setHinhCaSi(caSi.getHinhCaSi());
-                adapter.notifyItemChanged(i);
+                if (adapter != null) {
+                    adapter.setItemchange(i);
+                    adapter.notifyItemChanged(i);
+                }
                 break;
             }
     }
-    public static void AddCaSi(CaSi caSi){
+
+    public static void AddCaSi(CaSi caSi) {
         arrayList.add(caSi);
         adapter.notifyDataSetChanged();
     }
-    public static void DeleteCaSi(CaSi caSi){
+
+    public static void DeleteCaSi(CaSi caSi) {
         int i = arrayList.indexOf(caSi);
-        if(i != -1){
+        if (i != -1) {
             arrayList.remove(i);
             adapter.notifyItemRemoved(i);
             adapter.notifyItemRangeChanged(i, arrayList.size());

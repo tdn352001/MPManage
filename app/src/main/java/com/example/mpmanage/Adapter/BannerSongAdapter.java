@@ -10,11 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mpmanage.Activity.UpdateBannerActivity;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.R;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ public class BannerSongAdapter extends RecyclerView.Adapter<BannerSongAdapter.Vi
         BaiHat baiHat = arrayList.get(position);
         holder.tvTenCaSi.setText(baiHat.getTenAllCaSi());
         holder.tvTenBaiHat.setText(baiHat.getTenBaiHat());
-        Picasso.with(context).load(baiHat.getHinhBaiHat().toString()).into(holder.imgBaihat);
+        Glide.with(context).load(baiHat.getHinhBaiHat()).into(holder.imgBaihat);
 
         holder.itemView.setOnClickListener(v -> {
             if(isDialog){
@@ -116,7 +116,7 @@ public class BannerSongAdapter extends RecyclerView.Adapter<BannerSongAdapter.Vi
                 } else {
                     List<BaiHat> caSis = new ArrayList<>();
                     for (BaiHat caSi : mArrayList) {
-                        if (caSi.getTenBaiHat().toString().toLowerCase().contains(query.toLowerCase())) {
+                        if (caSi.getTenBaiHat().toLowerCase().contains(query.toLowerCase())) {
                             caSis.add(caSi);
                         }
                     }

@@ -90,13 +90,14 @@ public class AlbumFragment extends Fragment {
         int i = 0;
         for (i = 0; i < arrayList.size(); i++) {
             if (album.getIdAlbum().equals(arrayList.get(i).getIdAlbum())) {
-                Log.e("BBB", album.getTenCaSi());
                 arrayList.get(i).setIdCaSi(album.getIdCaSi());
                 arrayList.get(i).setTenCaSi(album.getTenCaSi());
                 arrayList.get(i).setHinhAlbum(album.getHinhAlbum());
                 arrayList.get(i).setTenAlbum(album.getTenAlbum());
-                if (adapter != null)
+                if (adapter != null) {
+                    adapter.setItemchange(i);
                     adapter.notifyItemChanged(i);
+                }
                 return;
             }
         }

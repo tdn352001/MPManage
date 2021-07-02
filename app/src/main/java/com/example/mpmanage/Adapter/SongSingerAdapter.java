@@ -12,11 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mpmanage.Activity.UpdateSongActivity;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.R;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -43,7 +43,7 @@ public class SongSingerAdapter extends RecyclerView.Adapter<SongSingerAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BaiHat baiHat = arrayList.get(position);
-        Picasso.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.song).into(holder.Avatar);
+        Glide.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.song).into(holder.Avatar);
         holder.txtBaiHat.setText(baiHat.getTenBaiHat());
         holder.txtCaSi.setText(baiHat.getTenAllCaSi());
         holder.itemView.setOnClickListener(v -> {

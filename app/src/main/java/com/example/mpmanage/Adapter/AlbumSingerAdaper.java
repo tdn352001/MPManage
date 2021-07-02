@@ -13,11 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mpmanage.Activity.UpdateAlbumActivity;
 import com.example.mpmanage.Model.Album;
 import com.example.mpmanage.R;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -42,7 +42,7 @@ public class AlbumSingerAdaper extends RecyclerView.Adapter<AlbumSingerAdaper.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Album album = arrayList.get(position);
-        Picasso.with(context).load(album.getHinhAlbum()).error(R.drawable.song).into(holder.Avatar);
+        Glide.with(context).load(album.getHinhAlbum()).error(R.drawable.song).into(holder.Avatar);
         holder.txtBaiHat.setText(album.getTenAlbum());
         holder.txtCaSi.setText(album.getTenCaSi());
 

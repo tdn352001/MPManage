@@ -73,10 +73,10 @@ public class BannerFragment extends Fragment {
             if (arrayList.get(i).getIdQuangCao().equals(banner.getIdQuangCao())) {
                 break;
             }
-        Log.e("BBB", i + "");
         if (i <= arrayList.size() - 1){
             arrayList.remove(i);
             arrayList.add(i, banner);
+            adapter.setItemchange(i);
             adapter.notifyDataSetChanged();
         }
     }
