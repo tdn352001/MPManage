@@ -48,6 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/content"
+                android:maxLength="100"
                 android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -135,6 +136,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/link_poster"
+                            android:maxLength="400"
                             android:textColor="@color/black" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -154,8 +156,8 @@
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/img_hinh_poster"
                     android:layout_width="match_parent"
-                    android:layout_marginHorizontal="20dp"
                     android:layout_height="40mm"
+                    android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="30dp"
                     android:contentDescription="@string/img_baihat"
                     android:scaleType="fitXY"
@@ -207,10 +209,10 @@
                 android:textColor="#018893"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                app:cornerRadius="10dp"
                 app:icon="@drawable/ic_add"
                 app:iconPadding="45dp"
                 app:iconTint="#018893"
-                app:cornerRadius="10dp"
                 app:strokeColor="#9A9A99" />
 
             <androidx.recyclerview.widget.RecyclerView

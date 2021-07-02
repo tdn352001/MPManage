@@ -47,6 +47,7 @@
                 android:id="@+id/edt_ten_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLength="100"
                 android:hint="@string/content"
                 android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -135,6 +136,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/link_hinh"
+                            android:maxLength="400"
                             android:textColor="@color/black" />
                     </com.google.android.material.textfield.TextInputLayout>
 
