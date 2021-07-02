@@ -17,6 +17,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import com.example.mpmanage.Activity.MainActivity;
 import com.example.mpmanage.Activity.UpdateCategoryActivity;
@@ -71,6 +73,8 @@ public class CategoryFragment extends Fragment {
 
     private void SetRvChuDe() {
         adapterChuDe = new CategoryAdapter(getContext(), arrayListChuDe, "chude");
+        LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_left_to_right);
+        rvChuDe.setLayoutAnimation(animlayout);
         rvChuDe.setAdapter(adapterChuDe);
         rvChuDe.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
     }
@@ -96,6 +100,8 @@ public class CategoryFragment extends Fragment {
 
     private void SetRvTheLoai() {
         adapterTheLoai = new CategoryAdapter(getContext(), arrayListTheLoai, "theloai");
+        LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_left_to_right);
+        rvTheLoai.setLayoutAnimation(animlayout);
         rvTheLoai.setAdapter(adapterTheLoai);
         rvTheLoai.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
     }

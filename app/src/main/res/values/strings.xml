@@ -119,4 +119,6 @@
     <string name="list_singer">Danh Sách Ca Sĩ</string>
     <string name="info">Thông Tin</string>
     <string name="da_phat_hanh">Đã Phát Hành</string>
+    <string name="mpvp">Music Player Vip Pro</string>
+    <string name="admin">Admin</string>
 </resources>

@@ -606,14 +606,19 @@ public class UpdateSongActivity extends AppCompatActivity {
                 if (result.getResultCode() == RESULT_OK) {
                     Intent data = result.getData();
                     assert data != null;
-                    uriHinh = data.getData();
-                    RealPathHinh = RealPathUtil.getRealPath(this, uriHinh);
-                    if (RealPathHinh == null) {
+                    try {
+                        uriHinh = data.getData();
+                        RealPathHinh = RealPathUtil.getRealPath(this, uriHinh);
+                        if (RealPathHinh == null) {
+                            Toast.makeText(this, "Không Thể Lấy File", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Toast.makeText(this, "Lấy File Thành Công", Toast.LENGTH_SHORT).show();
+                        Picasso.with(this).load(uriHinh).into(imgBaiHat);
+
+                    } catch (Exception e) {
                         Toast.makeText(this, "Không Thể Lấy File", Toast.LENGTH_SHORT).show();
-                        return;
                     }
-                    Toast.makeText(this, "Lấy File Thành Công", Toast.LENGTH_SHORT).show();
-                    Picasso.with(this).load(uriHinh).into(imgBaiHat);
                 }
             });
 
@@ -623,13 +628,17 @@ public class UpdateSongActivity extends AppCompatActivity {
                     Intent data = result.getData();
                     assert data != null;
                     uriNhac = data.getData();
-                    RealPathNhac = RealPathUtil.getRealPath(this, uriNhac);
-                    if (RealPathNhac == null) {
-                        Toast.makeText(this, "Không Thể Lấy File", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                    try {
+                        RealPathNhac = RealPathUtil.getRealPath(this, uriNhac);
+                        if (RealPathNhac == null) {
+                            Toast.makeText(this, "Không Thể Lấy File", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
-                    Toast.makeText(this, "Lấy File Thành Công", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Lấy File Thành Công", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(this, "Không Thể Lấy File", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 

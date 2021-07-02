@@ -1,15 +1,20 @@
 package com.example.mpmanage.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -43,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int PERMISSION_READ = 123;
     // Dữ Liệu Từ Database
     Admin admin;
+    private long backtime;
     public static ArrayList<BaiHat> baiHatArrayList;
     public static ArrayList<QuangCao> quangCaoArrayList;
     public static ArrayList<Album> albumArrayList;
@@ -66,12 +72,12 @@ public class MainActivity extends AppCompatActivity {
 
         //Ánh Xạ
         AnhXa();
+        GetAdminAcount();
         SetToolBar();
         SetupDrawer();
-//        checkPermission();
+        checkPermission();
 
         // Lấy Dữ Liệu
-        GetAdminAcount();
         GetListQuangCao();
         GetListBaiHat();
         GetListAlbum();
@@ -93,13 +99,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void SetupDrawer() {
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container_normal);
         navController = navHostFragment.getNavController();
         appBarConfiguration = new AppBarConfiguration.Builder(R.id.bannerFragment, R.id.songFragment,
                 R.id.albumFragment, R.id.singerFragment,
                 R.id.playlistFragment, R.id.categoryFragment).setDrawerLayout(drawerLayout).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        @SuppressLint("ResourceType")
+        View headerLayout = navigationView.getHeaderView(0);
+        TextView textView = headerLayout.findViewById(R.id.textView);
+        textView.setText(admin.getEmail());
     }
 
     private void GetAdminAcount() {
@@ -150,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<List<Album>> call, @NonNull Response<List<Album>> response) {
                 albumArrayList = (ArrayList<Album>) response.body();
-                AlbumFragment.arrayList= albumArrayList;
+                AlbumFragment.arrayList = albumArrayList;
             }
 
             @Override
@@ -242,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        return  -1;
+        return -1;
     }
 
     @Override
@@ -251,4 +262,19 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
+    @Override
+    public void onBackPressed() {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START))
+            drawerLayout.closeDrawer(GravityCompat.START);
+        else{
+            if (backtime + 2000 > System.currentTimeMillis()) {
+                super.onBackPressed();
+                return;
+            } else {
+                Toast.makeText(this, "Nhấn Lần Nữa Để Thoát", Toast.LENGTH_SHORT).show();
+            }
+
+            backtime = System.currentTimeMillis();
+        }
+    }
 }
