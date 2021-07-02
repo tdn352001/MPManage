@@ -222,13 +222,10 @@ public class SongFragment extends Fragment {
 
         MenuItem addItem = menu.findItem(R.id.add_item);
         addItem.setTitle(R.string.add_song);
-        addItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Intent intent = new Intent(getActivity(), AddSongActivity.class);
-                startActivity(intent);
-                return true;
-            }
+        addItem.setOnMenuItemClickListener(item -> {
+            Intent intent = new Intent(getActivity(), AddSongActivity.class);
+            startActivity(intent);
+            return true;
         });
 
         super.onCreateOptionsMenu(menu, inflater);

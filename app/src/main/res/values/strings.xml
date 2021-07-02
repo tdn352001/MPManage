@@ -20,7 +20,7 @@
     <string name="mat_khau">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="new_password">New Password</string>
-    <string name="change_password">Đổi Password</string>
+    <string name="change_password">Đổi Mật Khẩu</string>
     <string name="enter_password">Nhập Mật Khẩu</string>
     <string name="change_email">Đổi Email</string>
     <string name="new_email">New Email</string>

@@ -1,35 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/headerlayout"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="220dp"
     android:background="@drawable/background_gradient"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:paddingHorizontal="16dp"
+    android:paddingBottom="5dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
+    <TextView
+        android:id="@+id/changepassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/change_password"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_gravity="end"
+        android:gravity="start|center"
+        android:drawablePadding="10dp"
+        android:layout_marginTop="6dp"
+        android:textSize="12sp"
+        app:drawableLeftCompat="@drawable/ic_settings"
+        app:drawableTint="@color/black"
+        tools:ignore="RtlHardcoded" />
     <ImageView
         android:id="@+id/imageView"
-        android:layout_marginTop="30dp"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginTop="26dp"
         android:contentDescription="@string/header_nav_main"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/music2" />
+        app:srcCompat="@mipmap/mppro" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="@string/music_player_vjp_pro"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/username"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+
+
 </LinearLayout>

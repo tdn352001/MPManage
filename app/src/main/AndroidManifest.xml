@@ -27,7 +27,8 @@
         <activity android:name=".Activity.AddSongActivity" />
         <activity android:name=".Activity.UpdateSongActivity" />
         <activity android:name=".Activity.LoginActivity" />
-        <activity android:name=".Activity.MainActivity">
+        <activity android:name=".Activity.MainActivity"/>
+        <activity android:name=".Activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

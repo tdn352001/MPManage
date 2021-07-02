@@ -73,7 +73,7 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.ViewHolder
             dialog.setIcon(R.drawable.ic_delete);
             dialog.setMessage("Bạn Có Chắc muốn xóa bài hát này?");
             dialog.setNegativeButton("Đồng Ý", (dialog1, which) -> {
-                if (arrayList.size() < 4) {
+                if (arrayList.size() > 4) {
                     DataService dataService = APIService.getService();
                     Call<String> callback = dataService.DeleteBanner(banner.getIdQuangCao());
                     callback.enqueue(new Callback<String>() {
