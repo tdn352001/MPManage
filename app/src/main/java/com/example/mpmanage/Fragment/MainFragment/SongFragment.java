@@ -70,8 +70,10 @@ public class SongFragment extends Fragment {
     }
 
     private void GetDataBaiHat() {
+        view.setVisibility(View.INVISIBLE);
         if (baiHatArrayList != null) {
             SetRecycleView();
+            view.setVisibility(View.VISIBLE);
             return;
         }
         Handler handler = new Handler();
@@ -80,6 +82,7 @@ public class SongFragment extends Fragment {
             public void run() {
                 handler.postDelayed(this, 200);
                 if (MainActivity.baiHatArrayList != null) {
+                    view.setVisibility(View.VISIBLE);
                     baiHatArrayList = MainActivity.baiHatArrayList;
                     SetRecycleView();
                     handler.removeCallbacks(this);

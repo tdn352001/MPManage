@@ -33,6 +33,7 @@ public class BannerFragment extends Fragment {
 
     RecyclerView recyclerView;
     RelativeLayout layoutNoinfo;
+    private int i = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,17 +51,24 @@ public class BannerFragment extends Fragment {
     }
 
     private void SetDataBanner() {
+        view.setVisibility(View.INVISIBLE);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 handler.postDelayed(this, 120);
                 if (MainActivity.quangCaoArrayList != null) {
+                    view.setVisibility(View.VISIBLE);
                     arrayList = MainActivity.quangCaoArrayList;
                     adapter = new BannerAdapter(getActivity(), arrayList);
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
                     handler.removeCallbacks(this);
+                }
+
+                i++;
+                if(i >= 20){
+                    view.setVisibility(View.VISIBLE);
                 }
             }
         }, 120);

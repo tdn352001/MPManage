@@ -131,21 +131,23 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 ArrayList<BaiHat> baiHatArrayList = (ArrayList<BaiHat>) response.body();
                 if (baiHatArrayList != null) {
-                    Toast.makeText(context, "Không Thể Xóa Ca Sĩ", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(context, "Bạn Phải Xóa Hết Bài Hát Và Album Của Ca Sĩ Trước", Toast.LENGTH_SHORT).show();
-                } else {
-                    OpenDialogAskDelete(arrayList.get(position));
-                    SingerFragment.DeleteCaSi(arrayList.get(position));
-                }
+                    if (baiHatArrayList.size() > 0) {
+                        Toast.makeText(context, "Không Thể Xóa Ca Sĩ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Bạn Phải Xóa Hết Bài Hát Và Album Của Ca Sĩ Trước", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
+                OpenDialogAskDelete(arrayList.get(position));
             }
 
-            @Override
-            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
+        }
 
-            }
-        });
-    }
+        @Override
+        public void onFailure (Call < List < BaiHat >> call, Throwable t){
+
+        }
+    });
+}
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void OpenDialogAskDelete(CaSi caSi) {
@@ -165,7 +167,7 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-
+                    Toast.makeText(context, "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -184,18 +186,19 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        RoundedImageView imageView;
-        TextView tvTitle;
-        ImageView btnOptions;
+public class ViewHolder extends RecyclerView.ViewHolder {
+    RoundedImageView imageView;
+    TextView tvTitle;
+    ImageView btnOptions;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.img_playlist);
-            tvTitle = itemView.findViewById(R.id.tv_playlist);
-            btnOptions = itemView.findViewById(R.id.btn_delete_playlist);
-        }
+    public ViewHolder(@NonNull View itemView) {
+        super(itemView);
+        imageView = itemView.findViewById(R.id.img_playlist);
+        tvTitle = itemView.findViewById(R.id.tv_playlist);
+        btnOptions = itemView.findViewById(R.id.btn_delete_playlist);
     }
+
+}
 
     @Override
     public Filter getFilter() {

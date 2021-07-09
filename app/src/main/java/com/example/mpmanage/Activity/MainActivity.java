@@ -142,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<List<BaiHat>> call, @NonNull Response<List<BaiHat>> response) {
                 baiHatArrayList = (ArrayList<BaiHat>) response.body();
+                if(baiHatArrayList == null)
+                    baiHatArrayList = new ArrayList<>();
                 SongFragment.baiHatArrayList = baiHatArrayList;
             }
 

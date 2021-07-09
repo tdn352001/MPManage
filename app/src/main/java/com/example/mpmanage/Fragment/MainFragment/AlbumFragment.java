@@ -15,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
@@ -53,19 +54,27 @@ public class AlbumFragment extends Fragment {
     }
 
     private void GetDataAlbum() {
+        view.setVisibility(View.INVISIBLE);
         if (arrayList != null) {
+            view.setVisibility(View.VISIBLE);
             SetRv();
             return;
         }
+        final int[] i = {0};
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 handler.postDelayed(this, 120);
                 if (MainActivity.albumArrayList != null) {
+                    view.setVisibility(View.VISIBLE);
                     arrayList = MainActivity.albumArrayList;
                     SetRv();
                     handler.removeCallbacks(this);
+                }
+                i[0] +=10;
+                if(i[0] >= 2000){
+                    view.setVisibility(View.VISIBLE);
                 }
 
             }
