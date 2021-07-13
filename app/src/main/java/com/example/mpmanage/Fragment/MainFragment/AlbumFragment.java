@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +14,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
@@ -38,7 +36,7 @@ public class AlbumFragment extends Fragment {
     View view;
     TextView title;
     RecyclerView recyclerView;
-    SearchView searchView;
+    static SearchView searchView;
     RelativeLayout relativeLayout;
     public static ArrayList<Album> arrayList;
     static AlbumAdapter adapter;
@@ -72,8 +70,8 @@ public class AlbumFragment extends Fragment {
                     SetRv();
                     handler.removeCallbacks(this);
                 }
-                i[0] +=10;
-                if(i[0] >= 2000){
+                i[0] += 10;
+                if (i[0] >= 2000) {
                     view.setVisibility(View.VISIBLE);
                 }
 
@@ -82,7 +80,7 @@ public class AlbumFragment extends Fragment {
     }
 
     private void SetRv() {
-        adapter = new AlbumAdapter(getContext(), arrayList);
+        adapter = new AlbumAdapter(this, arrayList);
         LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_left_to_right);
         recyclerView.setLayoutAnimation(animlayout);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
@@ -106,6 +104,11 @@ public class AlbumFragment extends Fragment {
                 if (adapter != null) {
                     adapter.setItemchange(i);
                     adapter.notifyItemChanged(i);
+                    if (!searchView.getQuery().equals("")) {
+                        String query = searchView.getQuery().toString();
+                        searchView.setQuery("", true);
+                        searchView.setQuery(query, true);
+                    }
                 }
                 return;
             }
@@ -116,15 +119,25 @@ public class AlbumFragment extends Fragment {
         if (!arrayList.contains(album)) {
             arrayList.add(album);
             adapter.notifyDataSetChanged();
+            if (!searchView.getQuery().equals("")) {
+                String query = searchView.getQuery().toString();
+                searchView.setQuery("", true);
+                searchView.setQuery(query, true);
+            }
         }
     }
 
-    public static void DeleteAlbum(Album album) {
+    public void DeleteAlbum(Album album) {
         int i = arrayList.indexOf(album);
         if (i != -1) {
             arrayList.remove(i);
             adapter.notifyItemRemoved(i);
             adapter.notifyItemRangeChanged(i, arrayList.size());
+            if (!searchView.getQuery().equals("")) {
+                String query = searchView.getQuery().toString();
+                searchView.setQuery("", true);
+                searchView.setQuery(query, true);
+            }
         }
     }
 

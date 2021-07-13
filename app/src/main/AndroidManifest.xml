@@ -8,7 +8,7 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:icon="@mipmap/mppro"
         android:label="@string/app_name"
@@ -16,7 +16,9 @@
         android:roundIcon="@mipmap/mppro"
         android:supportsRtl="true"
         android:theme="@style/Theme.MPManage"
-        tools:ignore="AllowBackup">
+        android:usesCleartextTraffic="true"
+        tools:ignore="AllowBackup"
+        tools:targetApi="m">
         <activity android:name=".Activity.UpdateCaSiActivity" />
         <activity android:name=".Activity.UpdateSingerActivity" />
         <activity android:name=".Activity.UpdateAlbumActivity" />
@@ -27,7 +29,9 @@
         <activity android:name=".Activity.AddSongActivity" />
         <activity android:name=".Activity.UpdateSongActivity" />
         <activity android:name=".Activity.LoginActivity" />
-        <activity android:name=".Activity.MainActivity"/>
+        <activity android:name=".Activity.MainActivity">
+
+        </activity>
         <activity android:name=".Activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

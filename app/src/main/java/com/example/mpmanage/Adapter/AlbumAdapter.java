@@ -36,12 +36,12 @@ import retrofit2.Response;
 
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> implements Filterable {
 
-    Context context;
+    AlbumFragment context;
     ArrayList<Album> arrayList;
     ArrayList<Album> mArrayList;
     int itemchange;
 
-    public AlbumAdapter(Context context, ArrayList<Album> arrayList) {
+    public AlbumAdapter(AlbumFragment context, ArrayList<Album> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         mArrayList = arrayList;
@@ -50,7 +50,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(context.getContext());
         android.view.View view = inflater.inflate(R.layout.dong_album, parent, false);
         return new ViewHolder(view);
     }
@@ -61,7 +61,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Album album = arrayList.get(position);
-        if (itemchange == position)
+        if (itemchange != position)
             Glide.with(context).load(album.getHinhAlbum()).error(R.drawable.song).into(holder.Avatar);
         else {
             Glide.with(context).load(album.getHinhAlbum()).diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -72,13 +72,13 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         holder.txtCaSi.setText(album.getTenCaSi());
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, UpdateAlbumActivity.class);
+            Intent intent = new Intent(context.getContext(), UpdateAlbumActivity.class);
             intent.putExtra("album", album);
             context.startActivity(intent);
         });
 
         holder.btnDelete.setOnClickListener(v -> {
-            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context.getContext());
             dialog.setBackground(context.getResources().getDrawable(R.drawable.custom_diaglog_background));
             dialog.setTitle("Thoát");
             dialog.setIcon(R.drawable.ic_exit);
@@ -88,13 +88,13 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
                 callback.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        AlbumFragment.DeleteAlbum(album);
-                        Toast.makeText(context, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
+                        context.DeleteAlbum(album);
+                        Toast.makeText(context.getContext(), "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-                        Toast.makeText(context, "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context.getContext(), "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
                     }
                 });
 

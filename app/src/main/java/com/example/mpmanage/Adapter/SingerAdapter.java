@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mpmanage.Activity.UpdateCaSiActivity;
 import com.example.mpmanage.Activity.UpdateSingerActivity;
 import com.example.mpmanage.Fragment.MainFragment.SingerFragment;
+import com.example.mpmanage.Model.Album;
 import com.example.mpmanage.Model.BaiHat;
 import com.example.mpmanage.Model.CaSi;
 import com.example.mpmanage.R;
@@ -40,12 +42,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder> implements Filterable {
-    Context context;
+    SingerFragment context;
     ArrayList<CaSi> arrayList;
     ArrayList<CaSi> mArrayList;
     int itemchange;
 
-    public SingerAdapter(Context context, ArrayList<CaSi> arrayList) {
+    public SingerAdapter(SingerFragment context, ArrayList<CaSi> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         mArrayList = arrayList;
@@ -55,7 +57,7 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(context.getContext());
         View view = inflater.inflate(R.layout.dong_singer, parent, false);
         return new ViewHolder(view);
     }
@@ -75,7 +77,7 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
 
         holder.tvTitle.setText(caSi.getTenCaSi());
         holder.btnOptions.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(context, holder.btnOptions);
+            PopupMenu popupMenu = new PopupMenu(context.getContext(), holder.btnOptions);
             setupPopupMenu(position, popupMenu);
             popupMenu.show();
         });
@@ -98,7 +100,7 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
                     ViewSongAlbumSinger(position);
                     break;
                 case R.id.delete_singer:
-                    DeleteSinger(position);
+                    CheckHaveBaiHat(position);
                     break;
             }
 
@@ -112,18 +114,18 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
     }
 
     private void UpdateInfoSinger(int position) {
-        Intent intent = new Intent(context, UpdateCaSiActivity.class);
+        Intent intent = new Intent(context.getContext(), UpdateCaSiActivity.class);
         intent.putExtra("casi", arrayList.get(position));
         context.startActivity(intent);
     }
 
     private void ViewSongAlbumSinger(int position) {
-        Intent intent = new Intent(context, UpdateSingerActivity.class);
+        Intent intent = new Intent(context.getContext(), UpdateSingerActivity.class);
         intent.putExtra("casi", arrayList.get(position));
         context.startActivity(intent);
     }
 
-    private void DeleteSinger(int position) {
+    private void CheckHaveBaiHat(int position) {
         DataService dataService = APIService.getService();
         Call<List<BaiHat>> callback = dataService.GetBaiHatCaSi(arrayList.get(position).getIdCaSi());
         callback.enqueue(new Callback<List<BaiHat>>() {
@@ -132,26 +134,49 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
                 ArrayList<BaiHat> baiHatArrayList = (ArrayList<BaiHat>) response.body();
                 if (baiHatArrayList != null) {
                     if (baiHatArrayList.size() > 0) {
-                        Toast.makeText(context, "Không Thể Xóa Ca Sĩ", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(context, "Bạn Phải Xóa Hết Bài Hát Và Album Của Ca Sĩ Trước", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context.getContext(), "Không Thể Xóa Ca Sĩ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context.getContext(), "Bạn Phải Xóa Hết Bài Hát Và Album Của Ca Sĩ Trước", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                OpenDialogAskDelete(arrayList.get(position));
+                    CheckHaveAlbum(position);
+                }
+
             }
 
-        }
+            @Override
+            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
 
-        @Override
-        public void onFailure (Call < List < BaiHat >> call, Throwable t){
+            }
+        });
+    }
 
-        }
-    });
-}
+    private void CheckHaveAlbum(int postion) {
+        DataService dataService = APIService.getService();
+        Call<List<Album>> callback = dataService.GetAlbumCaSi(arrayList.get(postion).getIdCaSi());
+        callback.enqueue(new Callback<List<Album>>() {
+            @Override
+            public void onResponse(Call<List<Album>> call, Response<List<Album>> response) {
+                ArrayList<Album> albums = (ArrayList<Album>) response.body();
+                if (albums != null) {
+                    if (albums.size() > 0) {
+                        Toast.makeText(context.getContext(), "Không Thể Xóa Ca Sĩ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context.getContext(), "Bạn Phải Xóa Hết Bài Hát Và Album Của Ca Sĩ Trước", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                OpenDialogAskDelete(arrayList.get(postion));
+            }
+
+            @Override
+            public void onFailure(Call<List<Album>> call, Throwable t) {
+            }
+        });
+    }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void OpenDialogAskDelete(CaSi caSi) {
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context.getContext());
         dialog.setBackground(context.getResources().getDrawable(R.drawable.custom_diaglog_background));
         dialog.setTitle("Thoát");
         dialog.setIcon(R.drawable.ic_delete);
@@ -161,13 +186,14 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    SingerFragment.DeleteCaSi(caSi);
-                    Toast.makeText(context, "Cập Nhật THành Công", Toast.LENGTH_SHORT).show();
+                    context.DeleteCaSi(caSi);
+                    Toast.makeText(context.getContext(), "Cập Nhật THành Công", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-                    Toast.makeText(context, "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context.getContext(), "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
+                    Log.e("BBBBB", t.getMessage());
                 }
             });
 
@@ -186,19 +212,19 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
     }
 
 
-public class ViewHolder extends RecyclerView.ViewHolder {
-    RoundedImageView imageView;
-    TextView tvTitle;
-    ImageView btnOptions;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        RoundedImageView imageView;
+        TextView tvTitle;
+        ImageView btnOptions;
 
-    public ViewHolder(@NonNull View itemView) {
-        super(itemView);
-        imageView = itemView.findViewById(R.id.img_playlist);
-        tvTitle = itemView.findViewById(R.id.tv_playlist);
-        btnOptions = itemView.findViewById(R.id.btn_delete_playlist);
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.img_playlist);
+            tvTitle = itemView.findViewById(R.id.tv_playlist);
+            btnOptions = itemView.findViewById(R.id.btn_delete_playlist);
+        }
+
     }
-
-}
 
     @Override
     public Filter getFilter() {

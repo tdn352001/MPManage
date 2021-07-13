@@ -39,7 +39,7 @@ public class SingerFragment extends Fragment {
     TextView title;
     static ArrayList<CaSi> arrayList;
     static SingerAdapter adapter;
-    SearchView searchView;
+    public static SearchView searchView;
 
 
     @Override
@@ -78,7 +78,7 @@ public class SingerFragment extends Fragment {
     }
 
     private void SetRV() {
-        adapter = new SingerAdapter(getContext(), arrayList);
+        adapter = new SingerAdapter(this, arrayList);
         recyclerView.setAdapter(adapter);
         LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_left_to_right);
         recyclerView.setLayoutAnimation(animlayout);
@@ -94,6 +94,11 @@ public class SingerFragment extends Fragment {
                 if (adapter != null) {
                     adapter.setItemchange(i);
                     adapter.notifyItemChanged(i);
+                    if (!searchView.getQuery().equals("")) {
+                        String query = searchView.getQuery().toString();
+                        searchView.setQuery("", true);
+                        searchView.setQuery(query, true);
+                    }
                 }
                 break;
             }
@@ -102,14 +107,20 @@ public class SingerFragment extends Fragment {
     public static void AddCaSi(CaSi caSi) {
         arrayList.add(caSi);
         adapter.notifyDataSetChanged();
+
     }
 
-    public static void DeleteCaSi(CaSi caSi) {
+    public void DeleteCaSi(CaSi caSi) {
         int i = arrayList.indexOf(caSi);
         if (i != -1) {
             arrayList.remove(i);
             adapter.notifyItemRemoved(i);
             adapter.notifyItemRangeChanged(i, arrayList.size());
+            if (!searchView.getQuery().equals("")) {
+                String query = searchView.getQuery().toString();
+                searchView.setQuery("", true);
+                searchView.setQuery(query, true);
+            }
         }
     }
 

@@ -479,10 +479,10 @@ public class UpdateCategoryActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                String Linkroot = "https://filenhacmp3.000webhostapp.com/file/";
+                String Linkroot = "http://192.168.1.3/PlayerMusicProject/Server/Client/image/";
                 String LinkHinh = Linkroot + FileName;
                 edtLink.setText(LinkHinh);
-                if (category.getId().equals(""))
+                if (category.getId() == null)
                     AddCategory();
                 else
                     UpdateCategory();

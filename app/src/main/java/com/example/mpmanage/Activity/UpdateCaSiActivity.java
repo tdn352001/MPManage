@@ -106,6 +106,7 @@ public class UpdateCaSiActivity extends AppCompatActivity {
                     }
                 }).into(imgCaSi);
     }
+
     private void SetUpToolBar() {
         String title;
         if (caSi.getIdCaSi() == null)
@@ -162,7 +163,7 @@ public class UpdateCaSiActivity extends AppCompatActivity {
             FileAnhResult.launch(Intent.createChooser(intent, " Chọn Hình Ảnh"));
         });
 
-        
+
         btnFinish.setOnClickListener(v -> {
             if (CheckValidate()) {
                 progressDialog = ProgressDialog.show(UpdateCaSiActivity.this, "Đang Cập Nhật", " Vui Lòng Chờ");
@@ -214,7 +215,7 @@ public class UpdateCaSiActivity extends AppCompatActivity {
             public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(UpdateCaSiActivity.this, "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
-                Log.e("BBB", "add album failed");
+                Log.e("BBBB", t.getMessage());
             }
         });
     }
@@ -228,7 +229,7 @@ public class UpdateCaSiActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String id = response.body();
-                if(id != null){
+                if (id != null) {
                     caSi.setIdCaSi(id);
                     SingerFragment.AddCaSi(caSi);
                     Toast.makeText(UpdateCaSiActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
@@ -258,10 +259,13 @@ public class UpdateCaSiActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                String Linkroot = "https://filenhacmp3.000webhostapp.com/file/";
+                String Linkroot = "http://192.168.1.3/PlayerMusicProject/Server/Client/image/";
                 String LinkHinh = Linkroot + FileName;
                 edtLink.setText(LinkHinh);
-                UpdateCaSi();
+                if (caSi.getIdCaSi() == null)
+                    AddSinger();
+                else
+                    UpdateCaSi();
             }
 
             @Override
@@ -289,7 +293,7 @@ public class UpdateCaSiActivity extends AppCompatActivity {
                 return false;
             }
         }
-        
+
         return true;
     }
 

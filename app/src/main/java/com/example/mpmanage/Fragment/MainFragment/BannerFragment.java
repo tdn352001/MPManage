@@ -25,6 +25,8 @@ import com.example.mpmanage.R;
 
 import java.util.ArrayList;
 
+import static com.example.mpmanage.Fragment.MainFragment.AlbumFragment.searchView;
+
 public class BannerFragment extends Fragment {
 
     View view;
@@ -100,6 +102,7 @@ public class BannerFragment extends Fragment {
             arrayList.remove(Pos);
             adapter.notifyItemRemoved(Pos);
             adapter.notifyItemRangeChanged(Pos, arrayList.size());
+
         }
     }
 

@@ -33,12 +33,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder> implements Filterable {
-    Context context;
+    PlaylistFragment context;
     ArrayList<Playlist> arrayList;
     ArrayList<Playlist> mArrayList;
     int itemchange;
 
-    public PlaylistAdapter(Context context, ArrayList<Playlist> arrayList) {
+    public PlaylistAdapter(PlaylistFragment context, ArrayList<Playlist> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         mArrayList = arrayList;
@@ -48,7 +48,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(context.getContext());
         View view = inflater.inflate(R.layout.dong_playlist, parent, false);
         return new ViewHolder(view);
     }
@@ -58,23 +58,23 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Playlist playlist = arrayList.get(position);
         if(itemchange == position){
-            Glide.with(context).load(playlist.getHinhAnh())
+            Glide.with(context.getContext()).load(playlist.getHinhAnh())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .into(holder.imageView);
             itemchange = -1;
         }
-        Glide.with(context).load(playlist.getHinhAnh()).into(holder.imageView);
+        Glide.with(context.getContext()).load(playlist.getHinhAnh()).into(holder.imageView);
         holder.tvTitle.setText(playlist.getTen());
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, UpdatePlaylistActivity.class);
+            Intent intent = new Intent(context.getContext(), UpdatePlaylistActivity.class);
             intent.putExtra("playlist", playlist);
             context.startActivity(intent);
         });
 
         holder.btnDelete.setOnClickListener(v -> {
-            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context.getContext());
             dialog.setBackground(context.getResources().getDrawable(R.drawable.custom_diaglog_background));
             dialog.setTitle("Thoát");
             dialog.setIcon(R.drawable.ic_delete);
@@ -84,8 +84,8 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        PlaylistFragment.DeletePlaylist(playlist);
-                        Toast.makeText(context, "Cập Nhật THành Công", Toast.LENGTH_SHORT).show();
+                        context.DeletePlaylist(playlist);
+                        Toast.makeText(context.getContext(), "Cập Nhật THành Công", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

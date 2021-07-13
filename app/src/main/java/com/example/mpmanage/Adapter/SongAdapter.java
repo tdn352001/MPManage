@@ -35,13 +35,13 @@ import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> implements Filterable {
 
-    Context context;
+    SongFragment context;
     ArrayList<BaiHat> arrayList;
-    ArrayList<BaiHat> mArrayList;
+    public ArrayList<BaiHat> mArrayList;
     int View;
     int itemchange;
 
-    public SongAdapter(Context context, ArrayList<BaiHat> arrayList) {
+    public SongAdapter(SongFragment context, ArrayList<BaiHat> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
         mArrayList = arrayList;
@@ -51,7 +51,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(context.getContext());
         View view = inflater.inflate(R.layout.dong_song, parent, false);
         return new ViewHolder(view);
     }
@@ -74,13 +74,13 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
         holder.txtBaiHat.setText(baiHat.getTenBaiHat());
         holder.txtCaSi.setText(baiHat.getTenAllCaSi());
         holder.relativeLayout.setOnClickListener(v -> {
-            Intent intent = new Intent(context, UpdateSongActivity.class);
+            Intent intent = new Intent(context.getContext(), UpdateSongActivity.class);
             intent.putExtra("baihat", baiHat);
             context.startActivity(intent);
         });
 
         holder.btnOptions.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(context, holder.btnOptions);
+            PopupMenu popupMenu = new PopupMenu(context.getContext(), holder.btnOptions);
             OpenOptionsMenu(position, popupMenu);
         });
     }
@@ -97,18 +97,18 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> im
             BaiHat baiHat = arrayList.get(position);
             Log.e("BBB", baiHat.getTenBaiHat());
             if (item.getItemId() == R.id.info_song_item) {
-                Intent intent = new Intent(context, InfoSongActivity.class);
+                Intent intent = new Intent(context.getContext(), InfoSongActivity.class);
                 intent.putExtra("baihat", baiHat);
                 context.startActivity(intent);
             } else {
-                MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
+                MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context.getContext());
                 dialog.setBackground(context.getResources().getDrawable(R.drawable.custom_diaglog_background));
                 dialog.setTitle("Xóa?");
                 dialog.setIcon(R.drawable.ic_delete);
                 dialog.setMessage("Bạn Có Chắc muốn xóa bài hát này?");
                 dialog.setNegativeButton("Đồng Ý", (dialog1, which) -> {
-                    SongFragment.DeleteSong(baiHat);
-                    Toast.makeText(context, "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
+                    context.DeleteSong(baiHat);
+                    Toast.makeText(context.getContext(), "Đã Cập Nhật", Toast.LENGTH_SHORT).show();
                 });
 
                 dialog.setPositiveButton("Hủy", (dialog12, which) -> dialog12.dismiss());

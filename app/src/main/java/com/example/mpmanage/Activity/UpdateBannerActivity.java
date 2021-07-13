@@ -247,7 +247,7 @@ public class UpdateBannerActivity extends AppCompatActivity {
                     if (radioGroup.getCheckedRadioButtonId() == R.id.rd_link_hinh_poster)
                         AddBanner();
                     else {
-                        String FileName = banner.getIdBaiHat() + "poster" + banner.getTenBaiHat() + ".jpg";
+                        String FileName = banner.getIdBaiHat() + "poster" + banner.getTenBaiHat() + System.currentTimeMillis() + ".jpg";
                         UpLoadFile(FileName);
                     }
                 }
@@ -339,14 +339,13 @@ public class UpdateBannerActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                String Linkroot = "https://filenhacmp3.000webhostapp.com/file/";
+                String Linkroot = "http://192.168.1.3/PlayerMusicProject/Server/Client/image/";
                 String LinkHinh = Linkroot + FileName;
                 edtPoster.setText(LinkHinh);
                 if (banner.getIdQuangCao() == null) {
                     AddBanner();
                 } else {
                     UpdateBanner();
-                    Log.e("BBB", "Logic ok");
                 }
             }
 
@@ -468,6 +467,17 @@ public class UpdateBannerActivity extends AppCompatActivity {
         if (baiHats.size() == 0) {
             Toast.makeText(this, "Chưa Chọn Bài Hát", Toast.LENGTH_SHORT).show();
             return false;
+        }
+
+        if (banner.getIdQuangCao() == null) {
+            if (baiHats.get(0).getIdBaiHat() != null) {
+                Log.e("BBBB", "Cheeck exit, " + baiHats.get(0).getTenBaiHat());
+                for (int i = 0; i < MainActivity.quangCaoArrayList.size(); i++)
+                    if (MainActivity.quangCaoArrayList.get(i).getIdBaiHat().equals(baiHats.get(0).getIdBaiHat())) {
+                        Toast.makeText(this, "Bài Hát Đã Được Quảng Cáo", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+            }
         }
 
         return true;

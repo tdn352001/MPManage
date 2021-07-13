@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,7 +45,7 @@ public class SongFragment extends Fragment {
     static SongAdapter songAdapter;
     public static ArrayList<BaiHat> baiHatArrayList;
     MaterialButton btnViewMore, btnViewLess;
-    SearchView searchView;
+    static SearchView searchView;
     TextView title;
     RelativeLayout SearchNoDataResult;
 
@@ -92,7 +91,7 @@ public class SongFragment extends Fragment {
     }
 
     private void SetRecycleView() {
-        songAdapter = new SongAdapter(getContext(), baiHatArrayList);
+        songAdapter = new SongAdapter(this, baiHatArrayList);
         LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_left_to_right);
         recyclerView.setLayoutAnimation(animlayout);
         recyclerView.setAdapter(songAdapter);
@@ -132,6 +131,11 @@ public class SongFragment extends Fragment {
         if (songAdapter != null) {
             songAdapter.setItemchange(Position);
             songAdapter.notifyItemChanged(Position);
+            if (!searchView.getQuery().equals("")) {
+                String query = searchView.getQuery().toString();
+                searchView.setQuery("", true);
+                searchView.setQuery(query, true);
+            }
         }
 
     }
@@ -139,10 +143,13 @@ public class SongFragment extends Fragment {
     public static void AddSong(BaiHat baihat) {
         baiHatArrayList.add(0, baihat);
         songAdapter.notifyDataSetChanged();
+
     }
 
-    public static void DeleteSong(BaiHat baiHat) {
+    public void DeleteSong(BaiHat baiHat) {
         int Pos = baiHatArrayList.indexOf(baiHat);
+        if (Pos == -1)
+            return;
         baiHatArrayList.remove(Pos);
         songAdapter.notifyItemRemoved(Pos);
         songAdapter.notifyItemRangeChanged(Pos, baiHatArrayList.size());
@@ -151,7 +158,13 @@ public class SongFragment extends Fragment {
         callback.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-
+                if (!searchView.getQuery().equals("")) {
+                    {
+                        String query = searchView.getQuery().toString();
+                        searchView.setQuery("", true);
+                        searchView.setQuery(query, true);
+                    }
+                }
             }
 
             @Override

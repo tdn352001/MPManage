@@ -38,7 +38,7 @@ public class PlaylistFragment extends Fragment {
     static ArrayList<Playlist> arrayList;
     @SuppressLint("StaticFieldLeak")
     static PlaylistAdapter adapter;
-    SearchView searchView;
+    static SearchView searchView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,7 +71,7 @@ public class PlaylistFragment extends Fragment {
     }
 
     private void SetRv() {
-        adapter = new PlaylistAdapter(getContext(), arrayList);
+        adapter = new PlaylistAdapter(this, arrayList);
         recyclerView.setAdapter(adapter);
         LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_left_to_right);
         recyclerView.setLayoutAnimation(animlayout);
@@ -137,13 +137,10 @@ public class PlaylistFragment extends Fragment {
 
         MenuItem AddItem = menu.findItem(R.id.add_item);
         AddItem.setTitle("Thêm Playlist");
-        AddItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Intent intent = new Intent(getContext(), UpdatePlaylistActivity.class);
-                startActivity(intent);
-                return true;
-            }
+        AddItem.setOnMenuItemClickListener(item -> {
+            Intent intent = new Intent(getContext(), UpdatePlaylistActivity.class);
+            startActivity(intent);
+            return true;
         });
 
 
@@ -153,6 +150,7 @@ public class PlaylistFragment extends Fragment {
     public static void AddPlaylist(Playlist playlist) {
         arrayList.add(playlist);
         adapter.notifyDataSetChanged();
+
     }
 
     public static void UpdatePlaylist(Playlist playlist) {
@@ -169,15 +167,25 @@ public class PlaylistFragment extends Fragment {
         if (adapter != null) {
             adapter.setItemchange(i);
             adapter.notifyItemChanged(i);
+            if (!searchView.getQuery().equals("")) {
+                String query = searchView.getQuery().toString();
+                searchView.setQuery("", true);
+                searchView.setQuery(query, true);
+            }
         }
     }
 
-    public static void DeletePlaylist(Playlist playlist) {
+    public void DeletePlaylist(Playlist playlist) {
         int index = arrayList.indexOf(playlist);
         if (index != -1) {
             arrayList.remove(index);
             adapter.notifyItemRemoved(index);
             adapter.notifyItemRangeChanged(index, arrayList.size());
+            if (!searchView.getQuery().equals("")) {
+                String query = searchView.getQuery().toString();
+                searchView.setQuery("", true);
+                searchView.setQuery(query, true);
+            }
         }
     }
 }

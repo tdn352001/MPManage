@@ -487,7 +487,7 @@ public class UpdateSongActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (RealPath == RealPathHinh) {
-                    String LinkHinh = "https://filenhacmp3.000webhostapp.com/file/";
+                    String LinkHinh = "http://192.168.1.3/PlayerMusicProject/Server/Client/image/";
                     edtHinhBaiHat.setText(LinkHinh + FileName);
                     if (rdNhac.getCheckedRadioButtonId() == R.id.rd_file_nhac) {
                         String TenFile = baiHat.getIdBaiHat() + "file" + edtTenBaiHat.getText().toString().replaceAll(" ", "") + ".mp3";
@@ -496,7 +496,7 @@ public class UpdateSongActivity extends AppCompatActivity {
                         UpdateSong();
                     }
                 } else {
-                    String LinkNhac = "https://filenhacmp3.000webhostapp.com/file/";
+                    String LinkNhac = "http://192.168.1.3/PlayerMusicProject/Server/Client/image/";
                     edtFileBaiHat.setText(LinkNhac + FileName);
                     UpdateSong();
                 }
