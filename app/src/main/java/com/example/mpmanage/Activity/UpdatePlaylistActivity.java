@@ -532,7 +532,7 @@ public class UpdatePlaylistActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                String Linkroot = "http://192.168.1.3/PlayerMusicProject/Server/Client/image/";
+                String Linkroot = "https://filenhacmp3.000webhostapp.com/file/";
                 String LinkHinh = Linkroot + FileName;
                 edtLink.setText(LinkHinh);
                 if(playlist.getIdPlaylist() == null)
